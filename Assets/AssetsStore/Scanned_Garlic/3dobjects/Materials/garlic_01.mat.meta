@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: fc4c97eeab016aa47966f747cf09bc51
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 229684
+  packageName: Scanned Garlic
+  packageVersion: 1.0
+  assetPath: Assets/Scanned_Garlic/3dobjects/Materials/garlic_01.mat
+  uploadId: 518518

@@ -1,0 +1,92 @@
+using DG.Tweening;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+[RequireComponent(typeof(CharacterController))]
+public class PlayerController : MonoBehaviour
+{
+    public float WalkingSpeed = 7.5f;
+    public float JumpSpeed = 8.0f;
+    public float Gravity = 20.0f;
+    public Camera PlayerCamera;
+    public float LookSpeed = 2.0f;
+    public float LookXLimit = 45.0f;
+    public float CrouchHeight = 0.6f;
+    Tween downAnim;
+    Tween upAnim;
+    Tween currentAnim;
+
+    CharacterController characterController;
+    Vector3 moveDirection = Vector3.zero;
+    float rotationX = 0;
+    bool isCrouching = false;
+
+    [HideInInspector]
+    public bool canMove = true;
+
+    void Start()
+    {
+        characterController = GetComponent<CharacterController>();
+
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+
+        var p = PlayerCamera.transform.localPosition;
+        downAnim = PlayerCamera.transform.DOLocalMoveY(p.y - CrouchHeight, 0.5f).SetAutoKill(false).OnComplete(() => { currentAnim = null; });
+        upAnim = PlayerCamera.transform.DOLocalMoveY(p.y, 0.5f).SetAutoKill(false).OnComplete(() => { currentAnim = null; });
+    }
+
+    void Update()
+    {
+        Vector3 forward = transform.TransformDirection(Vector3.forward);
+        Vector3 right = transform.TransformDirection(Vector3.right);
+        
+        float curSpeedX = canMove ? WalkingSpeed * Input.GetAxis("Vertical") : 0;
+        float curSpeedY = canMove ? WalkingSpeed * Input.GetAxis("Horizontal") : 0;
+        if(isCrouching)
+        {
+            curSpeedX /= 1.5f;
+            curSpeedY /= 1.5f;
+        }
+        float movementDirectionY = moveDirection.y;
+        moveDirection = (forward * curSpeedX) + (right * curSpeedY);
+
+        if (Input.GetButton("Jump") && canMove && characterController.isGrounded)
+        {
+            moveDirection.y = JumpSpeed;
+        }
+        else
+        {
+            moveDirection.y = movementDirectionY;
+        }
+        if (!characterController.isGrounded)
+        {
+            moveDirection.y -= Gravity * Time.deltaTime;
+        }
+        if (Input.GetKeyDown(KeyCode.LeftControl) && canMove)
+        {
+            if (currentAnim != null)
+                return;
+            isCrouching = !isCrouching;
+
+            if (isCrouching)
+            {
+                downAnim.Restart();
+            }
+            else
+            {
+                upAnim.Restart();
+            }
+        }
+        characterController.Move(moveDirection * Time.deltaTime);
+
+        if (canMove)
+        {
+            rotationX += -Input.GetAxis("Mouse Y") * LookSpeed;
+            rotationX = Mathf.Clamp(rotationX, -LookXLimit, LookXLimit);
+            PlayerCamera.transform.localRotation = Quaternion.Euler(rotationX, 0, 0);
+            transform.rotation *= Quaternion.Euler(0, Input.GetAxis("Mouse X") * LookSpeed, 0);
+        }
+    }
+}
