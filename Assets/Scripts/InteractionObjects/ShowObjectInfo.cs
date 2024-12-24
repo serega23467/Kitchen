@@ -9,6 +9,8 @@ public class ShowObjectInfo : MonoBehaviour
 {
     public string ObjectName = "";
     public string ObjectInfo = "";
+    [HideInInspector]
+    public string ObjectData = "";
     Outline outline;
     void Start()
     {
@@ -20,7 +22,7 @@ public class ShowObjectInfo : MonoBehaviour
     { 
         if(ObjectInfo!="")
         {
-            UIElements.GetInstance().ShowObjectInfo(ObjectName, ObjectInfo);
+            UIElements.GetInstance().ShowObjectInfo(ObjectName, ObjectInfo, ObjectData);
         }
     }
     public void HideInfo()

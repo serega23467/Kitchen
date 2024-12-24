@@ -2,8 +2,9 @@ using UnityEngine;
 
 public interface IHeated
 {
-    public float Temperature {  get; set; }
-    public byte MassKG{ get; set; }
+    public HeatedInfo HeatedInfo { get; set; }
+    public void AddWater();
+    public void OnBoiling(byte level);
     public void StopHeating();
     public void StartHeating();
 }

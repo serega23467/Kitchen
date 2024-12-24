@@ -149,6 +149,16 @@ public class PlayerRaycast : MonoBehaviour
                 {
                     switcher.AddLevel();
                 }
+                else if (hit.collider.TryGetComponent(out Tap tap) && currentDraggableObject != null)
+                {
+                    if(currentDraggableObject.TryGetComponent(out IHeated heated))
+                    {
+                        if(!heated.HeatedInfo.HasWater)
+                        {
+                            tap.FillContainer(heated);
+                        }
+                    }
+                }
             }
         }
         if (currentDraggableObject!=null && Input.GetAxis("Mouse ScrollWheel") != 0)

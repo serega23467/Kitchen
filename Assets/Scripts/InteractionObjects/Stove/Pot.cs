@@ -5,51 +5,79 @@ using UnityEngine;
 [RequireComponent(typeof(ShowObjectInfo))]
 public class Pot : MonoBehaviour, IHeated
 {
-    [SerializeField]
-    float t = 20;
-    public Water PotWater = null;
-    byte m;
+    Water potWater = null;
     ShowObjectInfo info;
     ParticleSystem smoke;
+    public HeatedInfo HeatedInfo { get; set; }
+
     private void Start()
     {
         info = GetComponent<ShowObjectInfo>();
         info.ObjectName = "Кастрюля";
         smoke = GetComponentInChildren<ParticleSystem>();
         smoke.Pause();
+        HeatedInfo = new HeatedInfo(temperature: 90, currentMassKG: 5, maxMassKG: 5, hasWater: false);
+
+        potWater = GetComponentInChildren<Water>();
+        potWater.gameObject.SetActive(false);
     }
+
     private void Update()
     {
-        info.ObjectInfo = $"t: {Temperature.ToString("F1")}";
-        if (PotWater != null && smoke != null)
+        if(info != null)
         {
-            if (Temperature >= 100)
+            info.ObjectData = $"\nt: {HeatedInfo.Temperature.ToString("F1")}\nm: {HeatedInfo.CurrentMassKG.ToString("F1")}";
+            if (potWater != null && smoke != null)
             {
-                if (!smoke.isPlaying)
+                if (HeatedInfo.Temperature >= 100 && HeatedInfo.HasWater)
                 {
-                    smoke.Play();
-                }               
-            }
-            else if (smoke.isPlaying)
-            {
-                smoke.Pause();
+                    if (!smoke.isPlaying)
+                    {
+                        smoke.Play();
+                    }               
+                }
+                else if (smoke.isPlaying)
+                {
+                    smoke.Stop();
+                }
             }
         }
     }
-    public float Temperature
+    public void AddWater()
     {
-        get { return t; }
-        set
+        HeatedInfo.HasWater = true;
+        HeatedInfo.CurrentMassKG = HeatedInfo.MaxMassKG;
+        potWater.gameObject.SetActive(true);
+        potWater.ChangeWaterLevel(HeatedInfo.CurrentMassKG, HeatedInfo.MaxMassKG);
+    }
+    public void OnBoiling(byte level)
+    {
+        if(HeatedInfo.HasWater && potWater.isActiveAndEnabled)
         {
-            if (value < 200 && value >= 0)
-                t = value;
-            else if (value > 200)
-                t = 200;
-            else if (value < 20)
-                t = 20;
+            if(HeatedInfo.CurrentMassKG<1f)
+            {
+                HeatedInfo.HasWater = false;
+                potWater.gameObject.SetActive(false);
+
+                return;
+            }
+            switch (level)
+            {
+                case 1:
+                    HeatedInfo.CurrentMassKG -= 0.1f / 60f;
+                    potWater.ChangeWaterLevel(HeatedInfo.CurrentMassKG, HeatedInfo.MaxMassKG);
+                    break;
+                case 2:
+                    HeatedInfo.CurrentMassKG -= 0.2f / 60f;
+                    potWater.ChangeWaterLevel(HeatedInfo.CurrentMassKG, HeatedInfo.MaxMassKG);
+                    break;
+                case 3:
+                    HeatedInfo.CurrentMassKG -= 0.3f / 60f;
+                    potWater.ChangeWaterLevel(HeatedInfo.CurrentMassKG, HeatedInfo.MaxMassKG);
+                    break;
+            }
         }
     }
-    public byte MassKG { get; set; } = 5;
     public void StartHeating()
     {
         StopAllCoroutines();
@@ -60,10 +88,10 @@ public class Pot : MonoBehaviour, IHeated
     }
     IEnumerator Cooling()
     {
-        while (Temperature > 20f)
+        while (HeatedInfo.Temperature > 20f)
         {
-            Temperature += -0.1f * (Temperature - 20f);
-            yield return new WaitForSeconds(1f);
+            HeatedInfo.Temperature += -0.1f * (HeatedInfo.Temperature - 20f);
+            yield return new WaitForSeconds(1f / 10f);
         }
     }
     private void OnDestroy()
