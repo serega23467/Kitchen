@@ -18,7 +18,14 @@ public class Inclose : MonoBehaviour
         {
             PickedObject = ob;
             PickedObject.transform.parent = transform;
-            PickedObject.transform.position = transform.position + offset;
+            if (ob.gameObject.TryGetComponent(out FryingPan pan))
+            {
+                PickedObject.transform.position = transform.position + new Vector3(0, 0.05f, 0);
+            }
+            else
+            {
+               PickedObject.transform.position = transform.position + offset;
+            }
             PickedObject.GetComponent<Rigidbody>().isKinematic = true;
             HasObject = true;
             OnPickPut.Invoke(Id, HasObject);

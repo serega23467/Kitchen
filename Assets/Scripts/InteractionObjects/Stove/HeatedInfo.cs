@@ -17,14 +17,18 @@ public class HeatedInfo
         }
     }
     public float CurrentMassKG { get; set; }
+    public int HeatingTime { get; set; }
+    public readonly float MinMassKG;
     public readonly float MaxMassKG;
     public bool HasWater { get; set; }
 
-    public HeatedInfo(float temperature, float currentMassKG, float maxMassKG, bool hasWater)
+    public HeatedInfo(float temperature, float minMassKG, float currentMassKG, float maxMassKG, bool hasWater, int time)
     {
         Temperature = temperature;
+        MinMassKG = minMassKG;
         CurrentMassKG = currentMassKG;
         MaxMassKG = maxMassKG;
         HasWater = hasWater;
+        HeatingTime = time;
     }
 }

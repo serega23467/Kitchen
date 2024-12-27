@@ -5,6 +5,7 @@ public class Parents
 {
     public GameObject FoodParent { get; private set; }
     public GameObject ThingParent { get; private set; }
+    public GameObject Player { get; private set; }
 
     private static Parents instance;
     private Parents() { }
@@ -15,6 +16,7 @@ public class Parents
             instance = new Parents();
             instance.FoodParent = GameObject.Find("Food");
             instance.ThingParent = GameObject.Find("Thing");
+            instance.Player = GameObject.Find("Player");
         }
         return instance;
     }

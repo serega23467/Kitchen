@@ -9,9 +9,9 @@ public class Tap : MonoBehaviour
         if (currentAnim != null)
             return;
         currentAnim = DOTween.Sequence()
-        .Append(transform.DOLocalRotate(new Vector3(0, 50, 0), 1f))
-        .SetDelay(1f)
-        .Append(transform.DOLocalRotate(new Vector3(0, 0, 0), 1f))
+        .Append(transform.DOLocalRotate(new Vector3(0, 50, 0), 0.5f))
+        .SetDelay(0.5f)
+        .Append(transform.DOLocalRotate(new Vector3(0, 0, 0), 0.5f))
         .OnComplete(() => { currentAnim = null; container.AddWater(); })
         .Play();
        //transform
