@@ -23,6 +23,8 @@ public class PlayerRaycast : MonoBehaviour
     ShowObjectInfo currentInfoObject = null;
     bool isShowContent = false;
     PlayerController playerController = null;
+    bool isShowResult = false;
+    bool isRecipeShow = true;
     //bool isInEntiractive = false;
 
     private void Start()
@@ -42,7 +44,12 @@ public class PlayerRaycast : MonoBehaviour
     void Update()
     {
         if(isShowInfo)
-        {
+        {   
+            if(!isRecipeShow)
+            {
+                UIElements.GetInstance().ShowPanelRecipe();
+                isRecipeShow = true;
+            }
             RaycastHit infoHit;
             if (Physics.Raycast(cam.transform.position, cam.transform.forward, out infoHit, showInfoDistance, LayerMask.GetMask("DraggableObject") | LayerMask.GetMask("InteractiveObject")))
             {
@@ -175,21 +182,40 @@ public class PlayerRaycast : MonoBehaviour
                 currentInfoObject = null;
             }
         }
+        else if (isRecipeShow)
+        {
+            UIElements.GetInstance().HidePanelRecipe();
+            isRecipeShow = false;
+        }
         if (Input.GetKeyDown(KeyCode.Z))
         {
-            if (currentInfoObject != null)
+            RaycastHit hit;
+            if (!isShowResult && Physics.Raycast(cam.transform.position, cam.transform.forward, out hit, raycastDistance, LayerMask.GetMask("DraggableObject")))
             {
-                if (CurrentDraggableObject.TryGetComponent(out PlateDish dish))
+                if (hit.collider.TryGetComponent(out PlateDish dish))
                 {
-                    if(dish.Compare(out string result))
+                    if (dish.Compare(out string result))
                     {
-                        UIElements.GetInstance().ShowPanelResult(result);
+                        UIElements.GetInstance().ShowPanelResult("Успешно!", result);
                     }
                     else
                     {
-                        UIElements.GetInstance().ShowPanelResult(result);
+                        UIElements.GetInstance().ShowPanelResult("Неуспешно!", result);
                     }
+                    isShowResult = true;
+                    playerController.canMove = false;
+                    Cursor.lockState = CursorLockMode.None;
+                    Cursor.visible = true;
                 }
+            }
+            else if(isShowResult)
+            {
+                UIElements.GetInstance().HidePanelResult();
+                isShowResult = false;
+
+                playerController.canMove = true;
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
             }
         }
         if (Input.GetKeyDown(KeyCode.I))
@@ -241,11 +267,16 @@ public class PlayerRaycast : MonoBehaviour
                         {
                             CurrentDraggableObject.CanDrag = false;
                             inclose.Put(CurrentDraggableObject);
+                            CurrentDraggableObject.StopFollowingObject();
                             CurrentDraggableObject = null;
                         }
                     }
                     else if(inclose.HasObject)
                     {
+                        if(CurrentDraggableObject != null)
+                        {
+                            CurrentDraggableObject.StopFollowingObject();
+                        }
                         var d = inclose.Pick();
                         d.CanDrag = true;
                         d.StartFollowingObject();
@@ -254,12 +285,13 @@ public class PlayerRaycast : MonoBehaviour
                 }
                 else if(hit.transform.parent.TryGetComponent(out Inclose inclose2))
                 {
-                    if (CurrentDraggableObject != null)
+                    if (CurrentDraggableObject != null && CurrentDraggableObject.Type == inclose2.DraggableType)
                     {
                         if (!inclose2.HasObject)
                         {
                             CurrentDraggableObject.CanDrag = false;
                             inclose2.Put(CurrentDraggableObject);
+                            CurrentDraggableObject.StopFollowingObject();
                             CurrentDraggableObject = null;
                         }
                     }
@@ -319,7 +351,7 @@ public class PlayerRaycast : MonoBehaviour
                         }
                         else if (food.IsPour && hit.collider.TryGetComponent(out FryingPan fryingPan))
                         {
-                            fryingPan.Foods.Add(food);
+                            fryingPan.AddFood(food);
                         }
                     }
                     else if (CurrentDraggableObject.TryGetComponent(out Plate plate))
@@ -340,6 +372,17 @@ public class PlayerRaycast : MonoBehaviour
                             fryingPan.AddFood(food1);
                         }
                     }
+                    else if (CurrentDraggableObject.TryGetComponent(out FryingPan fryingPan))
+                    {
+                        if(hit.collider.TryGetComponent(out Pot pot))
+                        {
+                            if(pot.HeatedInfo.HasWater)
+                            {
+                                pot.PutToWater(fryingPan.Foods);
+                                fryingPan.Foods = new List<IFood>();
+                            }
+                        }
+                    }
                     else if (CurrentDraggableObject.TryGetComponent(out PlateDish dish))
                     {
                         if (hit.collider.TryGetComponent(out Pot pot))
@@ -356,7 +399,12 @@ public class PlayerRaycast : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.G))
         {
-            isShowContent = !isShowContent;
+            RaycastHit hit;
+            if (Physics.Raycast(cam.transform.position, cam.transform.forward, out hit, raycastDistance, LayerMask.GetMask("DraggableObject")))
+            {
+                if(hit.collider.GetComponent<IListable>()!=null || hit.collider.GetComponentInChildren<IListable>() != null)
+                    isShowContent = !isShowContent;
+            }
         }
         if (CurrentDraggableObject!=null && Input.GetAxis("Mouse ScrollWheel") != 0)
         {

@@ -85,6 +85,10 @@ public class Pot : MonoBehaviour, IHeated
     {
         potWater.AddFood(food);
     }
+    public void PutToWater(List<IFood> food)
+    {
+        potWater.AddFood(food);
+    }
     public void OnBoiling(byte level)
     {
         if(HeatedInfo.HasWater && potWater.isActiveAndEnabled)

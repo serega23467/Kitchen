@@ -2,7 +2,6 @@ using NUnit.Framework;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-using static UnityEditor.PlayerSettings;
 public class Water : MonoBehaviour, IListable
 {
     public bool IsBoiled { get; private set; } = false;
@@ -44,6 +43,24 @@ public class Water : MonoBehaviour, IListable
             Foods.Add(food);
             if(!food.IsPour)
                 food.OnPull.AddListener(PutFood);
+        }
+    }
+    public void AddFood(List<IFood> foods)
+    {
+        for (int i = 0; i < foods.Count; i++)
+        {
+            if (Foods.Contains(foods[i]))
+            {
+                byte index = (byte)Foods.FindIndex(f => f.Equals(foods[i]));
+                if (index >= 0)
+                    Foods[index].GramsWeight += foods[i].GramsWeight;
+            }
+            else
+            {
+                Foods.Add(foods[i]);
+                if (!foods[i].IsPour)
+                    foods[i].OnPull.AddListener(PutFood);
+            }
         }
     }
     public void ChangeWaterLevel(float mass, float minMass, float fullMass)

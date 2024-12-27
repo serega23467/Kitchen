@@ -13,7 +13,19 @@ public class PlateDish : MonoBehaviour, IListable
     private void Start()
     {
         Foods = new List<IFood>();
-        Etalon = new List<IFood>();
+        Etalon = new List<IFood>()
+        {
+            new Chicken(){CurrentCutType =CutType.Medium, GramsWeight = 500, TemperatureSum = 272/2, TemperatureWithoutWaterSum = 0},
+            new Rice(){GramsWeight = 160, TemperatureSum = 157/2, TemperatureWithoutWaterSum = 0},
+            new Salt(){GramsWeight = 20, TemperatureSum = 88 / 2, TemperatureWithoutWaterSum = 0},
+            new Butter(){GramsWeight=40, TemperatureSum = 84/ 2, TemperatureWithoutWaterSum = 7},
+            new Carrot(){GramsWeight = 75, TemperatureSum = 84/ 2, TemperatureWithoutWaterSum = 7, CurrentCutType = CutType.Finely},
+            new Onion(){GramsWeight = 100, TemperatureSum = 84/ 2, TemperatureWithoutWaterSum = 7, CurrentCutType = CutType.Finely},
+            new Garlic(){GramsWeight = 100, TemperatureSum = 84/ 2, TemperatureWithoutWaterSum = 7, CurrentCutType = CutType.Finely},
+            new TomatoPasta(){GramsWeight=60, TemperatureSum = 84/ 2, TemperatureWithoutWaterSum = 7},
+            new Dill(){GramsWeight=30, TemperatureSum=7, TemperatureWithoutWaterSum=0 }
+
+        };
         content.SetActive(false);
     }
     public void AddDish(List<IFood> foods)
@@ -42,6 +54,8 @@ public class PlateDish : MonoBehaviour, IListable
             {
                 sb.Append("Разное количество ингридиентов!\n");
                 isGood = false;
+                result = sb.ToString();
+                return isGood;
             }
             for (int i = 0; i < Etalon.Count; i++)
             {
@@ -63,6 +77,11 @@ public class PlateDish : MonoBehaviour, IListable
                 else if (Mathf.Abs(foods[i].TemperatureWithoutWaterSum - etalon[i].TemperatureWithoutWaterSum) > 100)
                 {
                     sb.Append($"Пережарен: {etalon[i].FoodName}!\n");
+                    isGood = false;
+                }
+                else if (foods[i].CurrentCutType != etalon[i].CurrentCutType)
+                {
+                    sb.Append($"Нужно было нарезать: {etalon[i].CurrentCutType}, а не {foods[i].CurrentCutType}!\n");
                     isGood = false;
                 }
             }

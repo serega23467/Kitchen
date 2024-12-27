@@ -8,14 +8,17 @@ public class UIElements
     GameObject canvas;
     UnityEngine.UI.Image panelInfo;
     UnityEngine.UI.Image panelResult;
+    UnityEngine.UI.Image panelRecipe;
     TMP_Text panelInfoTextName;
     TMP_Text panelInfoTextDescription;
     TMP_Text panelInfoTextData;
     TMP_Text panelResultText;
+    TMP_Text panelResultHeaderText;
 
     Vector3 panelInfoSize;
     Vector3 panelResultSize;
     Vector3 scrollViewSize;
+    Vector3 panelRecipeSize;
 
     RectTransform scrollView;
     ScrollPanel scrollPanel;
@@ -33,6 +36,9 @@ public class UIElements
             instance.scrollView = GameObject.Find("Scroll View").GetComponent<RectTransform>();
             instance.scrollViewSize = instance.scrollView.localScale;
 
+            instance.panelRecipe = GameObject.Find("PanelRecipe").GetComponent<UnityEngine.UI.Image>();
+            instance.panelRecipeSize = instance.panelRecipe.rectTransform.localScale;
+
             instance.panelInfo = GameObject.Find("PanelInfo").GetComponent<UnityEngine.UI.Image>();
             instance.panelInfoTextName = instance.panelInfo.GetComponentsInChildren<TMP_Text>()[0];
             instance.panelInfoTextDescription = instance.panelInfo.GetComponentsInChildren<TMP_Text>()[1];
@@ -40,14 +46,24 @@ public class UIElements
             instance.panelInfoSize = instance.panelInfo.rectTransform.localScale;
 
             instance.panelResult = GameObject.Find("PanelResult").GetComponent<UnityEngine.UI.Image>();
-            instance.panelResultText = instance.panelResultText.GetComponentsInChildren<TMP_Text>()[0];
+            instance.panelResultHeaderText = instance.panelResult.GetComponentsInChildren<TMP_Text>()[0];
+            instance.panelResultText = instance.panelResult.GetComponentsInChildren<TMP_Text>()[1];
             instance.panelResultSize = instance.panelResult.rectTransform.localScale;
 
         }
         return instance;
     }
+    public void ShowPanelRecipe()
+    {
+        instance.panelRecipe.rectTransform.localScale = instance.panelRecipeSize;
+    }
+    public void HidePanelRecipe()
+    {
+        instance.panelRecipe.rectTransform.localScale = new Vector3(0, 0, 0);
+    }
     public void ShowPanelResult(string result, string text)
     {
+        instance.panelResultHeaderText.text = result;
         instance.panelResultText.text = text;
         instance.panelResult.rectTransform.localScale = instance.panelResultSize;
     }

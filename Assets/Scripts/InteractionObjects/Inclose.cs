@@ -16,6 +16,10 @@ public class Inclose : MonoBehaviour
     {
         if (DraggableType == ob.Type)
         {
+            if (ob.gameObject.layer == LayerMask.NameToLayer("Default"))
+            {
+                ob.gameObject.layer = LayerMask.NameToLayer("DraggableObject");
+            }
             PickedObject = ob;
             PickedObject.transform.parent = transform;
             if (ob.gameObject.TryGetComponent(out FryingPan pan))

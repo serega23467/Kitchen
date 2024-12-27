@@ -29,8 +29,15 @@ public class DraggableObject : MonoBehaviour
     }
     public void StartFollowingObject()
     {
-        if (CanDrag)
+        if (CanDrag && !follow)
+        {
             follow = true;
+            gameObject.layer = LayerMask.NameToLayer("Default");
+            foreach (Transform child in transform)
+            {
+                child.gameObject.layer = LayerMask.NameToLayer("Default");
+            }
+        }
     }
     public void SetTargetPosition(Vector3 newTargetPosition)
     {
@@ -43,6 +50,11 @@ public class DraggableObject : MonoBehaviour
         {
             follow = false;
             _rb.linearVelocity = Vector3.zero;
+        }
+        gameObject.layer = LayerMask.NameToLayer("DraggableObject");
+        foreach (Transform child in transform)
+        {
+            child.gameObject.layer = LayerMask.NameToLayer("DraggableObject");
         }
     }
 }
