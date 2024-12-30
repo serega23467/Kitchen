@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -30,15 +31,17 @@ public class FryingPan : MonoBehaviour, IHeated, IListable
     }
     public void AddFood(IFood food)
     {
-        if (Foods.Contains(food))
+        if (Foods.Select(f => f.FoodGameObject).Contains(food.FoodGameObject))
         {
-            byte index = (byte)Foods.FindIndex(f => f.Equals(food));
+            byte index = (byte)Foods.FindIndex(f => f.FoodGameObject == food.FoodGameObject);
             if (index >= 0)
+            {
                 Foods[index].GramsWeight += food.GramsWeight;
+            }
         }
         else
         {
-            Foods.Add(food);
+            Foods.Add(food.CloneFood());
             if (!food.IsPour)
                 food.OnPull.AddListener(PutFood);
         }
@@ -119,8 +122,12 @@ public class FryingPan : MonoBehaviour, IHeated, IListable
             {
                 if (Parents.GetInstance().Player.GetComponent<PlayerRaycast>().CurrentDraggableObject.GetComponent<Plate>() != null)
                 {
-                    Foods.Remove(food.GetComponent<IFood>());
-                    putFood.Invoke(food.GetComponent<IFood>());
+                    var f = Foods.FirstOrDefault(f => f.FoodGameObject == food);
+                    if (f != null)
+                    {
+                        Foods.Remove(f);
+                    }
+                    putFood.Invoke(f);
                 }
             }
         }

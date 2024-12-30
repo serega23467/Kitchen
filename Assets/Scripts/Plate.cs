@@ -10,27 +10,19 @@ public class Plate : MonoBehaviour
     GameObject content;
     ShowObjectInfo info;
     public IFood Food { get; private set; }
-    Dictionary<string, string> translator;
     private void Start()
     {
         info = GetComponent<ShowObjectInfo>();
         info.ObjectName = "Тарелка";
         content.SetActive(false);
-        translator = new Dictionary<string, string>()
-        {
-            { "None", "не нарезано" },           
-            { "Large", "крупно" },
-            { "Medium", "средне" },
-            { "Finely", "мелко" },
-        };
     }
     public void AddFood(IFood food)
     {
-        if(Food == null || Food != food)
+        if(Food == null || Food.FoodGameObject != food.FoodGameObject)
         {
-            Food = food;
+            Food = food.CloneFood();
         }
-        else if (Food == food)
+        else if (Food.FoodGameObject == food.FoodGameObject)
         {
             Food.GramsWeight += food.GramsWeight;
         }
@@ -54,6 +46,6 @@ public class Plate : MonoBehaviour
             info.ObjectData = "";
             return;
         }
-        info.ObjectData = $"{Food.FoodName} - {Food.GramsWeight} г\nнарезка - {translator[Food.CurrentCutType.ToString()]}";
+        info.ObjectData = $"{Food.FoodName} - {Food.GramsWeight} г\nнарезка - {Translator.GetInstance().GetTranslate(Food.CurrentCutType.ToString())}";
     }    
 }

@@ -12,6 +12,20 @@ public class Potato : MonoBehaviour, IFood
     public CutType CurrentCutType { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
     public GameObject FoodGameObject { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
     public float TemperatureWithoutWaterSum { get; set; }
+    public IFood CloneFood()
+    {
+        return new Potato()
+        {
+            FoodName = this.FoodName,
+            TemperatureSum = this.TemperatureSum,
+            GramsWeight = this.GramsWeight,
+            AllCutTypes = this.AllCutTypes,
+            CurrentCutType = this.CurrentCutType,
+            FoodGameObject = this.FoodGameObject,
+            OnPull = this.OnPull,
+            TemperatureWithoutWaterSum = this.TemperatureWithoutWaterSum,
+        };
+    }
     public GameObject GetPlatePrefab()
     {
         throw new System.NotImplementedException();

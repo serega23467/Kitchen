@@ -12,6 +12,22 @@ public class Butter : MonoBehaviour, IFood
     public CutType CurrentCutType { get; set; }
     public GameObject FoodGameObject { get; set; } = null;
     public float TemperatureWithoutWaterSum { get; set; }
+
+    public IFood CloneFood()
+    {
+        return new Butter()
+        {
+            FoodName = this.FoodName,
+            TemperatureSum = this.TemperatureSum,
+            GramsWeight = this.GramsWeight,
+            AllCutTypes = this.AllCutTypes,
+            CurrentCutType = this.CurrentCutType,
+            FoodGameObject = this.FoodGameObject,
+            OnPull = this.OnPull,
+            TemperatureWithoutWaterSum = this.TemperatureWithoutWaterSum,
+        };
+    }
+
     public GameObject GetPlatePrefab()
     {
         throw new System.NotImplementedException();
@@ -19,6 +35,7 @@ public class Butter : MonoBehaviour, IFood
 
     private void Awake()
     {
+        FoodGameObject = gameObject;
         OnPull = new UnityEvent<GameObject>();
         AllCutTypes = new CutType[] { CutType.None };
         CurrentCutType = CutType.None;

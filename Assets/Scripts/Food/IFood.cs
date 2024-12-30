@@ -13,4 +13,5 @@ public interface IFood
     public CutType[] AllCutTypes { get; set; }
     public CutType CurrentCutType { get; set; }
     public GameObject GetPlatePrefab();
+    public IFood CloneFood();
 }

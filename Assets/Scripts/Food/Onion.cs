@@ -12,6 +12,20 @@ public class Onion : MonoBehaviour, IFood
     public CutType CurrentCutType { get; set; }
     public GameObject FoodGameObject { get; set; }
     public float TemperatureWithoutWaterSum { get; set; }
+    public IFood CloneFood()
+    {
+        return new Onion()
+        {
+            FoodName = this.FoodName,
+            TemperatureSum = this.TemperatureSum,
+            GramsWeight = this.GramsWeight,
+            AllCutTypes = this.AllCutTypes,
+            CurrentCutType = this.CurrentCutType,
+            FoodGameObject = this.FoodGameObject,
+            OnPull = this.OnPull,
+            TemperatureWithoutWaterSum = this.TemperatureWithoutWaterSum,
+        };
+    }
     public GameObject GetPlatePrefab()
     {
         throw new System.NotImplementedException();

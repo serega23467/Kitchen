@@ -35,10 +35,17 @@ public class PlayerRaycast : MonoBehaviour
     }
     public void PickFood(IFood ob)
     {
-        if (CurrentDraggableObject.TryGetComponent(out Plate plate))
+        if (CurrentDraggableObject.TryGetComponent(out Plate plate) && ob!=null)
         {
-            if (plate.Food != ob)
+            if (plate.Food != null)
+            {
+                if (plate.Food.FoodGameObject != ob.FoodGameObject)
+                    plate.AddFood(ob);
+            }
+            else
+            {
                 plate.AddFood(ob);
+            }
         }
     }
     void Update()
