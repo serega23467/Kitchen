@@ -12,7 +12,7 @@ public class Pot : MonoBehaviour, IHeated
     ParticleSystem smoke;
     public HeatedInfo HeatedInfo { get; set; }
 
-    private void Start()
+    void Start()
     {
         info = GetComponent<ShowObjectInfo>();
         info.ObjectName = "Кастрюля";
