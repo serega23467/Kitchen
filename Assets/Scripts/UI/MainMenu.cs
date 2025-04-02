@@ -78,9 +78,9 @@ public class MainMenu : MonoBehaviour
             if (!controlPanels[i].Equals(info) && controlPanels[i].Id == info.Id)
             {
                 DB.ExecuteQueryWithoutAnswer($"UPDATE SettingsControls SET Button = '{controlPanels[i].Key}' Where Id = {info.Id}");
-                UpdateKeys();
             }
         }
+        UpdateKeys();
     }
     IEnumerator WaitForKeyPress(int id)
     {

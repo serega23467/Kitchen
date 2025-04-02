@@ -2,10 +2,13 @@ using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using static UnityEngine.InputSystem.InputAction;
 
 [RequireComponent(typeof(CharacterController))]
 public class PlayerController : MonoBehaviour
 {
+    PlayerControls playerControls;
     public float WalkingSpeed = 7.5f;
     public float JumpSpeed = 8.0f;
     public float Gravity = 20.0f;
@@ -25,6 +28,17 @@ public class PlayerController : MonoBehaviour
     [HideInInspector]
     public bool canMove = true;
 
+    private void Awake()
+    {
+        playerControls = new PlayerControls();
+        SettingsInit.InitControls(playerControls);
+    }
+    private void OnEnable()
+    {
+        playerControls.Player.Enable();
+        playerControls.Player.Jump.performed += OnJump;
+        playerControls.Player.Seet.performed += OnSeet;
+    }
     void Start()
     {
         characterController = GetComponent<CharacterController>();
@@ -41,9 +55,10 @@ public class PlayerController : MonoBehaviour
     {
         Vector3 forward = transform.TransformDirection(Vector3.forward);
         Vector3 right = transform.TransformDirection(Vector3.right);
-        
-        float curSpeedX = canMove ? WalkingSpeed * Input.GetAxis("Vertical") : 0;
-        float curSpeedY = canMove ? WalkingSpeed * Input.GetAxis("Horizontal") : 0;
+
+        Vector2 axisValues = playerControls.Player.Movement.ReadValue<Vector2>();
+        float curSpeedX = canMove ? WalkingSpeed * axisValues.y : 0;
+        float curSpeedY = canMove ? WalkingSpeed * axisValues.x : 0;
         if(isCrouching)
         {
             curSpeedX /= 1.5f;
@@ -51,20 +66,31 @@ public class PlayerController : MonoBehaviour
         }
         float movementDirectionY = moveDirection.y;
         moveDirection = (forward * curSpeedX) + (right * curSpeedY);
-
-        if (Input.GetButton("Jump") && canMove && characterController.isGrounded)
-        {
-            moveDirection.y = JumpSpeed;
-        }
-        else
-        {
-            moveDirection.y = movementDirectionY;
-        }
+        moveDirection.y = movementDirectionY;
         if (!characterController.isGrounded)
         {
             moveDirection.y -= Gravity * Time.deltaTime;
         }
-        if (Input.GetKeyDown(KeyCode.LeftControl) && canMove)
+        characterController.Move(moveDirection * Time.deltaTime);
+
+        if (canMove)
+        {
+            rotationX += -playerControls.Player.Look.ReadValue<Vector2>().y * LookSpeed;
+            rotationX = Mathf.Clamp(rotationX, -LookXLimit, LookXLimit);
+            PlayerCamera.transform.localRotation = Quaternion.Euler(rotationX, 0, 0);
+            transform.rotation *= Quaternion.Euler(0, playerControls.Player.Look.ReadValue<Vector2>().x * LookSpeed, 0);
+        }
+    }
+    void OnJump(CallbackContext context)
+    {
+        if (canMove && characterController.isGrounded)
+        {
+            moveDirection.y = JumpSpeed;
+        }
+    }
+    void OnSeet(CallbackContext context)
+    {
+        if(canMove)
         {
             if (currentAnim != null)
                 return;
@@ -79,14 +105,11 @@ public class PlayerController : MonoBehaviour
                 upAnim.Restart();
             }
         }
-        characterController.Move(moveDirection * Time.deltaTime);
-
-        if (canMove)
-        {
-            rotationX += -Input.GetAxis("Mouse Y") * LookSpeed;
-            rotationX = Mathf.Clamp(rotationX, -LookXLimit, LookXLimit);
-            PlayerCamera.transform.localRotation = Quaternion.Euler(rotationX, 0, 0);
-            transform.rotation *= Quaternion.Euler(0, Input.GetAxis("Mouse X") * LookSpeed, 0);
-        }
+    }
+    private void OnDisable()
+    {
+        playerControls.Player.Disable();
+        playerControls.Player.Jump.performed -= OnJump;
+        playerControls.Player.Seet.performed -= OnSeet;
     }
 }
