@@ -12,17 +12,17 @@ public class Controlsitem : RecyclingListViewItem
     [SerializeField]
     Button button;
 
-    ControlsInfo controlsInfo;
-    public ControlsInfo ControlsInfo
+    SettingValue controlsInfo;
+    public SettingValue ControlsInfo
     {
         get { return controlsInfo; }
         set
         {
             if (value == null) return;
             controlsInfo = value;
-            conrolAction.text = controlsInfo.Action;
-            controlKey.text = controlsInfo.Key;
-            button.onClick.AddListener(delegate { controlsInfo.OnChangeKey.Invoke(controlsInfo.Id); });
+            conrolAction.text = controlsInfo.Name;
+            controlKey.text = controlsInfo.Value;
+            button.onClick.AddListener(delegate { controlsInfo.OnValueChange.Invoke(controlsInfo.Id); });
         }
     }
 }

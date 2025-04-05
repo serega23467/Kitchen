@@ -32,6 +32,7 @@ public class PlayerController : MonoBehaviour
     {
         playerControls = new PlayerControls();
         SettingsInit.InitControls(playerControls);
+        LookSpeed = SettingsInit.GetSensetivity();
     }
     private void OnEnable()
     {

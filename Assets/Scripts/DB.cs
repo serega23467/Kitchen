@@ -5,7 +5,7 @@ using System.IO;
 
 public static class DB
 {
-    private const string fileName = "Kitchen.bytes";
+    private const string fileName = "Kitchen.db";
     private static string DBPath;
     private static SqliteConnection connection;
     private static SqliteCommand command;

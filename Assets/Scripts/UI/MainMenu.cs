@@ -1,4 +1,5 @@
 using Assets.Scripts.UI;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
@@ -12,18 +13,38 @@ public class MainMenu : MonoBehaviour
     [SerializeField]
     Image settings;
     [SerializeField]
+    List<Image> tabs;
+    [SerializeField]
     RecyclingListView theList;
-    List<ControlsInfo> controlPanels;
+    [SerializeField]
+    Slider sliderSens;
+    [SerializeField]
+    TMP_Text sensValue;
+    List<SettingValue> controlPanels;
+    List<SettingValue> settingValues;
+    Vector3 tabScale;
+    //TabType currentTab = TabType.Game;
     private void Start()
     {
-        controlPanels = new List<ControlsInfo>();
+        controlPanels = new List<SettingValue>();
+        settingValues = new List<SettingValue>();
+        if (tabs != null && tabs.Count > 0)
+        {
+            tabScale = tabs[0].rectTransform.localScale;
+        }
+        sliderSens.minValue = 1;
+        sliderSens.maxValue = 100;
+        sliderSens.onValueChanged.AddListener(UpdateSensValue);
+        UpdateSensValue(sliderSens.value);
     }
     public void OpenSettings()
     {
         if (settings != null)
         {
             settings.gameObject.SetActive(true);
+            OpenTab("Game");
             UpdateKeys();
+            UpdateSettings();
         }
     }
     public void CloseSettings() 
@@ -39,17 +60,28 @@ public class MainMenu : MonoBehaviour
     }
     void UpdateKeys()
     {
-        List<ControlsInfo> controls = new List<ControlsInfo>();
+        List<SettingValue> controls = new List<SettingValue>();
         DataTable scoreboard = DB.GetTable("SELECT * FROM SettingsControls;");
         for (int i = 0; i < scoreboard.Rows.Count; i++)
         {
-            var info = new ControlsInfo() { Id = int.Parse(scoreboard.Rows[i][0].ToString()), Action = scoreboard.Rows[i][1].ToString(), Key = scoreboard.Rows[i][2].ToString() };
-            info.OnChangeKey.AddListener(ChangeButton);
+            var info = new SettingValue() { Id = int.Parse(scoreboard.Rows[i][0].ToString()), Name = scoreboard.Rows[i][1].ToString(), Value = scoreboard.Rows[i][2].ToString() };
+            info.OnValueChange.AddListener(ChangeButton);
             controls.Add(info);
         }
         RetrieveData(controls);
     }
-    public void RetrieveData(List<ControlsInfo> panels)
+    void UpdateSettings()
+    {
+        settingValues.Clear();
+        DataTable scoreboard = DB.GetTable("SELECT * FROM SettingsValues;");
+        for (int i = 0; i < scoreboard.Rows.Count; i++)
+        {
+            var info = new SettingValue() { Id = int.Parse(scoreboard.Rows[i][0].ToString()), Name = scoreboard.Rows[i][1].ToString(), Value = scoreboard.Rows[i][2].ToString() };
+            settingValues.Add(info);
+        }
+        sliderSens.value = int.Parse(settingValues.FirstOrDefault(s => s.Name == "Чувствительность").Value);
+    }
+    void RetrieveData(List<SettingValue> panels)
     {
         theList.ItemCallback = PopulateItem;
         controlPanels.Clear();
@@ -60,7 +92,7 @@ public class MainMenu : MonoBehaviour
         theList.RowCount = panels.Count;
         theList.Refresh();
     }
-    private void PopulateItem(RecyclingListViewItem item, int rowIndex)
+    void PopulateItem(RecyclingListViewItem item, int rowIndex)
     {
         var child = item as Controlsitem;
         child.ControlsInfo = controlPanels[rowIndex];
@@ -69,24 +101,50 @@ public class MainMenu : MonoBehaviour
     {
         StartCoroutine(WaitForKeyPress(id));
     }
+    public void OpenTab(string name)
+    {
+        var tab = tabs.FirstOrDefault(t=>t.gameObject.name == name);
+        if (tab == null) return;
+        tab.rectTransform.localScale = tabScale;
+        foreach (var item in tabs.Where(t => t.gameObject.name != name))
+        {
+            item.rectTransform.localScale = Vector3.zero;
+        }
+    }
     public void Apply()
     {
-        DataTable scoreboard = DB.GetTable("SELECT * FROM SettingsControls;");
+        DataTable scoreboard = DB.GetTable("SELECT * FROM SettingsControls UNION ALL SELECT * FROM SettingsValues ;");
+        int endControlsIndex = controlPanels.Count - 1;
+        controlPanels.AddRange(settingValues);
         for (int i = 0; i < scoreboard.Rows.Count; i++)
         {
-            var info = new ControlsInfo() { Id = int.Parse(scoreboard.Rows[i][0].ToString()), Action = scoreboard.Rows[i][1].ToString(), Key = scoreboard.Rows[i][2].ToString() };
+            var info = new SettingValue() { Id = int.Parse(scoreboard.Rows[i][0].ToString()), Name = scoreboard.Rows[i][1].ToString(), Value = scoreboard.Rows[i][2].ToString() };
             if (!controlPanels[i].Equals(info) && controlPanels[i].Id == info.Id)
             {
-                DB.ExecuteQueryWithoutAnswer($"UPDATE SettingsControls SET Button = '{controlPanels[i].Key}' Where Id = {info.Id}");
+                if(i> endControlsIndex)
+                {
+                    DB.ExecuteQueryWithoutAnswer($"UPDATE SettingsValues SET Value = '{controlPanels[i].Value}' Where Id = {info.Id}");
+                }
+                else
+                {
+                    DB.ExecuteQueryWithoutAnswer($"UPDATE SettingsControls SET Button = '{controlPanels[i].Value}' Where Id = {info.Id}");
+                }
             }
         }
         UpdateKeys();
+        UpdateSettings();
+    }
+    void UpdateSensValue(float value)
+    {
+        sensValue.text = Convert.ToInt32(value).ToString();
+        var set = settingValues.FirstOrDefault(s => s.Name == "Чувствительность");
+        if (set!=null) set.Value = sensValue.text;
     }
     IEnumerator WaitForKeyPress(int id)
     {
         var toChange = controlPanels.FirstOrDefault(p => p.Id == id);
-        toChange.Key = "-";
-        RetrieveData(new List<ControlsInfo>(controlPanels));
+        toChange.Value = "-";
+        RetrieveData(new List<SettingValue>(controlPanels));
         // Ожидаем нажатия клавиши
         yield return new WaitUntil(() => Input.anyKeyDown);
 
@@ -100,8 +158,8 @@ public class MainMenu : MonoBehaviour
                 {
                     keyStr = "-";
                 }
-                toChange.Key = keyStr;
-                RetrieveData(new List<ControlsInfo>(controlPanels));
+                toChange.Value = keyStr;
+                RetrieveData(new List<SettingValue>(controlPanels));
                 break;
             }
         }

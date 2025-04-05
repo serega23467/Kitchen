@@ -178,12 +178,7 @@ public class RecyclingListView : MonoBehaviour {
         }
 
         return null;
-    }
-    
-    protected virtual void Awake() {
-        scrollRect = GetComponent<ScrollRect>();
-    }
-    
+    }   
     protected virtual bool CheckChildItems() {
         float vpHeight = ViewportHeight();
         float buildHeight = Mathf.Max(vpHeight, PreAllocHeight);
@@ -213,7 +208,10 @@ public class RecyclingListView : MonoBehaviour {
         return rebuild;
     }
 
-
+    protected virtual void Awake()
+    {
+        scrollRect = GetComponent<ScrollRect>();
+    }
     protected virtual void OnEnable() {
         scrollRect.onValueChanged.AddListener(OnScrollChanged);
         ignoreScrollChange = false;
