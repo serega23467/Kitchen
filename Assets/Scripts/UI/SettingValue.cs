@@ -13,6 +13,7 @@ namespace Assets.Scripts.UI
         public int Id { get; set; }
         public string Name { get; set; }
         public string Value { get; set; }
+        public int BindingIndex { get; set; }
         public UnityEvent<int> OnValueChange { get; private set; } = new UnityEvent<int>();
 
         public override bool Equals(object obj)

@@ -8,7 +8,7 @@ using static UnityEngine.InputSystem.InputAction;
 [RequireComponent(typeof(CharacterController))]
 public class PlayerController : MonoBehaviour
 {
-    PlayerControls playerControls;
+    public PlayerControls PlayerControls;
     public float WalkingSpeed = 7.5f;
     public float JumpSpeed = 8.0f;
     public float Gravity = 20.0f;
@@ -30,15 +30,13 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
-        playerControls = new PlayerControls();
-        SettingsInit.InitControls(playerControls);
-        LookSpeed = SettingsInit.GetSensetivity();
+        PlayerControls = new PlayerControls();
     }
     private void OnEnable()
     {
-        playerControls.Player.Enable();
-        playerControls.Player.Jump.performed += OnJump;
-        playerControls.Player.Seet.performed += OnSeet;
+        PlayerControls.Player.Enable();
+        PlayerControls.Player.Jump.performed += OnJump;
+        PlayerControls.Player.Seet.performed += OnSeet;
     }
     void Start()
     {
@@ -57,7 +55,7 @@ public class PlayerController : MonoBehaviour
         Vector3 forward = transform.TransformDirection(Vector3.forward);
         Vector3 right = transform.TransformDirection(Vector3.right);
 
-        Vector2 axisValues = playerControls.Player.Movement.ReadValue<Vector2>();
+        Vector2 axisValues = PlayerControls.Player.Movement.ReadValue<Vector2>();
         float curSpeedX = canMove ? WalkingSpeed * axisValues.y : 0;
         float curSpeedY = canMove ? WalkingSpeed * axisValues.x : 0;
         if(isCrouching)
@@ -76,10 +74,10 @@ public class PlayerController : MonoBehaviour
 
         if (canMove)
         {
-            rotationX += -playerControls.Player.Look.ReadValue<Vector2>().y * LookSpeed;
+            rotationX += -PlayerControls.Player.Look.ReadValue<Vector2>().y * LookSpeed;
             rotationX = Mathf.Clamp(rotationX, -LookXLimit, LookXLimit);
             PlayerCamera.transform.localRotation = Quaternion.Euler(rotationX, 0, 0);
-            transform.rotation *= Quaternion.Euler(0, playerControls.Player.Look.ReadValue<Vector2>().x * LookSpeed, 0);
+            transform.rotation *= Quaternion.Euler(0, PlayerControls.Player.Look.ReadValue<Vector2>().x * LookSpeed, 0);
         }
     }
     void OnJump(CallbackContext context)
@@ -109,8 +107,8 @@ public class PlayerController : MonoBehaviour
     }
     private void OnDisable()
     {
-        playerControls.Player.Disable();
-        playerControls.Player.Jump.performed -= OnJump;
-        playerControls.Player.Seet.performed -= OnSeet;
+        PlayerControls.Player.Disable();
+        PlayerControls.Player.Jump.performed -= OnJump;
+        PlayerControls.Player.Seet.performed -= OnSeet;
     }
 }

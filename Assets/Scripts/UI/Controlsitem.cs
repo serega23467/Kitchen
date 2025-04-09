@@ -22,6 +22,7 @@ public class Controlsitem : RecyclingListViewItem
             controlsInfo = value;
             conrolAction.text = controlsInfo.Name;
             controlKey.text = controlsInfo.Value;
+            button.onClick.RemoveAllListeners();
             button.onClick.AddListener(delegate { controlsInfo.OnValueChange.Invoke(controlsInfo.Id); });
         }
     }
