@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: f12f9c7c2cd4b4254b1d8f44c208fe6e
+DefaultImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 255798
+  packageName: The Brightness Plugin
+  packageVersion: 1.0
+  assetPath: Assets/BrightnessPlugin/Plugins/BrightnessPlugin/Contents/_CodeSignature/CodeResources
+  uploadId: 601351

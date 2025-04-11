@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: b7f2243c928330d4aa734ccac600aef6
+DefaultImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 255798
+  packageName: The Brightness Plugin
+  packageVersion: 1.0
+  assetPath: Assets/BrightnessPlugin/BrightnessPluginDemo.unity
+  uploadId: 601351

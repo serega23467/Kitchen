@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 31c794aa866447045835e047172b7e35
+TextScriptImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 255798
+  packageName: The Brightness Plugin
+  packageVersion: 1.0
+  assetPath: Assets/BrightnessPlugin/Third-Party Notices.txt
+  uploadId: 601351

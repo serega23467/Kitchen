@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: f41c42a6f9bf6fc41b95916ff512c096
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 255798
+  packageName: The Brightness Plugin
+  packageVersion: 1.0
+  assetPath: Assets/BrightnessPlugin/Scripts/BrightnessSlider.cs
+  uploadId: 601351

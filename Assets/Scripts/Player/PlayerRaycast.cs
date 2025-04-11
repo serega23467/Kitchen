@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.Burst.CompilerServices;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Rendering.PostProcessing;
 using static UnityEngine.InputSystem.InputAction;
 
 public class PlayerRaycast : MonoBehaviour
@@ -444,6 +445,7 @@ public class PlayerRaycast : MonoBehaviour
     {
         SettingsInit.InitControls(playerController.PlayerControls);
         playerController.LookSpeed = SettingsInit.GetSensetivity();
+        SettingsInit.InitVideo();
     }
     public void Escape()
     {

@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 0eab0cb1aec5af84da706bf3b171a758
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 255798
+  packageName: The Brightness Plugin
+  packageVersion: 1.0
+  assetPath: Assets/BrightnessPlugin/Prefabs/BrightnessManager.prefab
+  uploadId: 601351

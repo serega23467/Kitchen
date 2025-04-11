@@ -1,14 +1,21 @@
 using Assets.Scripts.UI;
+using BrightnessPlugin;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using UnityEditor.ShaderGraph;
 using UnityEngine;
 using UnityEngine.InputSystem;
 public static class SettingsInit 
 {
-
+    public static void ChangeBrighNoSave(float value)
+    {
+        BrightnessSingleton.GetInstance().SetBrightness(value);
+    }
+    public static void InitVideo()
+    {
+        BrightnessSingleton.GetInstance().SetBrightness(GetBrightness());
+    }
     public static void InitControls(PlayerControls playerControls)
     {
         List<SettingValue> controls = new List<SettingValue>();
@@ -35,6 +42,11 @@ public static class SettingsInit
             }
             lastIndex += action.bindings.Count;
         }
+    }
+     static float GetBrightness()
+    {
+        DataTable scoreboard = DB.GetTable("SELECT * FROM SettingsValues WHERE Name = 'яркость';");
+        return float.Parse(scoreboard.Rows[0][2].ToString());
     }
     public static float GetSensetivity()
     {

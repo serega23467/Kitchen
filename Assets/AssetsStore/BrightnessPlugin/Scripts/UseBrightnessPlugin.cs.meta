@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: cdfd9f47e624d2e4fbb1a6e2dcbd7665
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 255798
+  packageName: The Brightness Plugin
+  packageVersion: 1.0
+  assetPath: Assets/BrightnessPlugin/Scripts/UseBrightnessPlugin.cs
+  uploadId: 601351

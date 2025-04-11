@@ -1,0 +1,7 @@
+This asset uses the following third-party assets:
+
+Pixel Operator (Font) under a CC-0 license
+Low Poly Dungeon Sample (Mesh) under a CC-0 license
+
+
+License files are included in the asset folders.

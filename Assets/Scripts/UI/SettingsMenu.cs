@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,10 +15,17 @@ public class SettingsMenu : MonoBehaviour
     List<Image> tabs;
     [SerializeField]
     RecyclingListView theList;
+
     [SerializeField]
     Slider sliderSens;
     [SerializeField]
     TMP_Text sensValue;
+
+    [SerializeField]
+    Slider sliderBrigh;
+    [SerializeField]
+    TMP_Text brighValue;
+
     List<SettingValue> controlPanels;
     List<SettingValue> settingValues;
     Vector3 tabScale;
@@ -33,7 +41,14 @@ public class SettingsMenu : MonoBehaviour
         sliderSens.minValue = 1;
         sliderSens.maxValue = 100;
         sliderSens.onValueChanged.AddListener(UpdateSensValue);
+
+        sliderBrigh.minValue = -1.8f;
+        sliderBrigh.maxValue = 1.8f;
+        sliderBrigh.onValueChanged.AddListener(UpdateBrighValue);
         UpdateSensValue(sliderSens.value);
+        UpdateBrighValue(sliderBrigh.value);
+
+        SettingsInit.InitVideo();
     }
     public void UpdateKeys()
     {
@@ -57,6 +72,9 @@ public class SettingsMenu : MonoBehaviour
             settingValues.Add(info);
         }
         sliderSens.value = int.Parse(settingValues.FirstOrDefault(s => s.Name == "Чувствительность").Value);
+        sliderBrigh.value = float.Parse(settingValues.FirstOrDefault(s => s.Name == "Яркость").Value);
+
+        SettingsInit.InitVideo();
     }
     void RetrieveData(List<SettingValue> panels)
     {
@@ -76,11 +94,11 @@ public class SettingsMenu : MonoBehaviour
     }
     void ChangeButton(int id)
     {
+        if (selectedKeyId > -1) return;
         selectedKeyId = id;
         var toChange = controlPanels.FirstOrDefault(p => p.Id == selectedKeyId);
         toChange.Value = "-";
         RetrieveData(new List<SettingValue>(controlPanels));
-        Debug.Log("КНОПКА НААЖАТА");
     }
     public void OpenTab(string name)
     {
@@ -125,6 +143,13 @@ public class SettingsMenu : MonoBehaviour
         var set = settingValues.FirstOrDefault(s => s.Name == "Чувствительность");
         if (set != null) set.Value = sensValue.text;
     }
+    void UpdateBrighValue(float value)
+    {
+        brighValue.text = Math.Round(value, 1).ToString();
+        var set = settingValues.FirstOrDefault(s => s.Name == "Яркость");
+        if (set != null) set.Value = brighValue.text;
+        SettingsInit.ChangeBrighNoSave(value);
+    }
     void Update()
     {
         if(selectedKeyId>-1)
@@ -136,11 +161,12 @@ public class SettingsMenu : MonoBehaviour
                     if (Input.GetKeyDown(key))
                     {
                         string keyStr = key.ToString();
-                        if (key == KeyCode.Escape || key == KeyCode.LeftApple)
+                        if (!KeyValidator.CheckKey(key))
                         {
                             keyStr = "-";
                         }
                         var toChange = controlPanels.FirstOrDefault(p => p.Id == selectedKeyId);
+                        if (toChange == null) return;
                         toChange.Value = keyStr;
                         selectedKeyId = -1;
                         RetrieveData(new List<SettingValue>(controlPanels));
