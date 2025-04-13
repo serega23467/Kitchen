@@ -26,6 +26,12 @@ public class SettingsMenu : MonoBehaviour
     [SerializeField]
     TMP_Text brighValue;
 
+    [SerializeField]
+    TMP_Dropdown resolutionDropdown;
+
+    [SerializeField]
+    Toggle toogle;
+
     List<SettingValue> controlPanels;
     List<SettingValue> settingValues;
     Vector3 tabScale;
@@ -45,10 +51,18 @@ public class SettingsMenu : MonoBehaviour
         sliderBrigh.minValue = -1.8f;
         sliderBrigh.maxValue = 1.8f;
         sliderBrigh.onValueChanged.AddListener(UpdateBrighValue);
+
+        resolutionDropdown.onValueChanged.AddListener(UpdateResolution);
+
+        toogle.onValueChanged.AddListener(UpdateScreenMode);
+
         UpdateSensValue(sliderSens.value);
         UpdateBrighValue(sliderBrigh.value);
 
-        SettingsInit.InitVideo();
+        foreach (var resolution in SettingsInit.Resolutions)
+        {
+            resolutionDropdown.options.Add(new TMP_Dropdown.OptionData(resolution.x + "x" + resolution.y));
+        }
     }
     public void UpdateKeys()
     {
@@ -73,7 +87,8 @@ public class SettingsMenu : MonoBehaviour
         }
         sliderSens.value = int.Parse(settingValues.FirstOrDefault(s => s.Name == "Чувствительность").Value);
         sliderBrigh.value = float.Parse(settingValues.FirstOrDefault(s => s.Name == "Яркость").Value);
-
+        resolutionDropdown.value = int.Parse(settingValues.FirstOrDefault(s => s.Name == "Разрешение").Value);
+        toogle.isOn = Convert.ToBoolean(int.Parse(settingValues.FirstOrDefault(s => s.Name == "Режим экрана").Value));
         SettingsInit.InitVideo();
     }
     void RetrieveData(List<SettingValue> panels)
@@ -137,6 +152,16 @@ public class SettingsMenu : MonoBehaviour
     {
         gameObject.SetActive(false);
     }    
+    void UpdateScreenMode(bool mode)
+    {
+        var set = settingValues.FirstOrDefault(s => s.Name == "Режим экрана");
+        if (set != null) set.Value = Convert.ToInt32(mode).ToString();
+    }
+    void UpdateResolution(int index)
+    {
+        var set = settingValues.FirstOrDefault(s => s.Name == "Разрешение");
+        if (set != null) set.Value = index.ToString();
+    }
     void UpdateSensValue(float value)
     {
         sensValue.text = Convert.ToInt32(value).ToString();
@@ -160,7 +185,7 @@ public class SettingsMenu : MonoBehaviour
                 {
                     if (Input.GetKeyDown(key))
                     {
-                        string keyStr = key.ToString();
+                        string keyStr = KeyValidator.GetKey(key);
                         if (!KeyValidator.CheckKey(key))
                         {
                             keyStr = "-";

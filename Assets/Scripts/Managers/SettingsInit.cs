@@ -8,6 +8,13 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 public static class SettingsInit 
 {
+    public static readonly Vector2Int[] Resolutions = new Vector2Int[]
+    {
+           new Vector2Int(1920, 1080),
+           new Vector2Int(1280, 720),
+           new Vector2Int(800, 600),
+           new Vector2Int(640, 480)
+    };
     public static void ChangeBrighNoSave(float value)
     {
         BrightnessSingleton.GetInstance().SetBrightness(value);
@@ -15,6 +22,9 @@ public static class SettingsInit
     public static void InitVideo()
     {
         BrightnessSingleton.GetInstance().SetBrightness(GetBrightness());
+        int rIndex = GetResolution();
+        bool isFullScreen = GetScreenMode();
+        Screen.SetResolution(Resolutions[rIndex].x, Resolutions[rIndex].y, GetScreenMode());
     }
     public static void InitControls(PlayerControls playerControls)
     {
@@ -43,7 +53,17 @@ public static class SettingsInit
             lastIndex += action.bindings.Count;
         }
     }
-     static float GetBrightness()
+    static bool GetScreenMode()
+    {
+        DataTable scoreboard = DB.GetTable("SELECT * FROM SettingsValues WHERE Name = 'Режим экрана';");
+        return Convert.ToBoolean(int.Parse(scoreboard.Rows[0][2].ToString()));
+    }
+    static int GetResolution()
+    {
+        DataTable scoreboard = DB.GetTable("SELECT * FROM SettingsValues WHERE Name = 'Разрешение';");
+        return int.Parse(scoreboard.Rows[0][2].ToString());
+    }
+    static float GetBrightness()
     {
         DataTable scoreboard = DB.GetTable("SELECT * FROM SettingsValues WHERE Name = 'Яркость';");
         return float.Parse(scoreboard.Rows[0][2].ToString());
