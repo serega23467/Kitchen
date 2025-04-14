@@ -13,14 +13,16 @@ public class MainMenu : MonoBehaviour
 {
     [SerializeField]
     SettingsMenu settingsMenu;
+    [SerializeField]
+    LevelsMenu levelsMenu;
     private void Start()
     {
         SettingsInit.InitVideo();
     }
-    public void Play()
-    {
-        Scenes.SwitchScene("Gameplay");
-    }
+    //public void Play()
+    //{
+    //    Scenes.SwitchScene("Gameplay");
+    //}
     public void OpenSettings()
     {
         if (settingsMenu != null)
@@ -29,6 +31,14 @@ public class MainMenu : MonoBehaviour
             settingsMenu.OpenTab("Game");
             settingsMenu.UpdateKeys();
             settingsMenu.UpdateSettings();
+        }
+    }
+    public void OpenLevelsMenu()
+    {
+        if (levelsMenu != null)
+        {
+            levelsMenu.gameObject.SetActive(true);
+            levelsMenu.UpdateLevels();
         }
     }
     public void Quit()
