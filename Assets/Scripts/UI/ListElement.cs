@@ -11,9 +11,9 @@ public class ListElement : RecyclingListViewItem
     TMP_Text foodWeight;
     [SerializeField]
     Button button;
-    IFood food;
+    FoodInfo food;
 
-    public IFood Food
+    public FoodInfo Food
     {     
         get { return food; }
         set
@@ -27,7 +27,7 @@ public class ListElement : RecyclingListViewItem
             }    
             else
             {
-                button.onClick.AddListener (delegate { food.OnPull.Invoke(food.FoodGameObject); });
+                //button.onClick.AddListener (delegate { food.OnPull.Invoke(food.FoodGameObject); });
             }
         }
     }

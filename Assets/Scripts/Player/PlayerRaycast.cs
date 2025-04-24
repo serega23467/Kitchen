@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.Burst.CompilerServices;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem.HID;
 using UnityEngine.Rendering.PostProcessing;
 using static UnityEngine.InputSystem.InputAction;
 
@@ -21,19 +22,24 @@ public class PlayerRaycast : MonoBehaviour
     [SerializeField]
     float maxDraggableObjectDistance = 1.5f;
     float draggableObjectDistance = 1.5f;
+    
     public DraggableObject CurrentDraggableObject { get; set; } = null;
-    bool isShowInfo = true;
     ShowObjectInfo currentInfoObject = null;
-    bool isShowContent = false;
     PlayerController playerController = null;
+    Knife knife;
+    bool isShowInfo = true;
+    bool isShowContent = false;
     bool isShowResult = false;
     bool isRecipeShow = true;
     bool gameIsPaused = false;
+    bool knifeInHand = false;
     //bool isInEntiractive = false;
 
     private void Awake()
     {
         playerController = GetComponent<PlayerController>();
+        knife = cam.GetComponentInChildren<Knife>();
+        knife.gameObject.SetActive(false);
     }
     private void Start()
     {
@@ -42,6 +48,7 @@ public class PlayerRaycast : MonoBehaviour
         UIElements.GetInstance().HideMenu();
         UIElements.GetInstance().HideSettings();
         UpdateSettings();
+
     }
     private void OnEnable()
     {
@@ -50,21 +57,23 @@ public class PlayerRaycast : MonoBehaviour
         playerController.PlayerControls.Player.Interect.performed += Interect;
         playerController.PlayerControls.Player.Escape.performed += delegate (CallbackContext context) { Escape(); };
         playerController.PlayerControls.Player.Pour.performed += Pour;
+        playerController.PlayerControls.Player.TakeKnife.performed += TakeKnife;
+        playerController.PlayerControls.Player.Cut.performed += Cut;
     }
-    public void PickFood(IFood ob)
+    public void PickFood(FoodComponent ob)
     {
-        if (CurrentDraggableObject.TryGetComponent(out Plate plate) && ob!=null)
-        {
-            if (plate.Food != null)
-            {
-                if (plate.Food.FoodGameObject != ob.FoodGameObject)
-                    plate.AddFood(ob);
-            }
-            else
-            {
-                plate.AddFood(ob);
-            }
-        }
+        //if (CurrentDraggableObject.TryGetComponent(out Plate plate) && ob!=null)
+        //{
+        //    if (plate.Food != null)
+        //    {
+        //        if (plate.Food.FoodGameObject != ob.FoodGameObject)
+        //            plate.AddFood(ob);
+        //    }
+        //    else
+        //    {
+        //        plate.AddFood(ob);
+        //    }
+        //}
     }
     void Update()
     {
@@ -361,13 +370,13 @@ public class PlayerRaycast : MonoBehaviour
                     }
                 }
             }
-            else if (hit.collider.TryGetComponent(out CutBoard board))
-            {
-                if (CurrentDraggableObject.TryGetComponent(out Plate plate))
-                {
-                    board.CutObject(plate);
-                }
-            }
+            //else if (hit.collider.TryGetComponent(out CutBoard board))
+            //{
+            //    if (CurrentDraggableObject.TryGetComponent(out Plate plate))
+            //    {
+            //        board.CutObject(plate);
+            //    }
+            //}
         }
     }
     void Pour(CallbackContext context)
@@ -377,26 +386,45 @@ public class PlayerRaycast : MonoBehaviour
         {
             if (hit.collider.tag == "Puttable" && CurrentDraggableObject != null)
             {
-                if (CurrentDraggableObject.TryGetComponent(out IFood food))
+                if (CurrentDraggableObject.TryGetComponent(out FoodComponent food))
                 {
-                    if (!food.IsPour && hit.collider.TryGetComponent(out Plate plate))
+                    if(food.FoodInfo.IsPour)
                     {
-                        plate.AddFood(food);
-                        CurrentDraggableObject.StopFollowingObject();
-                        CurrentDraggableObject.transform.localScale = new Vector3(0, 0, 0);
-                        CurrentDraggableObject = null;
-                    }
-                    else if (food.IsPour && hit.collider.TryGetComponent(out Pot pot))
-                    {
-                        if (pot.HeatedInfo.HasWater)
+                        if(hit.collider.TryGetComponent(out Plate plate))
                         {
-                            pot.PutToWater(food);
+                            if(food.GetPour(out FoodComponent pour))
+                            {
+                                if (!plate.TryAddFood(pour))
+                                {
+                                    Destroy(pour.gameObject);
+                                }
+                            }
+                        }
+                        else if (hit.collider.TryGetComponent(out Pot pot))
+                        {
+                            if (pot.HeatedInfo.HasWater)
+                            {
+                                //pot.PutToWater(food);
+                            }
+                        }
+                        else if (hit.collider.TryGetComponent(out FryingPan fryingPan))
+                        {
+                            //fryingPan.AddFood(food);
                         }
                     }
-                    else if (food.IsPour && hit.collider.TryGetComponent(out FryingPan fryingPan))
+                    else
                     {
-                        fryingPan.AddFood(food);
-                    }
+                        if (hit.collider.TryGetComponent(out Plate plate))
+                        {
+                            if (plate.TryAddFood(food))
+                            {
+                                CurrentDraggableObject.StopFollowingObject();
+                                CurrentDraggableObject.OffRigidbody();
+                                CurrentDraggableObject.CanDrag = false;
+                                CurrentDraggableObject = null;
+                            }
+                        }
+                    }                 
                 }
                 else if (CurrentDraggableObject.TryGetComponent(out Plate plate))
                 {
@@ -404,16 +432,16 @@ public class PlayerRaycast : MonoBehaviour
                     {
                         if (pot.HeatedInfo.HasWater)
                         {
-                            IFood food1;
-                            plate.RemoveFood(out food1);
-                            pot.PutToWater(food1);
+                            //IFood food1;
+                            //plate.RemoveFood(out food1);
+                            //pot.PutToWater(food1);
                         }
                     }
                     else if (hit.collider.TryGetComponent(out FryingPan fryingPan))
                     {
-                        IFood food1;
-                        plate.RemoveFood(out food1);
-                        fryingPan.AddFood(food1);
+                        //IFood food1;
+                        //plate.RemoveFood(out food1);
+                        //fryingPan.AddFood(food1);
                     }
                 }
                 else if (CurrentDraggableObject.TryGetComponent(out FryingPan fryingPan))
@@ -422,8 +450,8 @@ public class PlayerRaycast : MonoBehaviour
                     {
                         if (pot.HeatedInfo.HasWater)
                         {
-                            pot.PutToWater(fryingPan.Foods);
-                            fryingPan.Foods = new List<IFood>();
+                            //pot.PutToWater(fryingPan.Foods);
+                            //fryingPan.Foods = new List<IFood>();
                         }
                     }
                 }
@@ -433,10 +461,32 @@ public class PlayerRaycast : MonoBehaviour
                     {
                         if (pot.HeatedInfo.HasWater)
                         {
-                            dish.AddDish(pot.GetFoods());
+                            //dish.AddDish(pot.GetFoods());
                         }
                     }
                 }
+            }
+            else if (CurrentDraggableObject == null && hit.collider.TryGetComponent(out FoodComponent food))
+            {
+                if (food.plate != null)
+                {
+                    if (!food.FoodInfo.IsPour)
+                    {
+                        var plate = food.plate;
+                        plate.RemoveFood(food);
+                        var dgo = food.GetComponent<DraggableObject>();
+                        dgo.CanDrag = true;
+                        dgo.gameObject.transform.position += new Vector3(0, 0.05f, 0);
+                        dgo.OnRigidbody();
+                        dgo.StartFollowingObject();
+                        CurrentDraggableObject = dgo;
+                    }
+                    else
+                    {
+                        //Ã≈Õﬁ ¬€—€œ¿Õ»ﬂ À»ÿÕ≈√Œ
+                    }
+                }
+
             }
 
         }
@@ -462,6 +512,41 @@ public class PlayerRaycast : MonoBehaviour
             playerController.canMove = true;
         }
     }
+    void TakeKnife(CallbackContext context)
+    {
+        if(knifeInHand)
+        {
+            knife.gameObject.SetActive(false);
+            knifeInHand = false;
+        }
+        else
+        {
+            knife.gameObject.SetActive(true);
+            knifeInHand = true;
+        }
+    }
+    void Cut(CallbackContext context)
+    {
+        if (knifeInHand)
+        {
+            RaycastHit hit;
+            if (Physics.Raycast(cam.transform.position, cam.transform.forward, out hit, raycastDistance, LayerMask.GetMask("DraggableObject")))
+            {
+                if (hit.collider.TryGetComponent(out FoodComponent food))
+                {
+                    if (CurrentDraggableObject != null)
+                    {
+                        if(CurrentDraggableObject.gameObject == hit.collider.gameObject)
+                        {
+                            CurrentDraggableObject.StopFollowingObject();
+                            CurrentDraggableObject = null;
+                        }
+                    }
+                    knife.Cut(food);
+                }
+            }
+        }
+    }
     private void OnDisable()
     {
         playerController.PlayerControls.Player.Disable();
@@ -469,5 +554,7 @@ public class PlayerRaycast : MonoBehaviour
         playerController.PlayerControls.Player.Interect.performed -= Interect;
         playerController.PlayerControls.Player.Pour.performed -= Pour;
         playerController.PlayerControls.Player.Escape.performed -= delegate (CallbackContext context) { Escape(); };
+        playerController.PlayerControls.Player.TakeKnife.performed -= TakeKnife;
+        playerController.PlayerControls.Player.Cut.performed -= Cut;
     }
 }

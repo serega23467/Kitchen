@@ -9,42 +9,42 @@ public class FryingPan : MonoBehaviour, IHeated, IListable
 {
 
     ShowObjectInfo info;
-    public List<IFood> Foods { get; set; }
+    public List<FoodComponent> Foods { get; set; }
     public HeatedInfo HeatedInfo { get; set; }
-    UnityEvent<IFood> putFood;
+    UnityEvent<FoodComponent> putFood;
 
     private void Start()
     {
         info = GetComponent<ShowObjectInfo>();
         info.ObjectName = "Сковородка";
         HeatedInfo = new HeatedInfo(temperature: 20, minMassKG: 1, currentMassKG: 1, maxMassKG: 5, hasWater: false, time: 0);
-        Foods = new List<IFood>();
-        putFood = new UnityEvent<IFood>();
+        Foods = new List<FoodComponent>();
+        putFood = new UnityEvent<FoodComponent>();
         putFood.AddListener(Parents.GetInstance().Player.GetComponent<PlayerRaycast>().PickFood);
     }
     public void HeatFood(float t)
     {
-        foreach (IFood food in Foods)
+        foreach (FoodComponent food in Foods)
         {
-            food.TemperatureWithoutWaterSum += t;
+            //food.TemperatureWithoutWaterSum += t;
         }
     }
-    public void AddFood(IFood food)
+    public void AddFood(FoodInfo food)
     {
-        if (Foods.Select(f => f.FoodGameObject).Contains(food.FoodGameObject))
-        {
-            byte index = (byte)Foods.FindIndex(f => f.FoodGameObject == food.FoodGameObject);
-            if (index >= 0)
-            {
-                Foods[index].GramsWeight += food.GramsWeight;
-            }
-        }
-        else
-        {
-            Foods.Add(food.CloneFood());
-            if (!food.IsPour)
-                food.OnPull.AddListener(PutFood);
-        }
+        //if (Foods.Select(f => f.FoodGameObject).Contains(food.FoodGameObject))
+        //{
+        //    byte index = (byte)Foods.FindIndex(f => f.FoodGameObject == food.FoodGameObject);
+        //    if (index >= 0)
+        //    {
+        //        Foods[index].GramsWeight += food.GramsWeight;
+        //    }
+        //}
+        //else
+        //{
+        //    Foods.Add(food.CloneFood());
+        //    if (!food.IsPour)
+        //        food.OnPull.AddListener(PutFood);
+        //}
     }
     private void Update()
     {
@@ -122,12 +122,12 @@ public class FryingPan : MonoBehaviour, IHeated, IListable
             {
                 if (Parents.GetInstance().Player.GetComponent<PlayerRaycast>().CurrentDraggableObject.GetComponent<Plate>() != null)
                 {
-                    var f = Foods.FirstOrDefault(f => f.FoodGameObject == food);
-                    if (f != null)
-                    {
-                        Foods.Remove(f);
-                    }
-                    putFood.Invoke(f);
+                    //var f = Foods.FirstOrDefault(f => f.FoodGameObject == food);
+                    //if (f != null)
+                    //{
+                    //    Foods.Remove(f);
+                    //}
+                    //putFood.Invoke(f);
                 }
             }
         }

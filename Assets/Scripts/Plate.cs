@@ -1,5 +1,8 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using Unity.VisualScripting;
 using UnityEngine;
 using static UnityEngine.Rendering.DebugUI;
 
@@ -7,45 +10,62 @@ using static UnityEngine.Rendering.DebugUI;
 public class Plate : MonoBehaviour
 {
     [SerializeField]
-    GameObject content;
+    float maxWeight = 500f;
+    [SerializeField]
+    Vector3 offset = Vector3.zero;
+    [SerializeField]
+    Vector3 randomRange = Vector3.zero;
     ShowObjectInfo info;
-    public IFood Food { get; private set; }
+
+    public List<FoodComponent> Food { get; private set; }
     private void Start()
     {
+        Food = new List<FoodComponent>();
         info = GetComponent<ShowObjectInfo>();
-        info.ObjectName = "Òàðåëêà";
-        content.SetActive(false);
+        info.ObjectName = "Ð¢Ð°Ñ€ÐµÐ»ÐºÐ°";
     }
-    public void AddFood(IFood food)
+    public bool TryAddFood(FoodComponent food)
     {
-        if(Food == null || Food.FoodGameObject != food.FoodGameObject)
+        if (Food.Sum(f => f.FoodInfo.GramsWeight) + food.FoodInfo.GramsWeight > maxWeight)
         {
-            Food = food.CloneFood();
+            return false;
         }
-        else if (Food.FoodGameObject == food.FoodGameObject)
+        else
         {
-            Food.GramsWeight += food.GramsWeight;
-        }
-        UpdateInfo();
-        content.SetActive(true);        
-    }
-    public void RemoveFood(out IFood food)
-    {
-        food = Food;
-        if (Food != null)
-        {
-            content.SetActive(false);
-            Food = null;
+            Food.Add(food);
+            Vector3 randomOffset = Vector3.zero;
+            randomOffset.x = UnityEngine.Random.Range(-randomRange.x, randomRange.x);
+            randomOffset.y = UnityEngine.Random.Range(-randomRange.y, randomRange.y);
+            randomOffset.z = UnityEngine.Random.Range(-randomRange.z, randomRange.z);
+
+            food.gameObject.transform.position = transform.position+offset+randomOffset;
+            food.gameObject.transform.parent = transform;
+            food.plate = this;
             UpdateInfo();
+            return true;
         }
+    }
+    public void RemoveFood(FoodComponent food)
+    {
+        Food.Remove(food);
+        food.transform.parent = Parents.GetInstance().FoodParent.transform;
+        food.plate = null;
+        UpdateInfo();   
     }
     public void UpdateInfo()
     {
-        if(Food == null)
+        if (Food.Count<1)
         {
             info.ObjectData = "";
             return;
         }
-        info.ObjectData = $"{Food.FoodName} - {Food.GramsWeight} ã\níàðåçêà - {Translator.GetInstance().GetTranslate(Food.CurrentCutType.ToString())}";
+        List<FoodComponent> uniqFood = Food.DistinctBy(f => f.FoodName).ToList();
+        StringBuilder sb = new StringBuilder();
+        foreach (var f in uniqFood)
+        {
+            var weight = Food.Where(food => food.FoodName == f.FoodName).Sum(f => f.FoodInfo.GramsWeight);
+            sb.AppendLine($"{f.FoodInfo.FoodName} - {weight}\n({Translator.GetInstance().GetTranslate(f.FoodInfo.CurrentCutType.ToString())})");
+        }
+        info.ObjectData = sb.ToString();
     }    
 }

@@ -3,5 +3,5 @@ using UnityEngine;
 
 public interface IListable
 {
-    List<IFood> Foods { get; set; }
+    List<FoodComponent> Foods { get; set; }
 }

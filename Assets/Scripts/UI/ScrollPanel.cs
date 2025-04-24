@@ -4,13 +4,13 @@ using UnityEngine;
 public class ScrollPanel : MonoBehaviour
 {
     public RecyclingListView theList;
-    private List<IFood> data = new List<IFood>();
+    private List<FoodInfo> data = new List<FoodInfo>();
     void Start()
     {
-        RetrieveData(new List<IFood>());
+        RetrieveData(new List<FoodInfo>());
     }
 
-    public void RetrieveData(List<IFood> food)
+    public void RetrieveData(List<FoodInfo> food)
     {
         theList.ItemCallback = PopulateItem;
         data.Clear();

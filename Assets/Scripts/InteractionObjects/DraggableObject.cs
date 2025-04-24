@@ -10,7 +10,7 @@ public class DraggableObject : MonoBehaviour
     bool follow;
     public DraggableType Type = DraggableType.Food;
     public bool CanDrag = true;
-    void Start()
+    void Awake()
     {
         _rb = GetComponent<Rigidbody>();
         _rb.maxAngularVelocity = 1f;
@@ -56,5 +56,18 @@ public class DraggableObject : MonoBehaviour
         {
             child.gameObject.layer = LayerMask.NameToLayer("DraggableObject");
         }
+    }
+    public void OffRigidbody()
+    {
+        Destroy(_rb);
+        _rb = null;
+    }
+    public void OnRigidbody()
+    {
+        var rb = gameObject.AddComponent<Rigidbody>();
+        _rb = rb;
+        _rb.maxAngularVelocity = 1f;
+        _rb.maxLinearVelocity = 15f;
+        _rb.constraints = RigidbodyConstraints.FreezeRotation;
     }
 }

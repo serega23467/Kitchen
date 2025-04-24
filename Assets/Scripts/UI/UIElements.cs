@@ -89,12 +89,12 @@ public class UIElements : MonoBehaviour
     }
     public void ShowObjectContent(IListable list)
     {
-        scrollPanel.RetrieveData(list.Foods);
-        scrollView.localScale = scrollViewSize;
+        //scrollPanel.RetrieveData(list.Foods);
+        //scrollView.localScale = scrollViewSize;
     }
     public void UpdateObjectContent(IListable list)
     {
-        scrollPanel.RetrieveData(list.Foods);
+        //scrollPanel.RetrieveData(list.Foods);
     }
     public void HideObjectContent()
     {

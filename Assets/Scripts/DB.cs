@@ -5,7 +5,7 @@ using System.IO;
 
 public static class DB
 {
-    private const string fileName = "Kitchen.db";
+    private const string fileName = "Kitchen.bytes";
     private static string DBPath;
     private static SqliteConnection connection;
     private static SqliteCommand command;
@@ -19,15 +19,10 @@ public static class DB
     {
 #if UNITY_EDITOR
         return Path.Combine(Application.streamingAssetsPath, fileName);
-#endif
-#if UNITY_STANDALONE
-        string filePath = Path.Combine(Application.dataPath, fileName);
+#elif UNITY_STANDALONE
+        string filePath = Path.Combine(Application.persistentDataPath, fileName);
         if (!File.Exists(filePath)) UnpackDatabase(filePath);
         return filePath;
-#elif UNITY_ANDROID
-    string filePath = Path.Combine(Application.persistentDataPath, fileName);
-    if(!File.Exists(filePath)) UnpackDatabase(filePath);
-    return filePath;
 #endif
     }
     /// <summary> –аспаковывает базу данных в указанный путь. </summary>

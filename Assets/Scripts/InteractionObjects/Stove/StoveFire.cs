@@ -48,7 +48,7 @@ public class StoveFire : MonoBehaviour
             else if (heated is FryingPan)
             {
                 FryingPan pan = heated as FryingPan;
-                if (pan.Foods.OfType<Butter>().Any())
+                if (pan.Foods.Where(f=>f.FoodName=="Butter").Any())
                 {
                     delta /= 10;
                 }

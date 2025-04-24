@@ -98,6 +98,24 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""TakeKnife"",
+                    ""type"": ""Button"",
+                    ""id"": ""f8e903af-e07a-4d38-8725-3f4be179b589"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Cut"",
+                    ""type"": ""Button"",
+                    ""id"": ""ab9f9d9f-77f7-49a0-ae90-3532f69c237b"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -232,6 +250,28 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""Escape"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""671b05db-e707-4db3-b8b8-cedef9c47514"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""TakeKnife"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""adcf86ef-99b3-46f7-adc2-81724c4086bb"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Cut"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -254,6 +294,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Player_Interect = m_Player.FindAction("Interect", throwIfNotFound: true);
         m_Player_Pour = m_Player.FindAction("Pour", throwIfNotFound: true);
         m_Player_Escape = m_Player.FindAction("Escape", throwIfNotFound: true);
+        m_Player_TakeKnife = m_Player.FindAction("TakeKnife", throwIfNotFound: true);
+        m_Player_Cut = m_Player.FindAction("Cut", throwIfNotFound: true);
     }
 
     ~@PlayerControls()
@@ -328,6 +370,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Interect;
     private readonly InputAction m_Player_Pour;
     private readonly InputAction m_Player_Escape;
+    private readonly InputAction m_Player_TakeKnife;
+    private readonly InputAction m_Player_Cut;
     public struct PlayerActions
     {
         private @PlayerControls m_Wrapper;
@@ -340,6 +384,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @Interect => m_Wrapper.m_Player_Interect;
         public InputAction @Pour => m_Wrapper.m_Player_Pour;
         public InputAction @Escape => m_Wrapper.m_Player_Escape;
+        public InputAction @TakeKnife => m_Wrapper.m_Player_TakeKnife;
+        public InputAction @Cut => m_Wrapper.m_Player_Cut;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -373,6 +419,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Escape.started += instance.OnEscape;
             @Escape.performed += instance.OnEscape;
             @Escape.canceled += instance.OnEscape;
+            @TakeKnife.started += instance.OnTakeKnife;
+            @TakeKnife.performed += instance.OnTakeKnife;
+            @TakeKnife.canceled += instance.OnTakeKnife;
+            @Cut.started += instance.OnCut;
+            @Cut.performed += instance.OnCut;
+            @Cut.canceled += instance.OnCut;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -401,6 +453,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Escape.started -= instance.OnEscape;
             @Escape.performed -= instance.OnEscape;
             @Escape.canceled -= instance.OnEscape;
+            @TakeKnife.started -= instance.OnTakeKnife;
+            @TakeKnife.performed -= instance.OnTakeKnife;
+            @TakeKnife.canceled -= instance.OnTakeKnife;
+            @Cut.started -= instance.OnCut;
+            @Cut.performed -= instance.OnCut;
+            @Cut.canceled -= instance.OnCut;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -437,5 +495,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnInterect(InputAction.CallbackContext context);
         void OnPour(InputAction.CallbackContext context);
         void OnEscape(InputAction.CallbackContext context);
+        void OnTakeKnife(InputAction.CallbackContext context);
+        void OnCut(InputAction.CallbackContext context);
     }
 }

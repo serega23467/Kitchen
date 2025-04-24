@@ -65,10 +65,10 @@ public class Pot : MonoBehaviour, IHeated
             }
         }
     }
-    public List<IFood> GetFoods()
-    {
-        return potWater.Foods;
-    }
+    //public List<IFood> GetFoods()
+    //{
+    //    return potWater.Foods;
+    //}
     public void HeatWater(float t)
     {
         potWater.HeatFood(t);
@@ -81,14 +81,14 @@ public class Pot : MonoBehaviour, IHeated
         potWater.gameObject.SetActive(true);
         potWater.ChangeWaterLevel(HeatedInfo.CurrentMassKG, HeatedInfo.MinMassKG, HeatedInfo.MaxMassKG);
     }
-    public void PutToWater(IFood food)
-    {
-        potWater.AddFood(food);
-    }
-    public void PutToWater(List<IFood> food)
-    {
-        potWater.AddFood(food);
-    }
+    //public void PutToWater(IFood food)
+    //{
+    //    potWater.AddFood(food);
+    //}
+    //public void PutToWater(List<IFood> food)
+    //{
+    //    potWater.AddFood(food);
+    //}
     public void OnBoiling(byte level)
     {
         if(HeatedInfo.HasWater && potWater.isActiveAndEnabled)
