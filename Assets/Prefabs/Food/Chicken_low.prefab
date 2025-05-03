@@ -27,8 +27,8 @@ Transform:
   m_GameObject: {fileID: 5600011072635813823}
   serializedVersion: 2
   m_LocalRotation: {x: 0.70710677, y: -0, z: -0, w: -0.7071068}
-  m_LocalPosition: {x: 0.003, y: -0.001, z: 0.006}
-  m_LocalScale: {x: 30, y: 30, z: 30}
+  m_LocalPosition: {x: 0.003, y: -0.001, z: -0.0037}
+  m_LocalScale: {x: 4, y: 5, z: 5}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5259990315137750351}
@@ -118,7 +118,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -8.4158, y: -0.89784, z: 3.1056}
-  m_LocalScale: {x: 0.1396846, y: 0.25524133, z: 0.18390952}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 701431730407266495}
@@ -201,8 +201,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.41, y: 0.09, z: 0.34}
-  m_Center: {x: 0.02, y: 0.03, z: 0.01}
+  m_Size: {x: 0.052375793, y: 0.01592493, z: 0.052641153}
+  m_Center: {x: 0.0047016144, y: 0.003660202, z: -0.003835082}
 --- !u!114 &1705921893878176939
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -236,4 +236,5 @@ MonoBehaviour:
   FoodName: ChickenLow
   CutCount: 0
   nextCuttedPart: {fileID: 0}
+  pourPrefab: {fileID: 0}
   plate: {fileID: 0}

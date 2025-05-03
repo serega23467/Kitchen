@@ -102,7 +102,7 @@ public class FryingPan : MonoBehaviour, IHeated, IListable
             {
                 time++;
             }
-            yield return new WaitForSeconds(1f / 10f);
+            yield return new WaitForSeconds(SettingsInit.VirtualSecond);
         }
     }
     private void OnDestroy()

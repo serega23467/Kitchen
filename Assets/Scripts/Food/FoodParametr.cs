@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "FoodParametr", menuName = "Scriptable Objects/FoodParametr")]
@@ -6,9 +7,11 @@ public class FoodParametr : ScriptableObject
 {
     public string ParamName;
     public float ParamValue;
-    public FoodParametr(string name, float value)
+    public string Desc = "";
+    public string ValueChar = "";
+    public bool IsSpice = false;
+    public FoodParametr Clone()
     {
-        ParamName = name;
-        ParamValue = value;
+        return this.MemberwiseClone() as FoodParametr;
     }
 }

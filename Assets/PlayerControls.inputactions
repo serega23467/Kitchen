@@ -94,6 +94,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "ShowInfo",
+                    "type": "Button",
+                    "id": "33eb6012-1f2c-46de-95f2-e04035c58267",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -248,6 +257,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Cut",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "607ae2c9-bc1e-412d-9e6b-5ea706ec42a7",
+                    "path": "<Keyboard>/g",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ShowInfo",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

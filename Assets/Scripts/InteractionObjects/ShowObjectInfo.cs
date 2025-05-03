@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
@@ -11,12 +12,14 @@ public class ShowObjectInfo : MonoBehaviour
     public string ObjectInfo = "";
     [HideInInspector]
     public string ObjectData = "";
-    public bool IsContentShowed { get; private set; } = false;
     Outline outline;
-    void Start()
+    private void Awake()
     {
         outline = GetComponent<Outline>();
         outline.enabled = false;
+    }
+    void Start()
+    {
         UIElements.GetInstance().HideObjectInfo();
         UIElements.GetInstance().HideObjectContent();
     }
@@ -31,18 +34,16 @@ public class ShowObjectInfo : MonoBehaviour
     {
         UIElements.GetInstance().HideObjectInfo();
     }
-    public void ShowContent(IListable list)
+    public void ShowContent(IListable list, bool hasPlate = true)
     {
-        IsContentShowed = true;
-        UIElements.GetInstance().ShowObjectContent(list);
+        UIElements.GetInstance().ShowObjectContent(list, hasPlate);
     }
-    public void UpdateContent(IListable list)
+    public void UpdateContent(List<FoodComponent> list)
     {
         UIElements.GetInstance().UpdateObjectContent(list);
     }
     public void HideContent()
     {
-        IsContentShowed = false;
         UIElements.GetInstance().HideObjectContent();
     }
     public void SetOutline(bool hasOutline)

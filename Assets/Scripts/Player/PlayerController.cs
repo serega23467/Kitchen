@@ -80,6 +80,18 @@ public class PlayerController : MonoBehaviour
             transform.rotation *= Quaternion.Euler(0, PlayerControls.Player.Look.ReadValue<Vector2>().x * LookSpeed, 0);
         }
     }
+    public void OnMenuMode()
+    {
+        canMove = false;
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+    }
+    public void OffMenuMode()
+    {
+        canMove = true;
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+    }
     void OnJump(CallbackContext context)
     {
         if (canMove && characterController.isGrounded)

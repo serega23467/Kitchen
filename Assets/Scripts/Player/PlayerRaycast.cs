@@ -1,3 +1,4 @@
+using NUnit.Framework;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Burst.CompilerServices;
@@ -59,167 +60,59 @@ public class PlayerRaycast : MonoBehaviour
         playerController.PlayerControls.Player.Pour.performed += Pour;
         playerController.PlayerControls.Player.TakeKnife.performed += TakeKnife;
         playerController.PlayerControls.Player.Cut.performed += Cut;
+        playerController.PlayerControls.Player.ShowInfo.performed += ChangeInfoVisibility;
     }
-    public void PickFood(FoodComponent ob)
+    public void PickFood(FoodComponent food)
     {
-        //if (CurrentDraggableObject.TryGetComponent(out Plate plate) && ob!=null)
-        //{
-        //    if (plate.Food != null)
-        //    {
-        //        if (plate.Food.FoodGameObject != ob.FoodGameObject)
-        //            plate.AddFood(ob);
-        //    }
-        //    else
-        //    {
-        //        plate.AddFood(ob);
-        //    }
-        //}
+        if (CurrentDraggableObject == null) return;
+        if (CurrentDraggableObject.TryGetComponent(out Plate plate) && food != null)
+        {
+            if(plate.TryAddFood(food))
+            {
+                food.gameObject.transform.localScale = Vector3.one;
+                var dgo = food.GetComponent<DraggableObject>();
+                if(dgo!=null)
+                {
+                    dgo.OffRigidbody();
+                    dgo.CanDrag = false;
+                }
+            }
+        }
     }
     void Update()
     {
         if(isShowInfo)
-        {   
-            if(!isRecipeShow)
-            {
-                UIElements.GetInstance().ShowPanelRecipe();
-                isRecipeShow = true;
-            }
+        {
             RaycastHit infoHit;
-            if (Physics.Raycast(cam.transform.position, cam.transform.forward, out infoHit, showInfoDistance, LayerMask.GetMask("DraggableObject") | LayerMask.GetMask("InteractiveObject")))
+            if (Physics.Raycast(cam.transform.position, cam.transform.forward, out infoHit, showInfoDistance, LayerMask.GetMask("DraggableObject") | LayerMask.GetMask("InteractiveObject"))
+            && infoHit.collider.TryGetComponent(out ShowObjectInfo info))
             {
-                if (infoHit.collider.TryGetComponent(out ShowObjectInfo info))
+                if (currentInfoObject == null)
                 {
-                    if (currentInfoObject == null)
-                    {
-                        currentInfoObject = info;
-                        currentInfoObject.SetOutline(true);
-                        currentInfoObject.ShowInfo();
-                        if (isShowContent)
-                        {
-                            var list = currentInfoObject.GetComponentInChildren<IListable>() ?? currentInfoObject.transform.GetComponent<IListable>();
-                            if (list != null)
-                            {
-                                currentInfoObject.ShowContent(list);
-                                playerController.canMove = false;
-                                Cursor.lockState = CursorLockMode.None;
-                                Cursor.visible = true;
+                    currentInfoObject = info;
+                    currentInfoObject.SetOutline(true);
+                    currentInfoObject.ShowInfo();
+                }
+                else if (currentInfoObject != info)
+                {
+                    currentInfoObject.HideInfo();
+                    currentInfoObject.SetOutline(false);
 
-                            }
-                        }
-                        else
-                        {
-                            currentInfoObject.HideContent();
-                            if (!playerController.canMove)
-                            {
-                                playerController.canMove = true;
-                                Cursor.lockState = CursorLockMode.Locked;
-                                Cursor.visible = false;
-                            }
-                        }
-
-                    }
-                    else if (currentInfoObject != info)
-                    {
-                        currentInfoObject.SetOutline(false);
-                        currentInfoObject.HideInfo();
-                        if (isShowContent)
-                        {
-                            var list = currentInfoObject.GetComponentInChildren<IListable>() ?? currentInfoObject.transform.GetComponent<IListable>();
-                            if (list != null)
-                            {
-                                currentInfoObject.ShowContent(list);
-                                playerController.canMove = false;
-                                Cursor.lockState = CursorLockMode.None;
-                                Cursor.visible = true;
-
-                            }
-                        }
-                        else
-                        {
-                            currentInfoObject.HideContent();
-                            if (!playerController.canMove)
-                            {
-                                playerController.canMove = true;
-                                Cursor.lockState = CursorLockMode.Locked;
-                                Cursor.visible = false;
-                            }
-                        }
-                        currentInfoObject = info;
-                        currentInfoObject.SetOutline(true);
-                        currentInfoObject.ShowInfo();
-                        if (isShowContent)
-                        {
-                            var list = currentInfoObject.GetComponentInChildren<IListable>() ?? currentInfoObject.transform.GetComponent<IListable>();
-
-                            if (list != null)
-                            {
-                                currentInfoObject.ShowContent(list);
-                                playerController.canMove = false;
-                                Cursor.lockState = CursorLockMode.None;
-                                Cursor.visible = true;
-                            }
-                        }
-                        else
-                        {
-                            currentInfoObject.HideContent();
-                            if (!playerController.canMove)
-                            {
-                                playerController.canMove = true;
-                                Cursor.lockState = CursorLockMode.Locked;
-                                Cursor.visible = false;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        currentInfoObject.ShowInfo();
-                        if (isShowContent)
-                        {
-                            var list = currentInfoObject.GetComponentInChildren<IListable>() ?? currentInfoObject.transform.GetComponent<IListable>();
-                            if (list != null)
-                            {
-                                if (currentInfoObject.IsContentShowed)
-                                {
-                                    currentInfoObject.UpdateContent(list);
-                                }
-                                else
-                                {
-                                    currentInfoObject.ShowContent(list);
-                                    playerController.canMove = false;
-                                    Cursor.lockState = CursorLockMode.None;
-                                    Cursor.visible = true;
-                                }
-                            }
-                        }
-                        else
-                        {
-                            currentInfoObject.HideContent();
-                            if (!playerController.canMove)
-                            {
-                                playerController.canMove = true;
-                                Cursor.lockState = CursorLockMode.Locked;
-                                Cursor.visible = false;
-                            }
-                        }
-                    }
+                    currentInfoObject = info;
+                    currentInfoObject.SetOutline(true);
+                    currentInfoObject.ShowInfo();
+                }
+                else
+                {
+                    currentInfoObject.ShowInfo();
                 }
             }
             else if (currentInfoObject != null)
             {
-                currentInfoObject.SetOutline(false);
                 currentInfoObject.HideInfo();
-                currentInfoObject.HideContent();
-                if (!playerController.canMove)
-                {
-                    playerController.canMove = true;
-                }
+                currentInfoObject.SetOutline(false);
                 currentInfoObject = null;
             }
-        }
-        else if (isRecipeShow)
-        {
-            UIElements.GetInstance().HidePanelRecipe();
-            isRecipeShow = false;
         }
         if (Input.GetKeyDown(KeyCode.Z))
         {
@@ -252,19 +145,19 @@ public class PlayerRaycast : MonoBehaviour
                 Cursor.visible = false;
             }
         }
-        if (Input.GetKeyDown(KeyCode.I))
-        {
-            isShowInfo = !isShowInfo;
-        }
-        if (Input.GetKeyDown(KeyCode.G))
-        {
-            RaycastHit hit;
-            if (Physics.Raycast(cam.transform.position, cam.transform.forward, out hit, raycastDistance, LayerMask.GetMask("DraggableObject")))
-            {
-                if(hit.collider.GetComponent<IListable>()!=null || hit.collider.GetComponentInChildren<IListable>() != null)
-                    isShowContent = !isShowContent;
-            }
-        }
+        //if (Input.GetKeyDown(KeyCode.I))
+        //{
+        //    isShowInfo = !isShowInfo;
+        //}
+        //if (Input.GetKeyDown(KeyCode.G))
+        //{
+        //    RaycastHit hit;
+        //    if (Physics.Raycast(cam.transform.position, cam.transform.forward, out hit, raycastDistance, LayerMask.GetMask("DraggableObject")))
+        //    {
+        //        if (hit.collider.GetComponent<IListable>() != null || hit.collider.GetComponentInChildren<IListable>() != null)
+        //            isShowContent = !isShowContent;
+        //    }
+        //}
         if (CurrentDraggableObject!=null && Input.GetAxis("Mouse ScrollWheel") != 0)
         {
             draggableObjectDistance = Mathf.Clamp(draggableObjectDistance+Input.GetAxis("Mouse ScrollWheel")*Time.deltaTime*20f, minDraggableObjectDistance, maxDraggableObjectDistance);
@@ -404,7 +297,13 @@ public class PlayerRaycast : MonoBehaviour
                         {
                             if (pot.HeatedInfo.HasWater)
                             {
-                                //pot.PutToWater(food);
+                                if (food.GetPour(out FoodComponent pour))
+                                {
+                                    pot.PutToWater(pour);
+                                    pour.OnPull.RemoveAllListeners();
+                                    pour.OnPull.AddListener(PickFood);
+                                    pour.OnPull.AddListener(pot.OnRemoveFromWater.Invoke);
+                                }
                             }
                         }
                         else if (hit.collider.TryGetComponent(out FryingPan fryingPan))
@@ -424,7 +323,30 @@ public class PlayerRaycast : MonoBehaviour
                                 CurrentDraggableObject = null;
                             }
                         }
+                        else if (hit.collider.TryGetComponent(out Pot pot))
+                        {
+                            if (pot.HeatedInfo.HasWater)
+                            {
+                                pot.PutToWater(food);
+                                food.OnPull.RemoveAllListeners();
+                                food.OnPull.AddListener(PickFood);
+                                food.OnPull.AddListener(pot.OnRemoveFromWater.Invoke);
+                                CurrentDraggableObject.StopFollowingObject();
+                                CurrentDraggableObject = null;
+                            }
+                        }
                     }                 
+                }
+                else if (CurrentDraggableObject.TryGetComponent(out SpiceComponent spice))
+                {
+                    if (hit.collider.TryGetComponent(out Plate plate))
+                    {
+                        plate.SpiceFood(spice);
+                    }
+                    else if (hit.collider.TryGetComponent(out Pot pot))
+                    {
+                        pot.SpiceFood(spice);
+                    }
                 }
                 else if (CurrentDraggableObject.TryGetComponent(out Plate plate))
                 {
@@ -432,9 +354,14 @@ public class PlayerRaycast : MonoBehaviour
                     {
                         if (pot.HeatedInfo.HasWater)
                         {
-                            //IFood food1;
-                            //plate.RemoveFood(out food1);
-                            //pot.PutToWater(food1);
+                            var foods = plate.MoveAllFood();
+                            foreach(var f in foods)
+                            {
+                                f.OnPull.RemoveAllListeners();
+                                f.OnPull.AddListener(PickFood);
+                                f.OnPull.AddListener(pot.OnRemoveFromWater.Invoke);
+                            }
+                            pot.PutToWater(foods);
                         }
                     }
                     else if (hit.collider.TryGetComponent(out FryingPan fryingPan))
@@ -495,6 +422,7 @@ public class PlayerRaycast : MonoBehaviour
     {
         SettingsInit.InitControls(playerController.PlayerControls);
         playerController.LookSpeed = SettingsInit.GetSensetivity();
+        SettingsInit.UpdateVirtualSecond();
         SettingsInit.InitVideo();
     }
     public void Escape()
@@ -547,6 +475,27 @@ public class PlayerRaycast : MonoBehaviour
             }
         }
     }
+    public void ChangeInfoVisibility(CallbackContext context)
+    {
+        if (currentInfoObject == null) return;
+        if(!isShowContent)
+        {
+            var list = currentInfoObject.GetComponentInChildren<IListable>() ?? currentInfoObject.transform.GetComponent<IListable>();
+            if (list != null && list.Foods.Count>0)
+            {
+                isShowContent = true;
+                bool hasPlate = CurrentDraggableObject == null ? false : CurrentDraggableObject.TryGetComponent(out Plate plate);
+                currentInfoObject.ShowContent(list, hasPlate);
+                playerController.OnMenuMode();
+            }
+        }
+        else
+        {
+            isShowContent = false;
+            currentInfoObject.HideContent();
+            playerController.OffMenuMode();
+        }
+    }
     private void OnDisable()
     {
         playerController.PlayerControls.Player.Disable();
@@ -556,5 +505,6 @@ public class PlayerRaycast : MonoBehaviour
         playerController.PlayerControls.Player.Escape.performed -= delegate (CallbackContext context) { Escape(); };
         playerController.PlayerControls.Player.TakeKnife.performed -= TakeKnife;
         playerController.PlayerControls.Player.Cut.performed -= Cut;
+        playerController.PlayerControls.Player.ShowInfo.performed -= ChangeInfoVisibility;
     }
 }

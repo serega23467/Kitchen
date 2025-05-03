@@ -27,7 +27,7 @@ public class Stove : MonoBehaviour
         if (hasObject)
         {
             StoveFire fire = places[id].gameObject.AddComponent<StoveFire>();
-            fire.StartFire(places[id].PickedObject.GetComponent<IHeated>(), switchers[id].Level);
+            fire.StartFire(places[id].PickedObject.GetComponent<IHeated>(), switchers[id].Level, SettingsInit.VirtualSecond);
             places[id].GetComponent<FireControl>().ChangeFire(0);
         }
         else
@@ -53,7 +53,7 @@ public class Stove : MonoBehaviour
             if (places[id].HasObject)
             {
                 StoveFire newFire = places[id].gameObject.AddComponent<StoveFire>();
-                newFire.StartFire(places[id].PickedObject.GetComponent<IHeated>(), switchers[id].Level);
+                newFire.StartFire(places[id].PickedObject.GetComponent<IHeated>(), switchers[id].Level, SettingsInit.VirtualSecond);
                 places[id].GetComponent<FireControl>().ChangeFire(0);
             }
         }

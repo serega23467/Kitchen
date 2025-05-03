@@ -1,77 +1,98 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
+using static UnityEngine.Rendering.DebugUI;
 
 public class FoodComponent : MonoBehaviour, ICloneable
 {
     public string FoodName;
+    [HideInInspector]
+    public UnityEvent<FoodComponent> OnPull;
     [SerializeField]
     public byte CutCount;
     [SerializeField]
     GameObject nextCuttedPart;
     [SerializeField]
     GameObject pourPrefab;
-    UnityEvent<GameObject> OnPull;
+    ShowObjectInfo info;
     public Plate plate;
     public FoodInfo FoodInfo { get; set; }
     private void Start()
     {
         bool isInstanceSpawned = true;
-        if(FoodInfo==null)
+        info = GetComponent<ShowObjectInfo>();
+        if (FoodInfo==null)
         {
             isInstanceSpawned = false;
-            FoodInfo = Resources.Load<FoodInfo>("Food/" + FoodName);
-            FoodInfo.CurrentCutType = CutType.None;
+            FoodInfo = Resources.Load<FoodInfo>("Food/" + FoodName).Clone();
+            //FoodInfo.CurrentCutType = CutType.None;
         }
+        //FoodInfo.Params = new List<FoodParametr>();
         if (FoodInfo.IsPour)
         {
             if (isInstanceSpawned)
             {
-                GetComponent<ShowObjectInfo>().ObjectData = $"{FoodInfo.GramsWeight} г";
+                info.ObjectInfo = $"{FoodInfo.GramsWeight} г";
             }
             else
             {
-                GetComponent<ShowObjectInfo>().ObjectData = $"{FoodInfo.GramsWeight} г насыпи";
+                info.ObjectInfo = $"{FoodInfo.GramsWeight} г за раз";
             }
         }
         else
         {
-            GetComponent<ShowObjectInfo>().ObjectData = $"{FoodInfo.GramsWeight.ToString("N1")} г\n({Translator.GetInstance().GetTranslate(FoodInfo.CurrentCutType.ToString())})";
+            info.ObjectInfo = $"{FoodInfo.GramsWeight.ToString("N1")} г\n({Translator.GetInstance().GetTranslate(FoodInfo.CurrentCutType.ToString())})";
         }
-        OnPull = new UnityEvent<GameObject>();
+        OnPull = new UnityEvent<FoodComponent>();
+        UpdateParamsData();
     }
-    public void AddFoodParameterValue(string paramName, float value)
+    public bool TryAddParameterValue(string paramName, float value)
     {
         if (FoodInfo != null)
         {
-            var param = FoodInfo.Params.FirstOrDefault(p => p.name == paramName);
-            if (param == null)
+            var param = FoodInfo.Params.FirstOrDefault(p => p.ParamName == paramName);
+            if(param == null)
             {
-                FoodInfo.Params.Add(new FoodParametr(paramName, value));
+                if(TryAddParameter(paramName))
+                {
+                    param = FoodInfo.Params.FirstOrDefault(p => p.ParamName == paramName);
+                }
+                else
+                {
+                    return false;
+                }
             }
-            else
-            {
-                param.ParamValue += value;
-            }
+            param.ParamValue += value;
+            UpdateParamsData();
+            return true;
         }
+        return false;
     }
-    public void SetFoodParameterValue(string paramName, float value)
+    public bool TrySetParameterValue(string paramName, float value)
     {
         if(FoodInfo!=null)
         {
-            var param = FoodInfo.Params.FirstOrDefault(p => p.name == paramName);
-            if (param==null)
+            var param = FoodInfo.Params.FirstOrDefault(p => p.ParamName == paramName);
+            if (param == null)
             {
-                FoodInfo.Params.Add(new FoodParametr(paramName, value));
+                if (TryAddParameter(paramName))
+                {
+                    param = FoodInfo.Params.FirstOrDefault(p => p.ParamName == paramName);
+                }
+                else
+                {
+                    return false;
+                }
             }
-            else
-            {
-                param.ParamValue = value;
-            }
+            param.ParamValue = value;
+            UpdateParamsData();
+            return true;
         }
+        return false;
     }
     public void Cut()
     {
@@ -83,9 +104,9 @@ public class FoodComponent : MonoBehaviour, ICloneable
         if(plate!=null)plate.RemoveFood(this);
         for (int i = 0; i < CutCount; i++)
         {
-            var part = Instantiate(nextCuttedPart, transform.position+new Vector3(UnityEngine.Random.Range(0, 0.15f),0, UnityEngine.Random.Range(0, 0.15f)), Quaternion.identity,  transform.parent);
+            var part = Instantiate(nextCuttedPart, transform.position+new Vector3(UnityEngine.Random.Range(0.05f, 0.20f),0, UnityEngine.Random.Range(0.05f, 0.20f)), Quaternion.identity,  transform.parent);
             var partFoodComponent = part.GetComponent<FoodComponent>();
-            partFoodComponent.FoodInfo = FoodInfo.Clone() as FoodInfo;
+            partFoodComponent.FoodInfo = FoodInfo.Clone();
             partFoodComponent.FoodInfo.GramsWeight = FoodInfo.GramsWeight/(float)CutCount;
             if(plateForParts != null)
             {
@@ -121,16 +142,45 @@ public class FoodComponent : MonoBehaviour, ICloneable
         pour.gameObject.transform.localScale = new Vector3(scale.x*scaleFactor, scale.y*scaleFactor, scale.z*scaleFactor);
 
         food = pour.GetComponent<FoodComponent>();
-        food.FoodInfo = FoodInfo.Clone() as FoodInfo;
+        food.FoodInfo = FoodInfo.Clone();
         return true;
     }
     public object Clone()
     {
         return this.MemberwiseClone();
     }
-    public GameObject GetPlatePrefab()
+    void UpdateParamsData()
     {
-        throw new System.NotImplementedException();
+        info.ObjectData = "";
+        if (FoodInfo == null)
+        {
+            return;
+        }
+        else if (FoodInfo.Params.Count <= 0)
+        {
+            return;
+        }
+        StringBuilder sb = new StringBuilder();
+        foreach (var p in FoodInfo.Params)
+        {
+            sb.AppendLine($"{p.Desc} - {p.ParamValue} {p.ValueChar}");
+        }
+        info.ObjectData = sb.ToString();
     }
-
+    bool TryAddParameter(string paramName)
+    {
+        if (FoodInfo != null)
+        {
+            var param = FoodInfo.Params.FirstOrDefault(p => p.ParamName == name);
+            if (param != null) return true;
+            FoodParametr foodParametr;
+            if (FoodParametersPool.GetInstance().TryGetParameter(paramName, out foodParametr))
+            {
+                FoodInfo.Params.Add(foodParametr);
+                return true;
+            }
+            return false;
+        }
+        return false;
+    }
 }

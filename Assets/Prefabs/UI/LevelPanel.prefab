@@ -982,7 +982,7 @@ GameObject:
   - component: {fileID: 8541160315338186686}
   - component: {fileID: 8890783715622900855}
   - component: {fileID: 3196178385645349332}
-  - component: {fileID: 3126349225896532857}
+  - component: {fileID: 1729188363847766696}
   m_Layer: 5
   m_Name: LevelPanel
   m_TagString: Untagged
@@ -1053,7 +1053,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &3126349225896532857
+--- !u!114 &1729188363847766696
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1062,7 +1062,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8703432964818222465}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 142bfb3b7eb620e4982cc6de4ce79a58, type: 3}
+  m_Script: {fileID: 11500000, guid: 0b0ac589a00331040b4ba8753f5998be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   levelName: {fileID: 6688661987388708431}

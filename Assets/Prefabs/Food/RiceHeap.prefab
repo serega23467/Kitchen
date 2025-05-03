@@ -70,6 +70,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   FoodName: Rice
+  OnPull:
+    m_PersistentCalls:
+      m_Calls: []
   CutCount: 0
   nextCuttedPart: {fileID: 0}
   pourPrefab: {fileID: 0}
@@ -81,7 +84,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 698553187863988315}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2d9d15a7510e9d74aa265f3a7b6a2181, type: 3}
   m_Name: 

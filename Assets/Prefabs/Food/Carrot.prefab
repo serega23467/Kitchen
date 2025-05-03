@@ -27,8 +27,8 @@ Transform:
   m_GameObject: {fileID: 486533701722912673}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: 0.579, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0.137, y: 0, z: 0}
+  m_LocalScale: {x: 0.25, y: 0.25, z: 0.25}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3178821052240887014}
@@ -118,7 +118,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -6.94, y: -1.369, z: 0.624}
-  m_LocalScale: {x: 0.25, y: 0.25, z: 0.25}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 4170415607822344895}
@@ -200,8 +200,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.02, y: 0.2, z: 0.22739792}
-  m_Center: {x: 0.06, y: 0.01, z: 0}
+  m_Size: {x: 0.2871821, y: 0.06386411, z: 0.06341481}
+  m_Center: {x: 0, y: 0.0027586818, z: -0.0012613535}
 --- !u!114 &247881856822140884
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -234,7 +234,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   FoodName: Carrot
   CutCount: 6
-  nextCuttedPart: {fileID: 8283624851579015342, guid: a7f404d84b895c646883cd3d705a500e, type: 3}
+  nextCuttedPart: {fileID: 8567428861086377194, guid: a7f404d84b895c646883cd3d705a500e, type: 3}
+  pourPrefab: {fileID: 0}
+  plate: {fileID: 0}
 --- !u!1 &8035619328902866169
 GameObject:
   m_ObjectHideFlags: 0
@@ -262,8 +264,8 @@ Transform:
   m_GameObject: {fileID: 8035619328902866169}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: 0.5790005, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0.13700056, y: 0, z: 0}
+  m_LocalScale: {x: 0.25, y: 0.25, z: 0.25}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3178821052240887014}

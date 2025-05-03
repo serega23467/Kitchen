@@ -2,10 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
+using UnityEngine.Events;
 
 [RequireComponent(typeof(ShowObjectInfo))]
 public class Pot : MonoBehaviour, IHeated
 {
+    [HideInInspector]
+    public UnityEvent<FoodComponent> OnRemoveFromWater;
     [SerializeField]
     Water potWater = null;
     ShowObjectInfo info;
@@ -14,6 +17,7 @@ public class Pot : MonoBehaviour, IHeated
 
     void Start()
     {
+        OnRemoveFromWater = new UnityEvent<FoodComponent>();
         info = GetComponent<ShowObjectInfo>();
         info.ObjectName = "Кастрюля";
         smoke = GetComponentInChildren<ParticleSystem>();
@@ -22,33 +26,19 @@ public class Pot : MonoBehaviour, IHeated
 
         potWater = GetComponentInChildren<Water>();
         potWater.gameObject.SetActive(false);
+
+        //УБРАТЬ
+        AddWater();
     }
 
     private void Update()
     {
         if(info != null)
         {
-            int totalSeconds = HeatedInfo.HeatingTime;
-            if(totalSeconds > 0) 
-            { 
-                int hours = totalSeconds / 3600;
-                if (hours > 0)
-                {
-                    totalSeconds %= 60;
-                }
-                int minutes = totalSeconds / 60;
-                if (minutes > 0)
-                {
-                    totalSeconds %= 60;
-                }
-                int seconds = totalSeconds;
-                string time = $"{hours}:{minutes}:{seconds}";
-                info.ObjectData = $"\nтемпература: {HeatedInfo.Temperature.ToString("F1")} C\nмасса воды: {(HeatedInfo.CurrentMassKG - HeatedInfo.MinMassKG).ToString("F1")} kg\nвремя: {time}";
-            }
-            else
-            {
-                info.ObjectData = $"\nтемпература: {HeatedInfo.Temperature.ToString("F1")} C\nмасса воды: {(HeatedInfo.CurrentMassKG - HeatedInfo.MinMassKG).ToString("F1")} kg";
-            }
+            //кривой код выполнения метода интерфейса по умолчанию, т.к. нельзя наследовать несколько классов чтобы использовать абстрактный
+            var iheated = this as IHeated;
+            info.ObjectData = iheated.GetInfo();
+
             if (potWater != null && smoke != null)
             {
                 if (HeatedInfo.Temperature >= 100 && HeatedInfo.HasWater)
@@ -69,6 +59,10 @@ public class Pot : MonoBehaviour, IHeated
     //{
     //    return potWater.Foods;
     //}
+    public void SpiceFood(SpiceComponent spice)
+    {
+        potWater.SpiceFood(spice);
+    }
     public void HeatWater(float t)
     {
         potWater.HeatFood(t);
@@ -81,14 +75,18 @@ public class Pot : MonoBehaviour, IHeated
         potWater.gameObject.SetActive(true);
         potWater.ChangeWaterLevel(HeatedInfo.CurrentMassKG, HeatedInfo.MinMassKG, HeatedInfo.MaxMassKG);
     }
-    //public void PutToWater(IFood food)
-    //{
-    //    potWater.AddFood(food);
-    //}
-    //public void PutToWater(List<IFood> food)
-    //{
-    //    potWater.AddFood(food);
-    //}
+    public void PutToWater(FoodComponent food)
+    {
+        potWater.AddFood(food);
+        OnRemoveFromWater.RemoveAllListeners();
+        OnRemoveFromWater.AddListener(potWater.PutFood);
+    }
+    public void PutToWater(List<FoodComponent> foods)
+    {
+        potWater.AddFood(foods);
+        OnRemoveFromWater.RemoveAllListeners();
+        OnRemoveFromWater.AddListener(potWater.PutFood);
+    }
     public void OnBoiling(byte level)
     {
         if(HeatedInfo.HasWater && potWater.isActiveAndEnabled)
@@ -142,7 +140,7 @@ public class Pot : MonoBehaviour, IHeated
             { 
                 time++;
             }
-            yield return new WaitForSeconds(1f / 10f);
+            yield return new WaitForSeconds(SettingsInit.VirtualSecond);
         }
     }
     private void OnDestroy()

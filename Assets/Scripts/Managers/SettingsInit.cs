@@ -8,6 +8,21 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 public static class SettingsInit 
 {
+    static float virtualSecond = 0;
+
+    public static float VirtualSecond
+    {
+        get 
+        { 
+            if(virtualSecond == 0)
+            {
+                virtualSecond = GetVirtualSecond();
+            }
+            return virtualSecond; 
+        }
+        private set { virtualSecond = value; }
+    }
+
     public static readonly Vector2Int[] Resolutions = new Vector2Int[]
     {
            new Vector2Int(1920, 1080),
@@ -67,6 +82,16 @@ public static class SettingsInit
     {
         DataTable scoreboard = DB.GetTable("SELECT * FROM SettingsValues WHERE Name = 'яркость';");
         return float.Parse(scoreboard.Rows[0][2].ToString());
+    }
+    static float GetVirtualSecond()
+    {
+        DataTable scoreboard = DB.GetTable("SELECT * FROM SettingsValues WHERE Name = 'ћножитель времени';");
+        float secs = 1f/float.Parse(scoreboard.Rows[0][2].ToString());
+        return secs;
+    }
+    public static void UpdateVirtualSecond()
+    {
+        virtualSecond = GetVirtualSecond();
     }
     public static float GetSensetivity()
     {

@@ -10,6 +10,7 @@ public class DraggableObject : MonoBehaviour
     bool follow;
     public DraggableType Type = DraggableType.Food;
     public bool CanDrag = true;
+    public Vector3 PlaceOffset = Vector3.zero;
     void Awake()
     {
         _rb = GetComponent<Rigidbody>();

@@ -1,5 +1,9 @@
+using NUnit.Framework;
+using System;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 using UnityEngine.UIElements;
 
@@ -8,7 +12,7 @@ public class UIElements : MonoBehaviour
     GameObject canvas;
     UnityEngine.UI.Image panelInfo;
     UnityEngine.UI.Image panelResult;
-    UnityEngine.UI.Image panelRecipe;
+    //UnityEngine.UI.Image panelRecipe;
     UnityEngine.UI.Image panelMenu;
     UnityEngine.UI.Image panelSettings;
 
@@ -21,13 +25,14 @@ public class UIElements : MonoBehaviour
     Vector3 panelInfoSize;
     Vector3 panelResultSize;
     Vector3 scrollViewSize;
-    Vector3 panelRecipeSize;
+    //Vector3 panelRecipeSize;
     Vector3 panelMenuSize;
     Vector3 panelSettingsSize;
 
     RectTransform scrollView;
     ScrollPanel scrollPanel;
     SettingsMenu settingsMenu;
+    SliderMenu sliderMenu;
     private static UIElements instance;
 
     private void Awake()
@@ -43,8 +48,8 @@ public class UIElements : MonoBehaviour
         instance.scrollView = GameObject.Find("Scroll View").GetComponent<RectTransform>();
         instance.scrollViewSize = instance.scrollView.localScale;
 
-        instance.panelRecipe = GameObject.Find("PanelRecipe").GetComponent<UnityEngine.UI.Image>();
-        instance.panelRecipeSize = instance.panelRecipe.rectTransform.localScale;
+        //instance.panelRecipe = GameObject.Find("PanelRecipe").GetComponent<UnityEngine.UI.Image>();
+        //instance.panelRecipeSize = instance.panelRecipe.rectTransform.localScale;
 
         instance.panelInfo = GameObject.Find("PanelInfo").GetComponent<UnityEngine.UI.Image>();
         instance.panelInfoTextName = instance.panelInfo.GetComponentsInChildren<TMP_Text>()[0];
@@ -64,19 +69,22 @@ public class UIElements : MonoBehaviour
         instance.panelSettingsSize = instance.panelSettings.rectTransform.localScale;
         instance.settingsMenu = instance.panelSettings.GetComponent<SettingsMenu>();
 
+        instance.sliderMenu = GameObject.Find("SliderMenu").GetComponent<SliderMenu>();
+        instance.sliderMenu.CloseSliderMenu();
+
     }
     public static UIElements GetInstance()
     {
         return instance;
     }
-    public void ShowPanelRecipe()
-    {
-        instance.panelRecipe.rectTransform.localScale = instance.panelRecipeSize;
-    }
-    public void HidePanelRecipe()
-    {
-        instance.panelRecipe.rectTransform.localScale = new Vector3(0, 0, 0);
-    }
+    //public void ShowPanelRecipe()
+    //{
+    //    instance.panelRecipe.rectTransform.localScale = instance.panelRecipeSize;
+    //}
+    //public void HidePanelRecipe()
+    //{
+    //    instance.panelRecipe.rectTransform.localScale = new Vector3(0, 0, 0);
+    //}
     public void ShowPanelResult(string result, string text)
     {
         instance.panelResultHeaderText.text = result;
@@ -87,14 +95,14 @@ public class UIElements : MonoBehaviour
     {
         instance.panelResult.rectTransform.localScale = new Vector3 (0, 0, 0);
     }
-    public void ShowObjectContent(IListable list)
+    public void ShowObjectContent(IListable list, bool hasPlate = true)
     {
-        //scrollPanel.RetrieveData(list.Foods);
-        //scrollView.localScale = scrollViewSize;
+        scrollPanel.RetrieveData(list.Foods, hasPlate);
+        scrollView.localScale = scrollViewSize;
     }
-    public void UpdateObjectContent(IListable list)
+    public void UpdateObjectContent(List<FoodComponent> list)
     {
-        //scrollPanel.RetrieveData(list.Foods);
+        scrollPanel.RetrieveData(list);
     }
     public void HideObjectContent()
     {
@@ -136,8 +144,19 @@ public class UIElements : MonoBehaviour
     {
         panelSettings.gameObject.SetActive(false);
     }
+    public void OpenSliderMenu(Action<List<FoodComponent>, int> onSelect, List<FoodComponent> list)
+    {
+        if(sliderMenu != null && !sliderMenu.IsOpen)
+        {
+            sliderMenu.OpenSliderMenu(onSelect, list);
+        }
+    }
     public void ExitToMainMenu()
     {
         Scenes.SwitchScene("MainMenu");
+    }
+    public void Restart()
+    {
+        Scenes.SwitchScene("Gameplay");
     }
 }

@@ -64,7 +64,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -8820807481059011055, guid: 098e1cc2035807640b7f4ea77947a5f5, type: 3}
+  - {fileID: 2100000, guid: 0abfc33202262a94199b40ca8fc485c8, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -234,6 +234,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   FoodName: Chicken
+  OnPull:
+    m_PersistentCalls:
+      m_Calls: []
   CutCount: 10
   nextCuttedPart: {fileID: 419160280731954696, guid: b7532dd8c17762b4d9d1f92458856eb7, type: 3}
+  pourPrefab: {fileID: 0}
   plate: {fileID: 0}

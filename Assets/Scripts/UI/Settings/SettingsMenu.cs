@@ -22,6 +22,11 @@ public class SettingsMenu : MonoBehaviour
     TMP_Text sensValue;
 
     [SerializeField]
+    Slider sliderTime;
+    [SerializeField]
+    TMP_Text timeValue;
+
+    [SerializeField]
     Slider sliderBrigh;
     [SerializeField]
     TMP_Text brighValue;
@@ -52,12 +57,17 @@ public class SettingsMenu : MonoBehaviour
         sliderBrigh.maxValue = 1.8f;
         sliderBrigh.onValueChanged.AddListener(UpdateBrighValue);
 
+        sliderTime.minValue = 1;
+        sliderTime.maxValue = 60;
+        sliderTime.onValueChanged.AddListener(UpdateTimeValue);
+
         resolutionDropdown.onValueChanged.AddListener(UpdateResolution);
 
         toogle.onValueChanged.AddListener(UpdateScreenMode);
 
         UpdateSensValue(sliderSens.value);
         UpdateBrighValue(sliderBrigh.value);
+        UpdateTimeValue(sliderTime.value);
 
         foreach (var resolution in SettingsInit.Resolutions)
         {
@@ -87,6 +97,8 @@ public class SettingsMenu : MonoBehaviour
         }
         sliderSens.value = int.Parse(settingValues.FirstOrDefault(s => s.Name == "Чувствительность").Value);
         sliderBrigh.value = float.Parse(settingValues.FirstOrDefault(s => s.Name == "Яркость").Value);
+        sliderTime.value = float.Parse(settingValues.FirstOrDefault(s => s.Name == "Множитель времени").Value);
+
         resolutionDropdown.value = int.Parse(settingValues.FirstOrDefault(s => s.Name == "Разрешение").Value);
         toogle.isOn = Convert.ToBoolean(int.Parse(settingValues.FirstOrDefault(s => s.Name == "Режим экрана").Value));
         SettingsInit.InitVideo();
@@ -174,6 +186,12 @@ public class SettingsMenu : MonoBehaviour
         var set = settingValues.FirstOrDefault(s => s.Name == "Яркость");
         if (set != null) set.Value = brighValue.text;
         SettingsInit.ChangeBrighNoSave(value);
+    }
+    void UpdateTimeValue(float time)
+    {
+        timeValue.text = time.ToString();
+        var set = settingValues.FirstOrDefault(s => s.Name == "Множитель времени");
+        if (set != null) set.Value = timeValue.text;
     }
     void Update()
     {

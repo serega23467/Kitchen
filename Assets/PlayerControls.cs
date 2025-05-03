@@ -116,6 +116,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ShowInfo"",
+                    ""type"": ""Button"",
+                    ""id"": ""33eb6012-1f2c-46de-95f2-e04035c58267"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -272,6 +281,17 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""Cut"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""607ae2c9-bc1e-412d-9e6b-5ea706ec42a7"",
+                    ""path"": ""<Keyboard>/g"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ShowInfo"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -296,6 +316,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Player_Escape = m_Player.FindAction("Escape", throwIfNotFound: true);
         m_Player_TakeKnife = m_Player.FindAction("TakeKnife", throwIfNotFound: true);
         m_Player_Cut = m_Player.FindAction("Cut", throwIfNotFound: true);
+        m_Player_ShowInfo = m_Player.FindAction("ShowInfo", throwIfNotFound: true);
     }
 
     ~@PlayerControls()
@@ -372,6 +393,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Escape;
     private readonly InputAction m_Player_TakeKnife;
     private readonly InputAction m_Player_Cut;
+    private readonly InputAction m_Player_ShowInfo;
     public struct PlayerActions
     {
         private @PlayerControls m_Wrapper;
@@ -386,6 +408,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @Escape => m_Wrapper.m_Player_Escape;
         public InputAction @TakeKnife => m_Wrapper.m_Player_TakeKnife;
         public InputAction @Cut => m_Wrapper.m_Player_Cut;
+        public InputAction @ShowInfo => m_Wrapper.m_Player_ShowInfo;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -425,6 +448,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Cut.started += instance.OnCut;
             @Cut.performed += instance.OnCut;
             @Cut.canceled += instance.OnCut;
+            @ShowInfo.started += instance.OnShowInfo;
+            @ShowInfo.performed += instance.OnShowInfo;
+            @ShowInfo.canceled += instance.OnShowInfo;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -459,6 +485,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Cut.started -= instance.OnCut;
             @Cut.performed -= instance.OnCut;
             @Cut.canceled -= instance.OnCut;
+            @ShowInfo.started -= instance.OnShowInfo;
+            @ShowInfo.performed -= instance.OnShowInfo;
+            @ShowInfo.canceled -= instance.OnShowInfo;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -497,5 +526,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnEscape(InputAction.CallbackContext context);
         void OnTakeKnife(InputAction.CallbackContext context);
         void OnCut(InputAction.CallbackContext context);
+        void OnShowInfo(InputAction.CallbackContext context);
     }
 }
