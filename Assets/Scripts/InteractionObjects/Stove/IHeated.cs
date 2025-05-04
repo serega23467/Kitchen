@@ -7,7 +7,7 @@ public interface IHeated
     public void OnBoiling(byte level);
     public void StopHeating();
     public void StartHeating();
-    string GetInfo()
+    string GetInfo(bool hasWater = true)
     {
         string result = string.Empty;
         int totalSeconds = HeatedInfo.HeatingTime;
@@ -35,11 +35,17 @@ public interface IHeated
             secondsString = secondsString.Length < 2 ? "0" + secondsString : secondsString;
 
             string time = $"{hoursString}:{minutesString}:{secondsString}";
-            result= $"\nтемпература: {HeatedInfo.Temperature.ToString("F1")} C\nмасса воды: {(HeatedInfo.CurrentMassKG - HeatedInfo.MinMassKG).ToString("F1")} kg\nвремя: {time}";
+            if(hasWater) 
+                result= $"\nтемпература: {HeatedInfo.Temperature.ToString("F1")} C\nмасса воды: {(HeatedInfo.CurrentMassKG - HeatedInfo.MinMassKG).ToString("F1")} kg\nвремя: {time}";
+            else
+                result = $"\nтемпература: {HeatedInfo.Temperature.ToString("F1")} C\nвремя: {time}";
         }
         else
         {
-            result = $"\nтемпература: {HeatedInfo.Temperature.ToString("F1")} C\nмасса воды: {(HeatedInfo.CurrentMassKG - HeatedInfo.MinMassKG).ToString("F1")} kg";
+            if(hasWater)
+                result = $"\nтемпература: {HeatedInfo.Temperature.ToString("F1")} C\nмасса воды: {(HeatedInfo.CurrentMassKG - HeatedInfo.MinMassKG).ToString("F1")} kg";
+            else
+                result = $"\nтемпература: {HeatedInfo.Temperature.ToString("F1")} C";
         }
         return result;
     }

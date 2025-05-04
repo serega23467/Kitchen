@@ -5,72 +5,45 @@ using UnityEngine;
 using UnityEngine.Events;
 
 [RequireComponent(typeof(ShowObjectInfo))]
-public class FryingPan : MonoBehaviour, IHeated, IListable
+public class FryingPan : MonoBehaviour, IHeated
 {
 
     ShowObjectInfo info;
-    public List<FoodComponent> Foods { get; set; }
+    Plate plate;
+    string foodDataBoofer = "";
     public HeatedInfo HeatedInfo { get; set; }
-    UnityEvent<FoodComponent> putFood;
 
     private void Start()
     {
         info = GetComponent<ShowObjectInfo>();
         info.ObjectName = "Сковородка";
         HeatedInfo = new HeatedInfo(temperature: 20, minMassKG: 1, currentMassKG: 1, maxMassKG: 5, hasWater: false, time: 0);
-        Foods = new List<FoodComponent>();
-        putFood = new UnityEvent<FoodComponent>();
-        putFood.AddListener(Parents.GetInstance().Player.GetComponent<PlayerRaycast>().PickFood);
+
+        plate = GetComponent<Plate>();
+        plate.OnUpdateInfo.AddListener(UpdateFoodsInfo);
+    }
+    public List<FoodComponent> GetFoods()
+    {
+        return plate.GetFoodList();
     }
     public void HeatFood(float t)
     {
-        foreach (FoodComponent food in Foods)
+        foreach (FoodComponent food in plate?.GetFoodList())
         {
-            //food.TemperatureWithoutWaterSum += t;
+            food.TryAddParameterValue("FryProgress", t);
         }
     }
-    public void AddFood(FoodInfo food)
+    void UpdateFoodsInfo(string data)
     {
-        //if (Foods.Select(f => f.FoodGameObject).Contains(food.FoodGameObject))
-        //{
-        //    byte index = (byte)Foods.FindIndex(f => f.FoodGameObject == food.FoodGameObject);
-        //    if (index >= 0)
-        //    {
-        //        Foods[index].GramsWeight += food.GramsWeight;
-        //    }
-        //}
-        //else
-        //{
-        //    Foods.Add(food.CloneFood());
-        //    if (!food.IsPour)
-        //        food.OnPull.AddListener(PutFood);
-        //}
+        foodDataBoofer = data;
     }
     private void Update()
     {
         if (info != null)
         {
-            int totalSeconds = HeatedInfo.HeatingTime;
-            if (totalSeconds > 0)
-            {
-                int hours = totalSeconds / 3600;
-                if (hours > 0)
-                {
-                    totalSeconds %= 60;
-                }
-                int minutes = totalSeconds / 60;
-                if (minutes > 0)
-                {
-                    totalSeconds %= 60;
-                }
-                int seconds = totalSeconds;
-                string time = $"{hours}:{minutes}:{seconds}";
-                info.ObjectData = $"\nтемпература: {HeatedInfo.Temperature.ToString("F1")} C\nвремя: {time}";
-            }
-            else
-            {
-                info.ObjectData = $"\nтемпература: {HeatedInfo.Temperature.ToString("F1")} C";
-            }
+            //костыль выполнения метода интерфейса по умолчанию, т.к. нельзя наследовать несколько классов чтобы использовать абстрактный
+            var iheated = this as IHeated;
+            info.ObjectData = foodDataBoofer + "\n\n" + iheated.GetInfo(false);
         }
     }
     public void AddWater()
@@ -113,23 +86,5 @@ public class FryingPan : MonoBehaviour, IHeated, IListable
     public void OnBoiling(byte level)
     {
         throw new System.NotImplementedException();
-    }
-    void PutFood(GameObject food)
-    {
-        if (food != null)
-        {
-            if (Parents.GetInstance().Player.GetComponent<PlayerRaycast>().CurrentDraggableObject != null)
-            {
-                if (Parents.GetInstance().Player.GetComponent<PlayerRaycast>().CurrentDraggableObject.GetComponent<Plate>() != null)
-                {
-                    //var f = Foods.FirstOrDefault(f => f.FoodGameObject == food);
-                    //if (f != null)
-                    //{
-                    //    Foods.Remove(f);
-                    //}
-                    //putFood.Invoke(f);
-                }
-            }
-        }
     }
 }

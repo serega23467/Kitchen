@@ -3,10 +3,13 @@ using System.Linq;
 using System.Text;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
 
 [RequireComponent(typeof(ShowObjectInfo))]
 public class Plate : MonoBehaviour
 {
+    [HideInInspector]
+    public UnityEvent<string> OnUpdateInfo;
     [SerializeField]
     float maxWeight = 500f;
     [SerializeField]
@@ -16,20 +19,35 @@ public class Plate : MonoBehaviour
     ShowObjectInfo info;
 
     List<FoodComponent> foods;
+    private void Awake()
+    {
+        OnUpdateInfo = new UnityEvent<string>();
+    }
     private void Start()
     {
         foods = new List<FoodComponent>();
         info = GetComponent<ShowObjectInfo>();
         info.ObjectName = "Тарелка";
     }
+    public List<FoodComponent> GetFoodList()
+    {
+        return foods; 
+    }
     public bool TryAddFood(FoodComponent food)
     {
+        if (food == null) return false;
         if (this.foods.Sum(f => f.FoodInfo.GramsWeight) + food.FoodInfo.GramsWeight > maxWeight)
         {
             return false;
         }
         else
         {
+            if (food.plate != null)
+            {
+                var plate2 = food.plate;
+                plate2.RemoveFood(food);
+            }
+
             this.foods.Add(food);
             Vector3 randomOffset = Vector3.zero;
             randomOffset.x = UnityEngine.Random.Range(-randomRange.x, randomRange.x);
@@ -42,6 +60,13 @@ public class Plate : MonoBehaviour
             UpdateInfo();
             return true;
         }
+    }
+    public void RemoveFood(FoodComponent food)
+    {
+        if (food == null) return;
+        this.foods.Remove(food);
+        food.plate = null;
+        UpdateInfo();   
     }
     public void SpiceFood(SpiceComponent spice)
     {
@@ -62,13 +87,6 @@ public class Plate : MonoBehaviour
         UpdateInfo();
         return list;
     }
-    public void RemoveFood(FoodComponent food)
-    {
-        this.foods.Remove(food);
-        food.transform.parent = Parents.GetInstance().FoodParent.transform;
-        food.plate = null;
-        UpdateInfo();   
-    }
     public void UpdateInfo()
     {
         if (foods.Count<1)
@@ -84,5 +102,6 @@ public class Plate : MonoBehaviour
             sb.AppendLine($"{f.FoodInfo.FoodName} - {weight.ToString("N1") + " г"}\n({Translator.GetInstance().GetTranslate(f.FoodInfo.CurrentCutType.ToString())})");
         }
         info.ObjectData = sb.ToString();
+        OnUpdateInfo.Invoke(sb.ToString());
     }    
 }

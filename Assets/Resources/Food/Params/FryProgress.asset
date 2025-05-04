@@ -14,3 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ParamName: FryProgress
   ParamValue: 0
+  Desc: "\u041F\u0440\u043E\u0433\u0440\u0435\u0441\u0441 \u0436\u0430\u0440\u043A\u0438"
+  ValueChar: "\u0421"
+  IsSpice: 0

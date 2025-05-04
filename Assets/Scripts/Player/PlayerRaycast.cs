@@ -306,10 +306,6 @@ public class PlayerRaycast : MonoBehaviour
                                 }
                             }
                         }
-                        else if (hit.collider.TryGetComponent(out FryingPan fryingPan))
-                        {
-                            //fryingPan.AddFood(food);
-                        }
                     }
                     else
                     {
@@ -364,22 +360,13 @@ public class PlayerRaycast : MonoBehaviour
                             pot.PutToWater(foods);
                         }
                     }
-                    else if (hit.collider.TryGetComponent(out FryingPan fryingPan))
+                    else if (hit.collider.TryGetComponent(out Plate plate2))
                     {
-                        //IFood food1;
-                        //plate.RemoveFood(out food1);
-                        //fryingPan.AddFood(food1);
-                    }
-                }
-                else if (CurrentDraggableObject.TryGetComponent(out FryingPan fryingPan))
-                {
-                    if (hit.collider.TryGetComponent(out Pot pot))
-                    {
-                        if (pot.HeatedInfo.HasWater)
+                        var foodList = new List<FoodComponent>(plate.GetFoodList());
+                        foreach (var f in foodList)
                         {
-                            //pot.PutToWater(fryingPan.Foods);
-                            //fryingPan.Foods = new List<IFood>();
-                        }
+                            plate2.TryAddFood(f);
+                        }    
                     }
                 }
                 else if (CurrentDraggableObject.TryGetComponent(out PlateDish dish))
@@ -401,6 +388,9 @@ public class PlayerRaycast : MonoBehaviour
                     {
                         var plate = food.plate;
                         plate.RemoveFood(food);
+
+                        food.transform.parent = Parents.GetInstance().FoodParent.transform;
+
                         var dgo = food.GetComponent<DraggableObject>();
                         dgo.CanDrag = true;
                         dgo.gameObject.transform.position += new Vector3(0, 0.05f, 0);
