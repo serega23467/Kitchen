@@ -55,10 +55,6 @@ public class Pot : MonoBehaviour, IHeated
             }
         }
     }
-    //public List<IFood> GetFoods()
-    //{
-    //    return potWater.Foods;
-    //}
     public void SpiceFood(SpiceComponent spice)
     {
         potWater.SpiceFood(spice);

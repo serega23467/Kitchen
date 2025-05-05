@@ -6,6 +6,7 @@ using UnityEngine;
 public class FoodParametr : ScriptableObject
 {
     public string ParamName;
+    [HideInInspector]
     public float ParamValue;
     public string Desc = "";
     public string ValueChar = "";

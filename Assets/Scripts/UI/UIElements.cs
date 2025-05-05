@@ -15,6 +15,7 @@ public class UIElements : MonoBehaviour
     //UnityEngine.UI.Image panelRecipe;
     UnityEngine.UI.Image panelMenu;
     UnityEngine.UI.Image panelSettings;
+    UnityEngine.UI.Image panelConfirm;
 
     TMP_Text panelInfoTextName;
     TMP_Text panelInfoTextDescription;
@@ -28,11 +29,13 @@ public class UIElements : MonoBehaviour
     //Vector3 panelRecipeSize;
     Vector3 panelMenuSize;
     Vector3 panelSettingsSize;
+    Vector3 panelConfirmSize;
 
     RectTransform scrollView;
     ScrollPanel scrollPanel;
     SettingsMenu settingsMenu;
     SliderMenu sliderMenu;
+    ConfirmWindow confirmWindow;
     private static UIElements instance;
 
     private void Awake()
@@ -68,6 +71,11 @@ public class UIElements : MonoBehaviour
         instance.panelSettings = GameObject.Find("Settings").GetComponent<UnityEngine.UI.Image>();
         instance.panelSettingsSize = instance.panelSettings.rectTransform.localScale;
         instance.settingsMenu = instance.panelSettings.GetComponent<SettingsMenu>();
+
+        instance.panelConfirm = GameObject.Find("PanelConfirm").GetComponent<UnityEngine.UI.Image>();
+        confirmWindow = instance.panelConfirm.GetComponent<ConfirmWindow>();
+        instance.panelConfirmSize = instance.panelConfirm.rectTransform.localScale;
+        ClosePanelConfirm();
 
         instance.sliderMenu = GameObject.Find("SliderMenu").GetComponent<SliderMenu>();
         instance.sliderMenu.CloseSliderMenu();
@@ -150,6 +158,17 @@ public class UIElements : MonoBehaviour
         {
             sliderMenu.OpenSliderMenu(onSelect, list);
         }
+    }
+    public void OpenPanelConfirm(string text, Action<bool> OnConfirm)
+    {
+        if (confirmWindow == null) return;
+        panelConfirm.rectTransform.localScale = panelConfirmSize;
+        confirmWindow.AddListener(OnConfirm, ClosePanelConfirm, text);
+    }
+    void ClosePanelConfirm()
+    {
+        if (confirmWindow == null) return;
+        panelConfirm.rectTransform.localScale = Vector3.zero;
     }
     public void ExitToMainMenu()
     {

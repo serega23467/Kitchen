@@ -25,7 +25,8 @@ public class ShowObjectInfo : MonoBehaviour
     }
     public void ShowInfo()
     {
-        UIElements.GetInstance().ShowObjectInfo(ObjectName + "\n", ObjectInfo, ObjectData);
+        if (ObjectInfo != "" || ObjectData!="" || ObjectName !="")
+            UIElements.GetInstance().ShowObjectInfo(ObjectName + "\n", ObjectInfo, ObjectData);
     }
     public void HideInfo()
     {

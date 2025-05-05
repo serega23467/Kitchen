@@ -30,6 +30,31 @@ public class PlateDish : MonoBehaviour, IListable
         };
         content.SetActive(false);
     }
+    private void Update()
+    {
+        //if (Input.GetKeyDown(KeyCode.Z))
+        //{
+        //    try
+        //    {
+        //        var serializedData = objectsToSave.Select(@object => @object.GetSaveLoadData()).ToList();
+
+        //        if (!Directory.Exists(SaveDataFolder))
+        //            Directory.CreateDirectory(SaveDataFolder);
+
+        //        var saveFile = new SaveFile(serializedData);
+        //        var serializedSaveFile = JsonConvert.SerializeObject(saveFile);
+
+        //        //todo: make async
+        //        File.WriteAllText(SaveFilePath, serializedSaveFile);
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        Debug.LogException(e);
+        //        throw;
+        //    }
+
+        //}
+    }
     public void AddDish(List<FoodInfo> foods)
     {
         //Foods.Clear();

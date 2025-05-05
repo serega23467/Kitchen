@@ -108,6 +108,13 @@ public class FoodComponent : MonoBehaviour, ICloneable
             var partFoodComponent = part.GetComponent<FoodComponent>();
             partFoodComponent.FoodInfo = FoodInfo.Clone();
             partFoodComponent.FoodInfo.GramsWeight = FoodInfo.GramsWeight/(float)CutCount;
+            foreach(var param in partFoodComponent.FoodInfo.Params)
+            {
+                if (param.IsSpice)
+                {
+                    param.ParamValue /= CutCount;
+                }
+            }
             if(plateForParts != null)
             {
                 if(plateForParts.TryAddFood(partFoodComponent))
@@ -163,7 +170,7 @@ public class FoodComponent : MonoBehaviour, ICloneable
         StringBuilder sb = new StringBuilder();
         foreach (var p in FoodInfo.Params)
         {
-            sb.AppendLine($"{p.Desc} - {p.ParamValue} {p.ValueChar}");
+            sb.AppendLine($"{p.Desc} - {p.ParamValue.ToString("N1")} {p.ValueChar}");
         }
         info.ObjectData = sb.ToString();
     }

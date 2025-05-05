@@ -149,15 +149,6 @@ public class PlayerRaycast : MonoBehaviour
         //{
         //    isShowInfo = !isShowInfo;
         //}
-        //if (Input.GetKeyDown(KeyCode.G))
-        //{
-        //    RaycastHit hit;
-        //    if (Physics.Raycast(cam.transform.position, cam.transform.forward, out hit, raycastDistance, LayerMask.GetMask("DraggableObject")))
-        //    {
-        //        if (hit.collider.GetComponent<IListable>() != null || hit.collider.GetComponentInChildren<IListable>() != null)
-        //            isShowContent = !isShowContent;
-        //    }
-        //}
         if (CurrentDraggableObject!=null && Input.GetAxis("Mouse ScrollWheel") != 0)
         {
             draggableObjectDistance = Mathf.Clamp(draggableObjectDistance+Input.GetAxis("Mouse ScrollWheel")*Time.deltaTime*20f, minDraggableObjectDistance, maxDraggableObjectDistance);
@@ -263,13 +254,6 @@ public class PlayerRaycast : MonoBehaviour
                     }
                 }
             }
-            //else if (hit.collider.TryGetComponent(out CutBoard board))
-            //{
-            //    if (CurrentDraggableObject.TryGetComponent(out Plate plate))
-            //    {
-            //        board.CutObject(plate);
-            //    }
-            //}
         }
     }
     void Pour(CallbackContext context)
@@ -380,30 +364,48 @@ public class PlayerRaycast : MonoBehaviour
                     }
                 }
             }
-            else if (CurrentDraggableObject == null && hit.collider.TryGetComponent(out FoodComponent food))
+            else if (hit.collider.TryGetComponent(out FoodComponent food))
             {
-                if (food.plate != null)
+                if(CurrentDraggableObject == null)
                 {
-                    if (!food.FoodInfo.IsPour)
+                    if (food.plate != null)
                     {
-                        var plate = food.plate;
-                        plate.RemoveFood(food);
+                        if (!food.FoodInfo.IsPour)
+                        {
+                            var plate = food.plate;
+                            plate.RemoveFood(food);
 
-                        food.transform.parent = Parents.GetInstance().FoodParent.transform;
+                            food.transform.parent = Parents.GetInstance().FoodParent.transform;
 
-                        var dgo = food.GetComponent<DraggableObject>();
-                        dgo.CanDrag = true;
-                        dgo.gameObject.transform.position += new Vector3(0, 0.05f, 0);
-                        dgo.OnRigidbody();
-                        dgo.StartFollowingObject();
-                        CurrentDraggableObject = dgo;
-                    }
-                    else
-                    {
-                        //Ã≈Õﬁ ¬€—€œ¿Õ»ﬂ À»ÿÕ≈√Œ
+                            var dgo = food.GetComponent<DraggableObject>();
+                            dgo.CanDrag = true;
+                            dgo.gameObject.transform.position += new Vector3(0, 0.05f, 0);
+                            dgo.OnRigidbody();
+                            dgo.StartFollowingObject();
+                            CurrentDraggableObject = dgo;
+                        }
+                        else
+                        {
+                            var plate = food.plate;
+                            System.Action<bool> action =
+                            result =>
+                            {
+                                if (result)
+                                {
+                                    plate.RemoveFood(food);
+                                    Destroy(food.gameObject);
+                                }
+                                playerController.OffMenuMode();
+                            };
+                            playerController.OnMenuMode();
+                            UIElements.GetInstance().OpenPanelConfirm($"”‰‡ÎÂÌËÂ ÔÓ‰ÛÍÚ‡: {food.FoodInfo.FoodName}", action);
+                        }
                     }
                 }
-
+                else if(CurrentDraggableObject.TryGetComponent(out SpiceComponent spice))
+                {
+                    spice.AddSpiceTo(food);
+                }
             }
 
         }
