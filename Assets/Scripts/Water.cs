@@ -1,5 +1,6 @@
 using NUnit.Framework;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEditor;
@@ -10,7 +11,7 @@ public class Water : MonoBehaviour, IListable
     public bool IsBoiled { get; private set; } = false;
     public bool IsBoilingNow { get; private set; } = false;
     [SerializeField]
-    public List<FoodComponent> Foods { get; set; }
+    public ObservableCollection<FoodComponent> Foods { get; set; }
     float yMaxLevel;
     float yMinLevel;
 
@@ -18,7 +19,7 @@ public class Water : MonoBehaviour, IListable
     {
         yMaxLevel = transform.localPosition.y;
         yMinLevel = -1.05f;
-        Foods = new List<FoodComponent>();
+        Foods = new ObservableCollection<FoodComponent>();
     }
     public void HeatFood(float t)
     {
@@ -38,9 +39,7 @@ public class Water : MonoBehaviour, IListable
     {
         food.gameObject.transform.parent = transform;
         food.gameObject.transform.localScale = Vector3.zero;
-        Foods.Add(food);
-        //if (!food.FoodInfo.IsPour)
-            //food.OnPull.AddListener(PutFood);
+        Foods.Add(food);;
     }
     public void AddFood(List<FoodComponent> foods)
     {
@@ -64,7 +63,7 @@ public class Water : MonoBehaviour, IListable
         if(food != null && food.plate!=null)
         {
             Foods.Remove(food);
-            UIElements.GetInstance().UpdateObjectContent(Foods);
+            UIElements.GetInstance().UpdateObjectContent(Foods.ToList());
         }
     }
 }

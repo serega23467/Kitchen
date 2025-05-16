@@ -1,8 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.Linq;
 using System.Text;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.InputSystem.Utilities;
+using UnityEngine.Rendering;
 
 [RequireComponent(typeof(ShowObjectInfo))]
 public class Pot : MonoBehaviour, IHeated
@@ -11,22 +16,32 @@ public class Pot : MonoBehaviour, IHeated
     public UnityEvent<FoodComponent> OnRemoveFromWater;
     [SerializeField]
     Water potWater = null;
+    [SerializeField]
+    Material waterWithFoodMaterial;
+    Material waterMaterial;
+
+    Renderer waterRend;
     ShowObjectInfo info;
     ParticleSystem smoke;
+
+
     public HeatedInfo HeatedInfo { get; set; }
 
     void Start()
     {
         OnRemoveFromWater = new UnityEvent<FoodComponent>();
         info = GetComponent<ShowObjectInfo>();
-        info.ObjectName = "Êàñòðþëÿ";
+        //info.ObjectName = "Êàñòðþëÿ";
         smoke = GetComponentInChildren<ParticleSystem>();
         smoke.Pause();
         HeatedInfo = new HeatedInfo(temperature: 20,minMassKG: 1, currentMassKG: 1, maxMassKG: 5, hasWater: false, time: 0);
 
         potWater = GetComponentInChildren<Water>();
-        potWater.gameObject.SetActive(false);
+        waterRend = potWater.gameObject.GetComponentInChildren<Renderer>();
+        waterMaterial = waterRend.material;
 
+        potWater.Foods.CollectionChanged += ChangeWaterMaterial;
+        potWater.gameObject.SetActive(false);
         //ÓÁÐÀÒÜ
         AddWater();
     }
@@ -55,6 +70,16 @@ public class Pot : MonoBehaviour, IHeated
             }
         }
     }
+    void ChangeWaterMaterial(object sender, NotifyCollectionChangedEventArgs e)
+    {
+        if(potWater!=null && waterRend!=null && waterWithFoodMaterial!=null)
+        {
+            if (potWater.Foods.Count() > 0)
+                waterRend.material = waterWithFoodMaterial;
+            else
+                waterRend.material = waterMaterial;
+        }
+    }
     public void SpiceFood(SpiceComponent spice)
     {
         potWater.SpiceFood(spice);
@@ -71,17 +96,30 @@ public class Pot : MonoBehaviour, IHeated
         potWater.gameObject.SetActive(true);
         potWater.ChangeWaterLevel(HeatedInfo.CurrentMassKG, HeatedInfo.MinMassKG, HeatedInfo.MaxMassKG);
     }
+
     public void PutToWater(FoodComponent food)
     {
+
         potWater.AddFood(food);
+
         OnRemoveFromWater.RemoveAllListeners();
         OnRemoveFromWater.AddListener(potWater.PutFood);
     }
     public void PutToWater(List<FoodComponent> foods)
     {
         potWater.AddFood(foods);
+
         OnRemoveFromWater.RemoveAllListeners();
         OnRemoveFromWater.AddListener(potWater.PutFood);
+    }
+    public ObservableCollection<FoodComponent> GetFoodsClone()
+    {
+        ObservableCollection<FoodComponent> foods = new ObservableCollection<FoodComponent>();
+        for(int i = 0; i< potWater.Foods.Count; i++)
+        {
+            foods.Add(potWater.Foods[i].Clone() as FoodComponent);
+        }
+        return foods;
     }
     public void OnBoiling(byte level)
     {

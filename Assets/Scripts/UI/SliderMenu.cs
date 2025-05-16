@@ -35,6 +35,8 @@ public class SliderMenu : MonoBehaviour
     {
         sliderCount.minValue = 0;
         sliderCount.maxValue = list.Count();
+        sliderCount.value = sliderCount.maxValue;
+
         button.onClick.RemoveAllListeners();
         button.onClick.AddListener(delegate() { onSelect.Invoke(list, Convert.ToInt32(sliderCount.value));});
         button.onClick.AddListener(CloseSliderMenu);

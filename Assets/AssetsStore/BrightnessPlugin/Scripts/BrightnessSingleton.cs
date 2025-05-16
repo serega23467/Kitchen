@@ -6,9 +6,11 @@ namespace BrightnessPlugin
 {
     public class BrightnessSingleton : MonoBehaviour
     {
-        public static BrightnessSingleton instance;
-        public bool doubleBright = false;
-        private UseBrightnessPlugin bPlugin, bPlugin2;
+        public static BrightnessSingleton Instance;
+        public bool DoubleBright = false;
+        public bool IsSetted = false;
+        float brValue = 0f;
+        UseBrightnessPlugin bPlugin, bPlugin2;
 
         void Awake()
         {
@@ -17,27 +19,33 @@ namespace BrightnessPlugin
 
         void CreateSingleton()
         {
-            if (instance == null)
-                instance = this;
+            if (Instance == null)
+                Instance = this;
             else
                 Destroy(gameObject);
 
             DontDestroyOnLoad(gameObject);
 
             bPlugin = GetComponent<UseBrightnessPlugin>();
-            if (doubleBright && bPlugin2 == null)
+            if (DoubleBright && bPlugin2 == null)
             {
                 bPlugin2 = gameObject.AddComponent<UseBrightnessPlugin>();
             }
         }
         public static BrightnessSingleton GetInstance()
         {
-            return instance;
+            return Instance;
         }
         public void SetBrightness(float brightness)
         {
             bPlugin.SetBrightness(brightness);
             if (bPlugin2 != null) bPlugin2.SetBrightness(brightness);
+            IsSetted = true;
+            brValue = brightness;
+        }
+        public float GetBrightness()
+        {
+            return brValue;
         }
     }
 }

@@ -147,7 +147,6 @@ public class FoodComponent : MonoBehaviour, ICloneable
         float scaleFactor = FoodInfo.GramsWeight / 40f;
         Vector3 scale = pour.transform.localScale;
         pour.gameObject.transform.localScale = new Vector3(scale.x*scaleFactor, scale.y*scaleFactor, scale.z*scaleFactor);
-
         food = pour.GetComponent<FoodComponent>();
         food.FoodInfo = FoodInfo.Clone();
         return true;

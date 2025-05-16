@@ -26,13 +26,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1911779129807137976}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
+  m_LocalPosition: {x: 0.0047, y: 0.0059, z: 0}
   m_LocalScale: {x: 2.5, y: 1.4999995, z: 2.219999}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8879805451839635292}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
 --- !u!33 &7486418257021138133
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -64,7 +64,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 09663ebc15b753b4e875b1c9ec91715b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -116,7 +116,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9136243990460500931}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 1.582, y: 0.038, z: -4.7366}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -198,6 +198,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Type: 2
   CanDrag: 1
+  PlaceOffset: {x: 0, y: 0, z: 0}
 --- !u!65 &4928479091432850448
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -217,8 +218,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.022389531, y: 0.057610817, z: 0.03274536}
-  m_Center: {x: 0, y: 0, z: -0.006}
+  m_Size: {x: 0.03126955, y: 0.021772742, z: 0.057971954}
+  m_Center: {x: -0.00162673, y: 0.005906284, z: 0.00020647049}
 --- !u!114 &3159409401246131786
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -232,6 +233,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   FoodName: GarlicMedium
-  CutCount: 0
-  nextCuttedPart: {fileID: 0}
+  OnPull:
+    m_PersistentCalls:
+      m_Calls: []
+  CutCount: 25
+  nextCuttedPart: {fileID: 7073272836406555023, guid: b98c4bfb30309724d893276f89e78771, type: 3}
+  pourPrefab: {fileID: 0}
   plate: {fileID: 0}

@@ -27,14 +27,14 @@ public class LevelsItem : RecyclingListViewItem
             if (value == null) return;
             levelInfo = value;
 
-            Sprite loadedSprite = Resources.Load<Sprite>(levelInfo.ImageName);
+            Sprite loadedSprite = Resources.Load<Sprite>("Food/" + levelInfo.FolderName + "/" + levelInfo.ImageName);
             if (loadedSprite != null)
             {
                 levelPicture.sprite = loadedSprite; 
             }
             else
             {
-                Sprite def = Resources.Load<Sprite>("DefaultLevel");
+                Sprite def = Resources.Load<Sprite>("Food/" + "DefaultLevel");
                 if (def != null) levelPicture.sprite = def;
             }
             levelName.text = levelInfo.Name;

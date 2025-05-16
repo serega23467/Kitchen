@@ -4,12 +4,14 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 public static class SettingsInit 
 {
     static float virtualSecond = 0;
 
+    static string currentLevelName;
     public static float VirtualSecond
     {
         get 
@@ -21,6 +23,18 @@ public static class SettingsInit
             return virtualSecond; 
         }
         private set { virtualSecond = value; }
+    }
+    public static string CurrentLevelName
+    {
+        get
+        {
+            if (currentLevelName == "")
+            {
+                currentLevelName = GetCurrentLevelName();
+            }
+            return currentLevelName;
+        }
+        private set { currentLevelName = value; }
     }
 
     public static readonly Vector2Int[] Resolutions = new Vector2Int[]
@@ -36,10 +50,11 @@ public static class SettingsInit
     }
     public static void InitVideo()
     {
-        BrightnessSingleton.GetInstance().SetBrightness(GetBrightness());
+        if(!BrightnessSingleton.GetInstance().IsSetted)
+            BrightnessSingleton.GetInstance().SetBrightness(GetBrightness());
         int rIndex = GetResolution();
         bool isFullScreen = GetScreenMode();
-        Screen.SetResolution(Resolutions[rIndex].x, Resolutions[rIndex].y, GetScreenMode());
+        Screen.SetResolution(Resolutions[rIndex].x, Resolutions[rIndex].y, isFullScreen);
     }
     public static void InitControls(PlayerControls playerControls)
     {
@@ -68,6 +83,27 @@ public static class SettingsInit
             lastIndex += action.bindings.Count;
         }
     }
+    public static void UpdateVirtualSecond()
+    {
+        virtualSecond = GetVirtualSecond();
+    }
+    public static void UpdateCurrentLevelName()
+    {
+        currentLevelName = GetCurrentLevelName();
+    }
+    public static float GetSensetivity()
+    {
+        DataTable scoreboard = DB.GetTable("SELECT * FROM SettingsValues WHERE Name = 'Чувствительность';");
+        float sens = float.Parse(scoreboard.Rows[0][2].ToString())/100;
+        if(sens< 0.5f)
+        {
+            return 0.01f + (0.25f - 0.01f) * (sens / 0.5f);
+        }
+        else
+        {
+            return 0.25f + (1f - 0.25f) * ((sens-0.5f) / 0.5f);
+        }
+    }
     static bool GetScreenMode()
     {
         DataTable scoreboard = DB.GetTable("SELECT * FROM SettingsValues WHERE Name = 'Режим экрана';");
@@ -89,21 +125,14 @@ public static class SettingsInit
         float secs = 1f/float.Parse(scoreboard.Rows[0][2].ToString());
         return secs;
     }
-    public static void UpdateVirtualSecond()
+    static string GetCurrentLevelName()
     {
-        virtualSecond = GetVirtualSecond();
-    }
-    public static float GetSensetivity()
-    {
-        DataTable scoreboard = DB.GetTable("SELECT * FROM SettingsValues WHERE Name = 'Чувствительность';");
-        float sens = float.Parse(scoreboard.Rows[0][2].ToString())/100;
-        if(sens< 0.5f)
-        {
-            return 0.01f + (0.25f - 0.01f) * (sens / 0.5f);
-        }
-        else
-        {
-            return 0.25f + (1f - 0.25f) * ((sens-0.5f) / 0.5f);
-        }
+        string levelName = "";
+        DataTable scoreboard = DB.GetTable("SELECT r.RecipeFileName FROM CurrentLevel " +
+            "cl JOIN Levels l ON cl.LevelId = l.Id " +
+            "JOIN Recipes r ON l.RecipeId = r.Id" +
+            " WHERE cl.Id  = 1; ");
+        levelName = scoreboard.Rows[0][0]?.ToString();
+        return levelName;   
     }
 }

@@ -9,7 +9,7 @@ public class StoveFire : MonoBehaviour
         heated.StartHeating();
         StartCoroutine(Fire(heated, level, virtualSecondInSeconds));
     }
-    IEnumerator Fire(IHeated heated, byte level, float timeModifier)
+    IEnumerator Fire(IHeated heated, byte level, float second)
     {
         float maxT = 250;
         if(heated.HeatedInfo.HasWater)
@@ -54,7 +54,7 @@ public class StoveFire : MonoBehaviour
                 }
                 pan.HeatFood(delta);
             }
-            yield return new WaitForSeconds(timeModifier);
+            yield return new WaitForSeconds(second);
         }
     }
     private void OnDestroy()

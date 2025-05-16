@@ -1,34 +1,38 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 
 [RequireComponent(typeof(ShowObjectInfo))]
-public class FryingPan : MonoBehaviour, IHeated
+public class FryingPan : MonoBehaviour, IHeated, IListable
 {
 
     ShowObjectInfo info;
     Plate plate;
     string foodDataBoofer = "";
     public HeatedInfo HeatedInfo { get; set; }
+    public ObservableCollection<FoodComponent> Foods { get => plate.Foods; set=>Foods = value; }
 
     private void Start()
     {
         info = GetComponent<ShowObjectInfo>();
-        info.ObjectName = "Сковородка";
         HeatedInfo = new HeatedInfo(temperature: 20, minMassKG: 1, currentMassKG: 1, maxMassKG: 5, hasWater: false, time: 0);
 
         plate = GetComponent<Plate>();
+        //info.ObjectName = "Сковородка";
+
         plate.OnUpdateInfo.AddListener(UpdateFoodsInfo);
+        //plate.GetComponent<ShowObjectInfo>().
     }
     public List<FoodComponent> GetFoods()
     {
-        return plate.GetFoodList();
+        return plate.Foods.ToList();
     }
     public void HeatFood(float t)
     {
-        foreach (FoodComponent food in plate?.GetFoodList())
+        foreach (FoodComponent food in plate?.Foods.ToList())
         {
             food.TryAddParameterValue("FryProgress", t);
         }

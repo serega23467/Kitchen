@@ -48,8 +48,8 @@ public class PlayerRaycast : MonoBehaviour
         UIElements.GetInstance().HidePanelResult();
         UIElements.GetInstance().HideMenu();
         UIElements.GetInstance().HideSettings();
-        UpdateSettings();
 
+        UpdateSettings();
     }
     private void OnEnable()
     {
@@ -114,37 +114,37 @@ public class PlayerRaycast : MonoBehaviour
                 currentInfoObject = null;
             }
         }
-        if (Input.GetKeyDown(KeyCode.Z))
-        {
-            RaycastHit hit;
-            if (!isShowResult && Physics.Raycast(cam.transform.position, cam.transform.forward, out hit, raycastDistance, LayerMask.GetMask("DraggableObject")))
-            {
-                if (hit.collider.TryGetComponent(out PlateDish dish))
-                {
-                    if (dish.Compare(out string result))
-                    {
-                        UIElements.GetInstance().ShowPanelResult("Успешно!", result);
-                    }
-                    else
-                    {
-                        UIElements.GetInstance().ShowPanelResult("Неуспешно!", result);
-                    }
-                    isShowResult = true;
-                    playerController.canMove = false;
-                    Cursor.lockState = CursorLockMode.None;
-                    Cursor.visible = true;
-                }
-            }
-            else if(isShowResult)
-            {
-                UIElements.GetInstance().HidePanelResult();
-                isShowResult = false;
+        //if (Input.GetKeyDown(KeyCode.Z))
+        //{
+        //    RaycastHit hit;
+        //    if (!isShowResult && Physics.Raycast(cam.transform.position, cam.transform.forward, out hit, raycastDistance, LayerMask.GetMask("DraggableObject")))
+        //    {
+        //        if (hit.collider.TryGetComponent(out PlateDish dish))
+        //        {
+        //            if (dish.Compare(out string result))
+        //            {
+        //                UIElements.GetInstance().ShowPanelResult("Успешно!", result);
+        //            }
+        //            else
+        //            {
+        //                UIElements.GetInstance().ShowPanelResult("Неуспешно!", result);
+        //            }
+        //            isShowResult = true;
+        //            playerController.canMove = false;
+        //            Cursor.lockState = CursorLockMode.None;
+        //            Cursor.visible = true;
+        //        }
+        //    }
+        //    else if(isShowResult)
+        //    {
+        //        UIElements.GetInstance().HidePanelResult();
+        //        isShowResult = false;
 
-                playerController.canMove = true;
-                Cursor.lockState = CursorLockMode.Locked;
-                Cursor.visible = false;
-            }
-        }
+        //        playerController.canMove = true;
+        //        Cursor.lockState = CursorLockMode.Locked;
+        //        Cursor.visible = false;
+        //    }
+        //}
         //if (Input.GetKeyDown(KeyCode.I))
         //{
         //    isShowInfo = !isShowInfo;
@@ -198,9 +198,9 @@ public class PlayerRaycast : MonoBehaviour
             }
             else if (hit.collider.TryGetComponent(out Inclose inclose))
             {
-                if (CurrentDraggableObject != null && CurrentDraggableObject.Type == inclose.DraggableType)
+                if (CurrentDraggableObject != null)
                 {
-                    if (!inclose.HasObject)
+                    if (CurrentDraggableObject.Type == inclose.DraggableType && !inclose.HasObject)
                     {
                         CurrentDraggableObject.CanDrag = false;
                         inclose.Put(CurrentDraggableObject);
@@ -253,6 +253,10 @@ public class PlayerRaycast : MonoBehaviour
                         tap.FillContainer(heated);
                     }
                 }
+            }
+            else if (hit.collider.TryGetComponent(out BellFinish bell))
+            {
+                bell.DingBell();
             }
         }
     }
@@ -346,7 +350,7 @@ public class PlayerRaycast : MonoBehaviour
                     }
                     else if (hit.collider.TryGetComponent(out Plate plate2))
                     {
-                        var foodList = new List<FoodComponent>(plate.GetFoodList());
+                        var foodList = new List<FoodComponent>(plate.Foods);
                         foreach (var f in foodList)
                         {
                             plate2.TryAddFood(f);
@@ -359,7 +363,9 @@ public class PlayerRaycast : MonoBehaviour
                     {
                         if (pot.HeatedInfo.HasWater)
                         {
-                            //dish.AddDish(pot.GetFoods());
+                            var foods = pot.GetFoodsClone();
+                            if(foods.Count > 0)
+                                dish.AddDish(foods, pot.HeatedInfo.HasWater);
                         }
                     }
                 }
@@ -414,8 +420,6 @@ public class PlayerRaycast : MonoBehaviour
     {
         SettingsInit.InitControls(playerController.PlayerControls);
         playerController.LookSpeed = SettingsInit.GetSensetivity();
-        SettingsInit.UpdateVirtualSecond();
-        SettingsInit.InitVideo();
     }
     public void Escape()
     {

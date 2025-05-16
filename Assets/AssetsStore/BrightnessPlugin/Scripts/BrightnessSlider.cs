@@ -22,7 +22,7 @@ namespace BrightnessPlugin
 
         public void SetBrightness(float brightness)
         {
-            BrightnessSingleton.instance.SetBrightness(brightness);
+            BrightnessSingleton.Instance.SetBrightness(brightness);
         }
     }
 }

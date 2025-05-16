@@ -11,8 +11,10 @@ public class FoodInfo : ScriptableObject
     public float GramsWeight;
     public bool IsPour;
     public CutType[] AllCutTypes;
-    public List<FoodParametr> Params { get; set; } = new List<FoodParametr>();
-    public CutType CurrentCutType { get; set; }
+    [HideInInspector]
+    public List<FoodParametr> Params = new List<FoodParametr>();
+    [HideInInspector]
+    public CutType CurrentCutType;
     public FoodInfo Clone()
     {
         FoodInfo clone = this.MemberwiseClone() as FoodInfo;
@@ -23,5 +25,22 @@ public class FoodInfo : ScriptableObject
         }
         clone.Params = cloneParams;
         return clone;
+    }
+    public SerializableFoodInfo GetSerializableFoodInfo()
+    {
+        SerializableFoodInfo sfoodInfo = new SerializableFoodInfo();
+        sfoodInfo.FoodId = FoodId;
+        sfoodInfo.FoodName = FoodName;
+        sfoodInfo.GramsWeight= GramsWeight;
+        sfoodInfo.IsPour = IsPour;
+        sfoodInfo.AllCutTypes = AllCutTypes;
+        List<SerializableFoodParameter> sparams = new List<SerializableFoodParameter>(); 
+        foreach(var p in Params)
+        {
+            sparams.Add(p.GetSerializbleFoodParameter());
+        }
+        sfoodInfo.Params = sparams;
+        sfoodInfo.CurrentCutType = CurrentCutType;
+        return sfoodInfo;
     }
 }

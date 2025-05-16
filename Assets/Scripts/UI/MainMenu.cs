@@ -19,10 +19,6 @@ public class MainMenu : MonoBehaviour
     {
         SettingsInit.InitVideo();
     }
-    //public void Play()
-    //{
-    //    Scenes.SwitchScene("Gameplay");
-    //}
     public void OpenSettings()
     {
         if (settingsMenu != null)

@@ -1,7 +1,8 @@
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using UnityEngine;
 
 public interface IListable
 {
-    List<FoodComponent> Foods { get; set; }
+    ObservableCollection<FoodComponent> Foods { get; set; }
 }

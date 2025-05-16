@@ -15,4 +15,12 @@ public class FoodParametr : ScriptableObject
     {
         return this.MemberwiseClone() as FoodParametr;
     }
+    public SerializableFoodParameter GetSerializbleFoodParameter()
+    {
+        SerializableFoodParameter sfoodParam = new SerializableFoodParameter();
+        sfoodParam.ParamName = ParamName;
+        sfoodParam.ParamValue = ParamValue;
+        sfoodParam.IsSpice = IsSpice;
+        return sfoodParam;
+    }
 }

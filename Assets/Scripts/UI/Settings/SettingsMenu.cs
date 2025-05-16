@@ -1,4 +1,5 @@
 using Assets.Scripts.UI;
+using BrightnessPlugin;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -57,17 +58,16 @@ public class SettingsMenu : MonoBehaviour
         sliderBrigh.maxValue = 1.8f;
         sliderBrigh.onValueChanged.AddListener(UpdateBrighValue);
 
-        sliderTime.minValue = 1;
-        sliderTime.maxValue = 60;
-        sliderTime.onValueChanged.AddListener(UpdateTimeValue);
+        if (sliderTime != null)
+        { 
+            sliderTime.minValue = 1;
+            sliderTime.maxValue = 60;
+            sliderTime.onValueChanged.AddListener(UpdateTimeValue);
+        }
 
         resolutionDropdown.onValueChanged.AddListener(UpdateResolution);
 
         toogle.onValueChanged.AddListener(UpdateScreenMode);
-
-        UpdateSensValue(sliderSens.value);
-        UpdateBrighValue(sliderBrigh.value);
-        UpdateTimeValue(sliderTime.value);
 
         foreach (var resolution in SettingsInit.Resolutions)
         {
@@ -95,13 +95,23 @@ public class SettingsMenu : MonoBehaviour
             var info = new SettingValue() { Id = int.Parse(scoreboard.Rows[i][0].ToString()), Name = scoreboard.Rows[i][1].ToString(), Value = scoreboard.Rows[i][2].ToString() };
             settingValues.Add(info);
         }
+
         sliderSens.value = int.Parse(settingValues.FirstOrDefault(s => s.Name == "Чувствительность").Value);
-        sliderBrigh.value = float.Parse(settingValues.FirstOrDefault(s => s.Name == "Яркость").Value);
-        sliderTime.value = float.Parse(settingValues.FirstOrDefault(s => s.Name == "Множитель времени").Value);
+        if (BrightnessSingleton.GetInstance().IsSetted)
+        {
+            sliderBrigh.value = BrightnessSingleton.GetInstance().GetBrightness();
+        }
+        else
+        {
+            sliderBrigh.value = float.Parse(settingValues.FirstOrDefault(s => s.Name == "Яркость").Value);
+        }
+        if (sliderTime != null)
+            sliderTime.value = float.Parse(settingValues.FirstOrDefault(s => s.Name == "Множитель времени").Value);
 
         resolutionDropdown.value = int.Parse(settingValues.FirstOrDefault(s => s.Name == "Разрешение").Value);
+
+
         toogle.isOn = Convert.ToBoolean(int.Parse(settingValues.FirstOrDefault(s => s.Name == "Режим экрана").Value));
-        SettingsInit.InitVideo();
     }
     void RetrieveData(List<SettingValue> panels)
     {
@@ -157,8 +167,10 @@ public class SettingsMenu : MonoBehaviour
                 }
             }
         }
+        BrightnessSingleton.GetInstance().IsSetted = false;
         UpdateKeys();
         UpdateSettings();
+        SettingsInit.InitVideo();
     }
     public void HideSettings()
     {

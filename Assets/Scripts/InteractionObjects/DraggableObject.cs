@@ -47,11 +47,8 @@ public class DraggableObject : MonoBehaviour
     }
     public void StopFollowingObject()
     {
-        if (CanDrag)
-        {
-            follow = false;
-            _rb.linearVelocity = Vector3.zero;
-        }
+        follow = false;
+        _rb.linearVelocity = Vector3.zero;
         gameObject.layer = LayerMask.NameToLayer("DraggableObject");
         foreach (Transform child in transform)
         {

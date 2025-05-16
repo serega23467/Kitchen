@@ -133,6 +133,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Type: 2
   CanDrag: 1
+  PlaceOffset: {x: 0, y: 0, z: 0}
 --- !u!114 &5716689627378654930
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -146,8 +147,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   FoodName: OnionMedium
-  CutCount: 0
-  nextCuttedPart: {fileID: 0}
+  OnPull:
+    m_PersistentCalls:
+      m_Calls: []
+  CutCount: 30
+  nextCuttedPart: {fileID: 9210135772697563166, guid: 942caff3b709efc44982fb8be2345267, type: 3}
+  pourPrefab: {fileID: 0}
   plate: {fileID: 0}
 --- !u!1 &8444568369661715682
 GameObject:

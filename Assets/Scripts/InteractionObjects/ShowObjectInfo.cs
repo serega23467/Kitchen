@@ -13,6 +13,7 @@ public class ShowObjectInfo : MonoBehaviour
     [HideInInspector]
     public string ObjectData = "";
     Outline outline;
+    bool hasFinishOutline = false;
     private void Awake()
     {
         outline = GetComponent<Outline>();
@@ -46,9 +47,21 @@ public class ShowObjectInfo : MonoBehaviour
     }
     public void SetOutline(bool hasOutline)
     {
-        outline.enabled = hasOutline;
+        if(!hasFinishOutline)
+            outline.enabled = hasOutline;
     }
-    public void SetOutlineColor(Color color)
+
+    public void SetFinishOutline(bool hasOutline)
+    {
+        outline.enabled = hasOutline;
+        hasFinishOutline = hasOutline;
+        if(hasOutline)
+            SetOutlineColor(Color.green);
+        else
+            SetOutlineColor(Color.white);
+
+    }
+    void SetOutlineColor(Color color)
     {
         outline.OutlineColor = color;
     }
