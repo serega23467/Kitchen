@@ -15,7 +15,8 @@ public class LevelsMenu : MonoBehaviour
     public void UpdateLevels()
     {
         List<Level> levels = new List<Level>();
-        DataTable scoreboard = DB.GetTable("SELECT * FROM Levels l JOIN Recipes r ON r.Id = l.Id");
+        DataTable scoreboard = DB.GetTable("SELECT l.Id, l.Name, l.Description, l.ImageName, l.Rate, l.Seconds, r.RecipeFileName " +
+            "FROM Levels l JOIN Recipes r ON r.Id = l.RecipeId;");
         for (int i = 0; i < scoreboard.Rows.Count; i++)
         {
             var info = new Level() { 
@@ -25,8 +26,7 @@ public class LevelsMenu : MonoBehaviour
                 ImageName = scoreboard.Rows[i][3].ToString(), 
                 Rate = int.Parse(scoreboard.Rows[i][4].ToString()),
                 Seconds = int.Parse(scoreboard.Rows[i][5].ToString()),
-                RecipeId = int.Parse(scoreboard.Rows[i][6].ToString()),
-                FolderName = scoreboard.Rows[i][7].ToString()
+                FolderName = scoreboard.Rows[i][6].ToString()
             };
             levels.Add(info);
         }

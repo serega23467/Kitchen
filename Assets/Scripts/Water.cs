@@ -8,6 +8,7 @@ using UnityEngine;
 using UnityEngine.Events;
 public class Water : MonoBehaviour, IListable
 {
+    public bool CanPull { get; private set; } = true;
     public bool IsBoiled { get; private set; } = false;
     public bool IsBoilingNow { get; private set; } = false;
     [SerializeField]
@@ -63,7 +64,7 @@ public class Water : MonoBehaviour, IListable
         if(food != null && food.plate!=null)
         {
             Foods.Remove(food);
-            UIElements.GetInstance().UpdateObjectContent(Foods.ToList());
+            UIElements.GetInstance().UpdateObjectContent(this);
         }
     }
 }

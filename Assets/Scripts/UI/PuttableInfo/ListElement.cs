@@ -14,6 +14,7 @@ public class ListElement : RecyclingListViewItem
     [SerializeField]
     public Button Button;
     public bool HasPlate = false;
+    public bool CanPull = false;
     FoodComponent food;
 
     int count = 0;
@@ -35,7 +36,7 @@ public class ListElement : RecyclingListViewItem
             food = value;
             foodName.text = value.FoodInfo.FoodName;
             foodWeight.text = value.FoodInfo.GramsWeight.ToString("N1") + " ã";
-            if(!HasPlate)
+            if(!HasPlate || !CanPull)
             {
                 Button.gameObject.transform.localScale = Vector3.zero;
             }    

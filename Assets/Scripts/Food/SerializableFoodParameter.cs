@@ -6,7 +6,6 @@ public class SerializableFoodParameter
     public string ParamName;
     public float ParamValue;
     public bool IsSpice = false;
-
     public override bool Equals(object obj)
     {
         if (obj == null || GetType() != obj.GetType())

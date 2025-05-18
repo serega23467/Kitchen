@@ -10,6 +10,7 @@ public class ShowObjectInfo : MonoBehaviour
 {
     public string ObjectName = "";
     public string ObjectInfo = "";
+    public bool CanShowContent = false;
     [HideInInspector]
     public string ObjectData = "";
     Outline outline;
@@ -37,7 +38,7 @@ public class ShowObjectInfo : MonoBehaviour
     {
         UIElements.GetInstance().ShowObjectContent(list, hasPlate);
     }
-    public void UpdateContent(List<FoodComponent> list)
+    public void UpdateContent(IListable list)
     {
         UIElements.GetInstance().UpdateObjectContent(list);
     }

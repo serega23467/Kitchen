@@ -26,6 +26,8 @@ public class PlayerRaycast : MonoBehaviour
     
     public DraggableObject CurrentDraggableObject { get; set; } = null;
     ShowObjectInfo currentInfoObject = null;
+    ShowObjectInfo contentInfoObject = null;
+
     PlayerController playerController = null;
     Knife knife;
     bool isShowInfo = true;
@@ -44,8 +46,6 @@ public class PlayerRaycast : MonoBehaviour
     }
     private void Start()
     {
-        //cameraSwitcher = GetComponent<CameraSwitcher>();
-        UIElements.GetInstance().HidePanelResult();
         UIElements.GetInstance().HideMenu();
         UIElements.GetInstance().HideSettings();
 
@@ -256,7 +256,7 @@ public class PlayerRaycast : MonoBehaviour
             }
             else if (hit.collider.TryGetComponent(out BellFinish bell))
             {
-                bell.DingBell();
+                bell.DingBell(Escape);
             }
         }
     }
@@ -473,24 +473,37 @@ public class PlayerRaycast : MonoBehaviour
     }
     public void ChangeInfoVisibility(CallbackContext context)
     {
-        if (currentInfoObject == null) return;
-        if(!isShowContent)
+        if (contentInfoObject!=null)
         {
-            var list = currentInfoObject.GetComponentInChildren<IListable>() ?? currentInfoObject.transform.GetComponent<IListable>();
-            if (list != null && list.Foods.Count>0)
-            {
-                isShowContent = true;
-                bool hasPlate = CurrentDraggableObject == null ? false : CurrentDraggableObject.TryGetComponent(out Plate plate);
-                currentInfoObject.ShowContent(list, hasPlate);
-                playerController.OnMenuMode();
-            }
+            isShowContent = false;
+            contentInfoObject.HideContent();
+            contentInfoObject = null;
+            playerController.OffMenuMode();
         }
         else
         {
-            isShowContent = false;
-            currentInfoObject.HideContent();
-            playerController.OffMenuMode();
+            if (currentInfoObject == null || !currentInfoObject.CanShowContent) return;
+            if (!isShowContent)
+            {
+                var list = currentInfoObject.GetComponentInChildren<IListable>() ?? currentInfoObject.transform.GetComponent<IListable>();
+                if (list != null && list.Foods.Count > 0)
+                {
+                    isShowContent = true;
+                    bool hasPlate = CurrentDraggableObject == null ? false : CurrentDraggableObject.TryGetComponent(out Plate plate);
+                    currentInfoObject.ShowContent(list, hasPlate);
+                    contentInfoObject = currentInfoObject;
+                    playerController.OnMenuMode();
+                }
+            }
+            else
+            {
+                isShowContent = false;
+                currentInfoObject.HideContent();
+                contentInfoObject = null;
+                playerController.OffMenuMode();
+            }
         }
+
     }
     private void OnDisable()
     {

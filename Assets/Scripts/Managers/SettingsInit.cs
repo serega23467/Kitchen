@@ -91,6 +91,22 @@ public static class SettingsInit
     {
         currentLevelName = GetCurrentLevelName();
     }
+    public static void UpdateLevelInfo(int rate, int time)
+    {
+        DataTable scoreboard = DB.GetTable("SELECT cl.LevelId, l.Rate, l.Seconds FROM CurrentLevel cl JOIN Levels l On l.Id = cl.LevelId WHERE cl.Id = 1 ");
+        int levelId = int.Parse(scoreboard.Rows[0][0].ToString());
+        int oldRate = int.Parse(scoreboard.Rows[0][1].ToString());
+        int oldSeconds = int.Parse(scoreboard.Rows[0][2].ToString());
+
+        if(rate > oldRate)
+        {
+            DB.ExecuteQueryWithoutAnswer($"UPDATE Levels SET Rate = {rate}, Seconds = {time} Where Id = {levelId}");
+        }
+        else if (rate == oldRate)
+        {
+            DB.ExecuteQueryWithoutAnswer($"UPDATE Levels SET Seconds = {time} Where Id = {levelId}");
+        }
+    }
     public static float GetSensetivity()
     {
         DataTable scoreboard = DB.GetTable("SELECT * FROM SettingsValues WHERE Name = 'Чувствительность';");

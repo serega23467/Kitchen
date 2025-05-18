@@ -10,6 +10,10 @@ public class FoodParametr : ScriptableObject
     public float ParamValue;
     public string Desc = "";
     public string ValueChar = "";
+    public string TooMuchError = "";
+    public string TooLittleError = "";
+    public string NoThisError = "";
+
     public bool IsSpice = false;
     public FoodParametr Clone()
     {

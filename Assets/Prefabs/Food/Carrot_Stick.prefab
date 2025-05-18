@@ -47,7 +47,7 @@ Rigidbody:
   m_GameObject: {fileID: 2381999168245259504}
   serializedVersion: 4
   m_Mass: 1
-  m_Drag: 0
+  m_Drag: 1
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
@@ -118,6 +118,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ObjectName: "\u041C\u043E\u0440\u043A\u043E\u0432\u043A\u0430"
   ObjectInfo: "\u041C\u043E\u0440\u043A\u043E\u0432\u043A\u0430"
+  CanShowContent: 0
   ObjectData: 
 --- !u!114 &2577219391591801569
 MonoBehaviour:
@@ -133,6 +134,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Type: 2
   CanDrag: 1
+  PlaceOffset: {x: 0, y: 0, z: 0}
 --- !u!114 &7654158384889839868
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -146,6 +148,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   FoodName: CarrotLow
+  OnPull:
+    m_PersistentCalls:
+      m_Calls: []
   CutCount: 0
   nextCuttedPart: {fileID: 0}
   pourPrefab: {fileID: 0}

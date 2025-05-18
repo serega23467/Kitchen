@@ -27,26 +27,24 @@ public class LevelsItem : RecyclingListViewItem
             if (value == null) return;
             levelInfo = value;
 
-            Sprite loadedSprite = Resources.Load<Sprite>("Food/" + levelInfo.FolderName + "/" + levelInfo.ImageName);
+            Sprite loadedSprite = Resources.Load<Sprite>("Levels/" + levelInfo.FolderName + "/" + levelInfo.ImageName);
             if (loadedSprite != null)
             {
                 levelPicture.sprite = loadedSprite; 
             }
             else
             {
-                Sprite def = Resources.Load<Sprite>("Food/" + "DefaultLevel");
+                Sprite def = Resources.Load<Sprite>("Levels/" + "DefaultLevel");
                 if (def != null) levelPicture.sprite = def;
             }
             levelName.text = levelInfo.Name;
             levelDesc.text = levelInfo.Description;
 
-            int minutes = levelInfo.Seconds / 60;
-            int seconds = levelInfo.Seconds;
-            if (minutes > 0)
-            {
-                seconds %= 60;
-            }
-            time.text = $"{minutes}мин {seconds}с";
+            if (levelInfo.Seconds > 0)
+                time.text = Translator.GetInstance().GetTimeBySeconds(levelInfo.Seconds);
+            else
+                time.text = "";
+
             for(int i = 0; i < levelInfo.Rate; i++)
             {
                 if (i > stars.Length-1) return;
@@ -61,7 +59,7 @@ public class LevelsItem : RecyclingListViewItem
         DataTable scoreboard = DB.GetTable("SELECT Id FROM CurrentLevel;");
         if(int.TryParse(scoreboard.Rows[0][0].ToString(), out int result))
         {
-            DB.ExecuteQueryWithoutAnswer($"UPDATE CurrentLevel SET LevelId = '{levelInfo.Id}' Where Id = {result}");
+            DB.ExecuteQueryWithoutAnswer($"UPDATE CurrentLevel SET LevelId = {levelInfo.Id} Where Id = {result}");
             Scenes.SwitchScene("Gameplay");
         }
     }

@@ -15,6 +15,8 @@ public class FryingPan : MonoBehaviour, IHeated, IListable
     public HeatedInfo HeatedInfo { get; set; }
     public ObservableCollection<FoodComponent> Foods { get => plate.Foods; set=>Foods = value; }
 
+    public bool CanPull { get; private set; } = false;
+
     private void Start()
     {
         info = GetComponent<ShowObjectInfo>();

@@ -16,4 +16,7 @@ MonoBehaviour:
   ParamValue: 0
   Desc: "\u0421\u043E\u043B\u044C"
   ValueChar: "\u0433"
+  TooMuchError: "\u041F\u0435\u0440\u0435\u0441\u043E\u043B\u0435\u043D\u043E"
+  TooLittleError: "\u041D\u0435\u0434\u043E\u0441\u043E\u043B\u0435\u043D\u043E"
+  NoThisError: "\u041D\u0435 \u0441\u043E\u043B\u0438\u043B\u043E\u0441\u044C"
   IsSpice: 1

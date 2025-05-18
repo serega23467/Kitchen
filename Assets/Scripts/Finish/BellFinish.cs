@@ -1,6 +1,9 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 
 public class BellFinish : MonoBehaviour
@@ -13,13 +16,17 @@ public class BellFinish : MonoBehaviour
         SettingsInit.UpdateCurrentLevelName();
         Level = JsonLoader.LoadLevelInfo(SettingsInit.CurrentLevelName);      
     }
-    public void DingBell()
+    public void DingBell(Action OnFinishMenuOpen)
     {
         var finishPlate = table.finishPlate;
 
         if (finishPlate!=null)
         {
-            SaveDish(finishPlate.GetRecipe());
+            int rate = Compare(out string result, Level.Recipe, finishPlate.GetRecipe());
+            int time = UIElements.GetInstance().GetTimerTime();
+            OnFinishMenuOpen?.Invoke();
+            UIElements.GetInstance().ShowPanelResult(Level, rate, time, result);
+            SettingsInit.UpdateLevelInfo(rate, time);
         }
 
     }
@@ -34,59 +41,152 @@ public class BellFinish : MonoBehaviour
 
         Debug.Log("Успешно");
     }
-    public void Compare(out string result, string etalon, Recipe recipe)
+    public int Compare(out string result, Recipe recipeEtalon, Recipe recipe)
     {
-        bool isGood = true;
         result = "";
+
+        bool hasRightAmountOfProducts = true;
+        bool hasCorrectCookParams = true;
+        bool hasCorrectSpiceParams = true;
+
+        int score = 0;
         StringBuilder sb = new StringBuilder();
-        //if (Foods.Count > 0 && Etalon.Count > 0)
-        //{
-        //    var foods = Foods.OrderBy(f => f.FoodName).ToList();
-        //    var etalon = Etalon.OrderBy(f => f.FoodName).ToList();
-        //    if (Foods.Count != Etalon.Count)
-        //    {
-        //        sb.Append("Разное количество ингридиентов!\n");
-        //        isGood = false;
-        //        result = sb.ToString();
-        //        return isGood;
-        //    }
-        //    for (int i = 0; i < Etalon.Count; i++)
-        //    {
-        //        string cutTypeEtalon = Translator.GetInstance().GetTranslate(etalon[i].CurrentCutType.ToString());
-        //        string cutTypeCurrent = Translator.GetInstance().GetTranslate(foods[i].CurrentCutType.ToString());
-        //        if (foods[i].FoodName != etalon[i].FoodName)
-        //        {
-        //            sb.Append($"Не хватает ингридиента: {etalon[i].FoodName}!\n");
-        //            isGood = false;
-        //        }
-        //        else if (Mathf.Abs(foods[i].GramsWeight - etalon[i].GramsWeight) > 5)
-        //        {
-        //            sb.Append($"Неправильные грамовки у {foods[i].FoodName}, {foods[i].GramsWeight}/{etalon[i].GramsWeight}!\n");
-        //            isGood = false;
-        //        }
-        //        else if (Mathf.Abs(foods[i].TemperatureSum - etalon[i].TemperatureSum) > 100)
-        //        {
-        //            sb.Append($"Переварен: {etalon[i].FoodName}!\n");
-        //            isGood = false;
-        //        }
-        //        else if (Mathf.Abs(foods[i].TemperatureWithoutWaterSum - etalon[i].TemperatureWithoutWaterSum) > 100)
-        //        {
-        //            sb.Append($"Пережарен: {etalon[i].FoodName}!\n");
-        //            isGood = false;
-        //        }
-        //        else if (foods[i].CurrentCutType != etalon[i].CurrentCutType)
-        //        {
-        //            sb.Append($"Нужно было нарезать: {cutTypeEtalon}, а не {cutTypeCurrent}!\n");
-        //            isGood = false;
-        //        }
-        //    }
-        //}
-        //else
-        //{
-        //    sb.Append("Нету ингридиентов!\n");
-        //    isGood = false;
-        //}
-        //result = sb.ToString();
-        //return isGood;
+        if(recipe.HasWater!=recipeEtalon.HasWater)
+        {
+            if (recipeEtalon.HasWater)
+            {
+                sb.AppendLine("Блюдо должно быть супом, подаваемым в суповой тарелке!");
+            }
+            else
+            {
+                sb.AppendLine("Блюдо должно подаваться в обычной тарелке!");
+            }
+            result = sb.ToString();
+
+            return 0;
+        }
+
+        var recipeContent = Recipe.RemoveDuplicates(recipe.RecipeContent);
+        var etalonContent = recipeEtalon.RecipeContent;
+
+        foreach(var r in recipeContent.DistinctBy(f=>f.FoodId))
+        {
+            if (!etalonContent.Select(f => f.FoodId).Contains(r.FoodId))
+            {
+                sb.AppendLine("Лишний продукт " + r.FoodName);
+                hasRightAmountOfProducts = false;
+            }
+            else
+            {
+                var foods = recipeContent.Where(f => f.FoodId == r.FoodId);
+                var etalonFoods = etalonContent.Where(f => f.FoodId == r.FoodId);
+                foreach (var food in foods)
+                {
+                    if(!etalonFoods.Select(f=>f.CurrentCutType).Contains(food.CurrentCutType))
+                    {
+                        sb.AppendLine("Неправильная нарезка " + food.FoodName);
+                        hasRightAmountOfProducts = false;
+                    }
+                }
+            }
+        }
+
+        foreach (var etalonFood in etalonContent)
+        {
+            var foodsWithEtalonId = recipeContent.Where(f => f.FoodId == etalonFood.FoodId);
+            if (foodsWithEtalonId == null || foodsWithEtalonId.Count()<=0)
+            {
+                sb.AppendLine("Нет " + etalonFood.FoodName);
+                hasRightAmountOfProducts = false;
+            }
+            else 
+            {
+                var foodEtalon = foodsWithEtalonId.FirstOrDefault(f => f.CurrentCutType == etalonFood.CurrentCutType);
+                if (foodEtalon == null)
+                {
+                    continue;
+                }
+                if (GetDiffPercent(foodEtalon.Count, etalonFood.Count) > 20f || GetDiffPercent(foodEtalon.Count, etalonFood.Count) < -20f)
+                {
+                    sb.AppendLine("Не соответствует количество " + etalonFood.FoodName + $" {foodEtalon.Count}/{etalonFood.Count}");
+                    hasRightAmountOfProducts = false;
+                }
+                else 
+                {
+                    foreach (var paramEtalon in etalonFood.Params)
+                    {
+                        var paramInFoods = foodEtalon.Params.FirstOrDefault(p=>p.ParamName== paramEtalon.ParamName);
+                        if(paramInFoods == null)
+                        {
+                            if(FoodParametersPool.GetInstance().TryGetParameter(paramEtalon.ParamName, out FoodParametr fullParamEtalon))
+                            {
+                                sb.AppendLine(fullParamEtalon.NoThisError + " " + etalonFood.FoodName);
+                            }
+                            else
+                            {
+                                sb.AppendLine("Нет " + paramEtalon.ParamName + " " + etalonFood.FoodName);
+                            }
+                            if(!fullParamEtalon.IsSpice)
+                            {
+                                hasCorrectCookParams = false;
+                            }
+                            else
+                            {
+                                hasCorrectSpiceParams = false;
+                            }
+                        }
+                        else if (FoodParametersPool.GetInstance().TryGetParameter(paramInFoods.ParamName, out FoodParametr fullParam))
+                        {
+                            fullParam.ParamValue = paramInFoods.ParamValue;
+
+                            float error = GetDiffPercent(paramEtalon.ParamValue, fullParam.ParamValue);
+                            if (error > 20f || error < -20f)
+                            {
+                                if(error > 20f)
+                                {
+                                    sb.AppendLine(fullParam.TooLittleError + " " + etalonFood.FoodName);
+                                }
+                                else
+                                {
+                                    sb.AppendLine(fullParam.TooMuchError + " " + etalonFood.FoodName);
+                                }
+
+                                if(!fullParam.IsSpice)
+                                {
+                                    hasCorrectCookParams = false;
+                                }
+                                else
+                                {
+                                    hasCorrectSpiceParams = false;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+        }
+        result = sb.ToString();
+        if(hasRightAmountOfProducts && hasCorrectCookParams)
+        {
+            score++;
+            if (hasCorrectSpiceParams)
+            {
+                score++;
+                if(Level.CookTime>=UIElements.GetInstance().GetTimerTime())
+                {
+                    score++;
+                }
+            }
+        }
+        return score;
+    }
+    float GetDiffPercent(float a, float b)
+    {
+        float dif = a - b;
+        float avg = (a + b) / 2;
+
+        float perc = (dif / avg) * 100;
+        return perc;
     }
 }

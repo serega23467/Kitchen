@@ -14,7 +14,6 @@ public class UIElements : MonoBehaviour
 {
     GameObject canvas;
     UnityEngine.UI.Image panelInfo;
-    UnityEngine.UI.Image panelResult;
     UnityEngine.UI.Image panelMenu;
     UnityEngine.UI.Image panelSettings;
     UnityEngine.UI.Image panelConfirm;
@@ -22,11 +21,8 @@ public class UIElements : MonoBehaviour
     TMP_Text panelInfoTextName;
     TMP_Text panelInfoTextDescription;
     TMP_Text panelInfoTextData;
-    TMP_Text panelResultText;
-    TMP_Text panelResultHeaderText;
 
     Vector3 panelInfoSize;
-    Vector3 panelResultSize;
     Vector3 scrollViewSize;
     Vector3 panelMenuSize;
     Vector3 panelSettingsSize;
@@ -37,6 +33,7 @@ public class UIElements : MonoBehaviour
     SettingsMenu settingsMenu;
     SliderMenu sliderMenu;
     ConfirmWindow confirmWindow;
+    FinishWindow finishWindow;
     Timer timer;
     private static UIElements instance;
 
@@ -62,10 +59,7 @@ public class UIElements : MonoBehaviour
         instance.panelInfoTextData = instance.panelInfo.GetComponentsInChildren<TMP_Text>()[2];
         instance.panelInfoSize = instance.panelInfo.rectTransform.localScale;
 
-        instance.panelResult = GameObject.Find("PanelResult").GetComponent<UnityEngine.UI.Image>();
-        instance.panelResultHeaderText = instance.panelResult.GetComponentsInChildren<TMP_Text>()[0];
-        instance.panelResultText = instance.panelResult.GetComponentsInChildren<TMP_Text>()[1];
-        instance.panelResultSize = instance.panelResult.rectTransform.localScale;
+        instance.finishWindow = GameObject.Find("PanelResult").GetComponent<FinishWindow>();
 
         instance.panelMenu = GameObject.Find("PanelMenu").GetComponent<UnityEngine.UI.Image>();
         instance.panelMenuSize = instance.panelMenu.rectTransform.localScale;
@@ -96,24 +90,23 @@ public class UIElements : MonoBehaviour
         if (instance.timer == null) return -1;
         return instance.timer.TotalSeconds;
     }
-    public void ShowPanelResult(string result, string text)
+    public void ShowPanelResult(LevelInfo info, int playerRate, int totalSeconds, string issues)
     {
-        instance.panelResultHeaderText.text = result;
-        instance.panelResultText.text = text;
-        instance.panelResult.rectTransform.localScale = instance.panelResultSize;
+        if(instance.finishWindow != null) 
+            instance.finishWindow.Show(info, playerRate, totalSeconds, issues);
     }
     public void HidePanelResult()
     {
-        instance.panelResult.rectTransform.localScale = new Vector3 (0, 0, 0);
+        instance.finishWindow.Hide();
     }
     public void ShowObjectContent(IListable list, bool hasPlate = true)
     {
-        scrollPanel.RetrieveData(list.Foods.ToList(), hasPlate);
+        scrollPanel.RetrieveData(list.Foods.ToList(), hasPlate, list.CanPull);
         scrollView.localScale = scrollViewSize;
     }
-    public void UpdateObjectContent(List<FoodComponent> list)
+    public void UpdateObjectContent(IListable list)
     {
-        scrollPanel.RetrieveData(list);
+        scrollPanel.RetrieveData(list.Foods.ToList(), canPull: list.CanPull);
     }
     public void HideObjectContent()
     {

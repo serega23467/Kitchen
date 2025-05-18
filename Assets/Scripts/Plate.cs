@@ -9,6 +9,7 @@ using UnityEngine.Events;
 [RequireComponent(typeof(ShowObjectInfo))]
 public class Plate : MonoBehaviour, IListable, IFinish
 {
+    public bool CanPull { get; private set; } = false;
     [HideInInspector]
     public UnityEvent<string> OnUpdateInfo;
     [SerializeField]

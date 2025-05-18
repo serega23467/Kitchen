@@ -11,15 +11,16 @@ public class ScrollPanel : MonoBehaviour
     private List<FoodComponent> allElements = new List<FoodComponent>();
     private List<FoodComponent> data = new List<FoodComponent>();
     bool hasPlateInHands = false;
+    bool canPullFood = false;
     void Start()
     {
         RetrieveData(new List<FoodComponent>());
     }
 
-    public void RetrieveData(List<FoodComponent> food, bool hasPlate = true)
+    public void RetrieveData(List<FoodComponent> food, bool hasPlate = true, bool canPull = false)
     {
         hasPlateInHands = hasPlate;
-
+        canPullFood = canPull;
         theList.ItemCallback = PopulateItem;
         data.Clear();
         allElements.Clear();
@@ -35,6 +36,7 @@ public class ScrollPanel : MonoBehaviour
     private void PopulateItem(RecyclingListViewItem item, int rowIndex)
     {
         var child = item as ListElement;
+        child.CanPull = canPullFood;
         child.HasPlate = hasPlateInHands;
         child.Food = data[rowIndex];
         child.Count = allElements.Where(f=>f.FoodName == data[rowIndex].FoodName).Count();

@@ -9,5 +9,4 @@ public class Level
     public string ImageName { get; set; }
     public int Rate { get; set; }
     public int Seconds { get; set; }
-    public int RecipeId { get; set; }
 }

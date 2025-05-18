@@ -5,4 +5,5 @@ using UnityEngine;
 public interface IListable
 {
     ObservableCollection<FoodComponent> Foods { get; set; }
+    bool CanPull { get; } 
 }
