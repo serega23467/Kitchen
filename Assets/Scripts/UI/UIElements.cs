@@ -4,11 +4,13 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
+using ToastMe;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 using UnityEngine.UIElements;
+using UnityEngine.WSA;
 
 public class UIElements : MonoBehaviour
 {
@@ -79,11 +81,14 @@ public class UIElements : MonoBehaviour
         SettingsInit.UpdateVirtualSecond();
         instance.timer = GameObject.Find("Timer").GetComponent<Timer>();
         instance.timer.StartTimer();
-
     }
     public static UIElements GetInstance()
     {
         return instance;
+    }
+    public static void ShowToast(string message, string title="")
+    {
+        ToastMe.Toast.Pop("Notification",  message, title);
     }
     public int GetTimerTime()
     {

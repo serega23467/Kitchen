@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 05c23663b038ea74389b758f0cb5b799
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 136602
+  packageName: Toast Me
+  packageVersion: 1.1.1
+  assetPath: Assets/ToastMe/Editor/ToastIdentityPropertyDrawer.cs
+  uploadId: 308777

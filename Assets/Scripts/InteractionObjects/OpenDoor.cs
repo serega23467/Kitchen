@@ -32,11 +32,11 @@ public class OpenDoor : MonoBehaviour
         else if (type == OpenType.Retractable)
         {
             openAnim = transform
-                .DOMoveZ(transform.position.z + zDelta, 1.5f)
+                .DOLocalMoveZ(transform.localPosition.z + zDelta, 1.5f)
                 .SetAutoKill(false)
                 .OnComplete(() => { currentAnim = null; IsOpen = true; }); ;
             closeAnim = transform
-                .DOMoveZ(transform.position.z, 1.5f)
+                .DOLocalMoveZ(transform.localPosition.z, 1.5f)
                 .SetAutoKill(false)
                 .OnComplete(() => { currentAnim = null; IsOpen = false; }); ;
         }

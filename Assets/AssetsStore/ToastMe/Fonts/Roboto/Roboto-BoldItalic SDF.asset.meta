@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: cf954284886f944488533b0e25f2244f
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 11400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 136602
+  packageName: Toast Me
+  packageVersion: 1.1.1
+  assetPath: Assets/ToastMe/Fonts/Roboto/Roboto-BoldItalic SDF.asset
+  uploadId: 308777

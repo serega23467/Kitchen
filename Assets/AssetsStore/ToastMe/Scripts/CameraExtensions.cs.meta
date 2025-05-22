@@ -1,0 +1,10 @@
+﻿fileFormatVersion: 2
+guid: b69998ab36334d7baf4381cd8ab8f31f
+timeCreated: 1546467991
+AssetOrigin:
+  serializedVersion: 1
+  productId: 136602
+  packageName: Toast Me
+  packageVersion: 1.1.1
+  assetPath: Assets/ToastMe/Scripts/CameraExtensions.cs
+  uploadId: 308777

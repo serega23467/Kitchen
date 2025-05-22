@@ -43,6 +43,7 @@ public class Plate : MonoBehaviour, IListable, IFinish
         if (food == null) return false;
         if (this.Foods.Sum(f => f.FoodInfo.GramsWeight) + food.FoodInfo.GramsWeight > maxWeight)
         {
+            UIElements.ShowToast($"{food.FoodName} не добавлено. Максимальная масса {maxWeight}г превышена!");
             return false;
         }
         else

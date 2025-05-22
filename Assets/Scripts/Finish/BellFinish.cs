@@ -28,6 +28,10 @@ public class BellFinish : MonoBehaviour
             UIElements.GetInstance().ShowPanelResult(Level, rate, time, result);
             SettingsInit.UpdateLevelInfo(rate, time);
         }
+        else
+        {
+            UIElements.ShowToast($"Положите блюдо на стол!");
+        }
 
     }
     public void SaveDish(Recipe recipe)

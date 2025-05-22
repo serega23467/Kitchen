@@ -101,6 +101,7 @@ GameObject:
   - component: {fileID: 2804281639823936224}
   - component: {fileID: 5190767482541694482}
   - component: {fileID: 8425066530031550760}
+  - component: {fileID: 3839272406786118470}
   m_Layer: 6
   m_Name: Salt
   m_TagString: Untagged
@@ -235,3 +236,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spiceName: Salinity
   spiceDozenGramsWeight: 10
+--- !u!114 &3839272406786118470
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8087429333970016296}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80f0e9d354955ce439791e8c17ac5811, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  angle: {x: 0, y: 0, z: 10}
+  time: 0.5

@@ -42,8 +42,6 @@ public class Pot : MonoBehaviour, IHeated
 
         potWater.Foods.CollectionChanged += ChangeWaterMaterial;
         potWater.gameObject.SetActive(false);
-        //”¡–¿“‹
-        AddWater();
     }
 
     private void Update()

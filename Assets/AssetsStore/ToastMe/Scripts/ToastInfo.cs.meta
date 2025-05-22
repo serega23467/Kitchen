@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: a80e24559bf01e24fb58e54f804a563a
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 136602
+  packageName: Toast Me
+  packageVersion: 1.1.1
+  assetPath: Assets/ToastMe/Scripts/ToastInfo.cs
+  uploadId: 308777

@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 99ce31f4595210541b2ab133d17c6ecc
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 136602
+  packageName: Toast Me
+  packageVersion: 1.1.1
+  assetPath: Assets/ToastMe/Scripts/SampleScene/DropdownController.cs
+  uploadId: 308777

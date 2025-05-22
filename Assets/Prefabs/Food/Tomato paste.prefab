@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 7252741901302377432}
   - component: {fileID: 5054367194346439435}
   - component: {fileID: 5534913984958493275}
+  - component: {fileID: 7616637354808785859}
   m_Layer: 6
   m_Name: Tomato paste
   m_TagString: Untagged
@@ -158,6 +159,20 @@ MonoBehaviour:
   nextCuttedPart: {fileID: 0}
   pourPrefab: {fileID: 4552472689699574859, guid: ea8e0ec6252b8854887d0119c96481b7, type: 3}
   plate: {fileID: 0}
+--- !u!114 &7616637354808785859
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1646184153347595742}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80f0e9d354955ce439791e8c17ac5811, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  angle: {x: 0, y: 0, z: 10}
+  time: 0.5
 --- !u!1 &5534011678399766724
 GameObject:
   m_ObjectHideFlags: 0

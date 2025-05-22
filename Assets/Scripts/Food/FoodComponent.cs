@@ -19,11 +19,14 @@ public class FoodComponent : MonoBehaviour, ICloneable
     [SerializeField]
     GameObject pourPrefab;
     ShowObjectInfo info;
+    [HideInInspector]
     public Plate plate;
     public FoodInfo FoodInfo { get; set; }
+    ShakingAnim anim;
     private void Start()
     {
         bool isInstanceSpawned = true;
+        anim = GetComponent<ShakingAnim>();
         info = GetComponent<ShowObjectInfo>();
         if (FoodInfo==null)
         {
@@ -149,6 +152,7 @@ public class FoodComponent : MonoBehaviour, ICloneable
         pour.gameObject.transform.localScale = new Vector3(scale.x*scaleFactor, scale.y*scaleFactor, scale.z*scaleFactor);
         food = pour.GetComponent<FoodComponent>();
         food.FoodInfo = FoodInfo.Clone();
+        anim?.Shake();
         return true;
     }
     public object Clone()

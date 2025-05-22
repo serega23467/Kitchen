@@ -187,6 +187,7 @@ GameObject:
   - component: {fileID: 2609640048598507465}
   - component: {fileID: 7620733939157809509}
   - component: {fileID: 3856428098146594562}
+  - component: {fileID: 807601782511375439}
   m_Layer: 6
   m_Name: Jar_Dill
   m_TagString: Untagged
@@ -322,3 +323,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spiceName: Dill
   spiceDozenGramsWeight: 10
+--- !u!114 &807601782511375439
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8597076262173157878}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80f0e9d354955ce439791e8c17ac5811, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  angle: {x: 10, y: 0, z: 0}
+  time: 0.5
