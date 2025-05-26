@@ -107,7 +107,7 @@ public class FoodComponent : MonoBehaviour, ICloneable
         if(plate!=null)plate.RemoveFood(this);
         for (int i = 0; i < CutCount; i++)
         {
-            var part = Instantiate(nextCuttedPart, transform.position+new Vector3(UnityEngine.Random.Range(0.05f, 0.20f),0, UnityEngine.Random.Range(0.05f, 0.20f)), Quaternion.identity,  transform.parent);
+            var part = Instantiate(nextCuttedPart, transform.position+new Vector3(UnityEngine.Random.Range(-0.10f, 0.10f),0, UnityEngine.Random.Range(-0.10f, 0.10f)), Quaternion.identity,  transform.parent);
             var partFoodComponent = part.GetComponent<FoodComponent>();
             partFoodComponent.FoodInfo = FoodInfo.Clone();
             partFoodComponent.FoodInfo.GramsWeight = FoodInfo.GramsWeight/(float)CutCount;

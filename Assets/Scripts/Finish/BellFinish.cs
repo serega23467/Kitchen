@@ -22,11 +22,12 @@ public class BellFinish : MonoBehaviour
 
         if (finishPlate!=null)
         {
-            int rate = Compare(out string result, Level.Recipe, finishPlate.GetRecipe());
-            int time = UIElements.GetInstance().GetTimerTime();
-            OnFinishMenuOpen?.Invoke();
-            UIElements.GetInstance().ShowPanelResult(Level, rate, time, result);
-            SettingsInit.UpdateLevelInfo(rate, time);
+            SaveDish(finishPlate.GetRecipe());
+            //int rate = Compare(out string result, Level.Recipe, finishPlate.GetRecipe());
+            //int time = UIElements.GetInstance().GetTimerTime();
+            //OnFinishMenuOpen?.Invoke();
+            //UIElements.GetInstance().ShowPanelResult(Level, rate, time, result);
+            //SettingsInit.UpdateLevelInfo(rate, time);
         }
         else
         {
@@ -41,9 +42,9 @@ public class BellFinish : MonoBehaviour
         Level.RecipeFoodPictureName = "";
         Level.Recipe = recipe;
         Level.CookTime = UIElements.GetInstance().GetTimerTime();
-        JsonLoader.SaveLevelInfo(Level, "Harcho3");
+        JsonLoader.SaveLevelInfo(Level, "Goulash");
 
-        Debug.Log("Успешно");
+        UIElements.ShowToast($"Успешно!");
     }
     public int Compare(out string result, Recipe recipeEtalon, Recipe recipe)
     {

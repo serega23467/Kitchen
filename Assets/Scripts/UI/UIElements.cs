@@ -1,30 +1,17 @@
-using NUnit.Framework;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using ToastMe;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Events;
-using UnityEngine.UI;
-using UnityEngine.UIElements;
-using UnityEngine.WSA;
 
 public class UIElements : MonoBehaviour
 {
     GameObject canvas;
-    UnityEngine.UI.Image panelInfo;
     UnityEngine.UI.Image panelMenu;
     UnityEngine.UI.Image panelSettings;
     UnityEngine.UI.Image panelConfirm;
 
-    TMP_Text panelInfoTextName;
-    TMP_Text panelInfoTextDescription;
-    TMP_Text panelInfoTextData;
-
-    Vector3 panelInfoSize;
     Vector3 scrollViewSize;
     Vector3 panelMenuSize;
     Vector3 panelSettingsSize;
@@ -37,6 +24,9 @@ public class UIElements : MonoBehaviour
     ConfirmWindow confirmWindow;
     FinishWindow finishWindow;
     Timer timer;
+    PanelInfo panelInfo;
+
+    static ToastInfo lastMessage;
     private static UIElements instance;
 
     private void Awake()
@@ -55,11 +45,7 @@ public class UIElements : MonoBehaviour
         //instance.panelRecipe = GameObject.Find("PanelRecipe").GetComponent<UnityEngine.UI.Image>();
         //instance.panelRecipeSize = instance.panelRecipe.rectTransform.localScale;
 
-        instance.panelInfo = GameObject.Find("PanelInfo").GetComponent<UnityEngine.UI.Image>();
-        instance.panelInfoTextName = instance.panelInfo.GetComponentsInChildren<TMP_Text>()[0];
-        instance.panelInfoTextDescription = instance.panelInfo.GetComponentsInChildren<TMP_Text>()[1];
-        instance.panelInfoTextData = instance.panelInfo.GetComponentsInChildren<TMP_Text>()[2];
-        instance.panelInfoSize = instance.panelInfo.rectTransform.localScale;
+        instance.panelInfo = GameObject.Find("PanelInfo").GetComponent<PanelInfo>(); 
 
         instance.finishWindow = GameObject.Find("PanelResult").GetComponent<FinishWindow>();
 
@@ -88,7 +74,21 @@ public class UIElements : MonoBehaviour
     }
     public static void ShowToast(string message, string title="")
     {
-        ToastMe.Toast.Pop("Notification",  message, title);
+        ToastInfo t = null;
+        if(lastMessage?.Message == message)
+        {
+            lastMessage.Count++;
+            t = ToastMe.Toast.Pop("Notification", message, title+ $" ({lastMessage.Count})");
+            t.Count = lastMessage.Count;
+            lastMessage.Destroy();
+        }
+        else
+        {
+            t = ToastMe.Toast.Pop("Notification", message, title);
+            t.Count = 1;
+        }
+        lastMessage = t;
+        t?.OnHide.AddListener(delegate () { if (lastMessage == t) lastMessage = null; });
     }
     public int GetTimerTime()
     {
@@ -119,14 +119,11 @@ public class UIElements : MonoBehaviour
     }
     public void ShowObjectInfo(string nameText, string descText, string dataText)
     {
-        panelInfoTextName.text = nameText;
-        panelInfoTextDescription.text = descText;
-        panelInfoTextData.text = dataText;
-        panelInfo.rectTransform.localScale = panelInfoSize;
+        instance.panelInfo.ShowInfo(nameText, descText, dataText);
     }
     public void HideObjectInfo()
     {
-        panelInfo.rectTransform.localScale = Vector3.zero;
+        panelInfo.Hide();
     }
     public void ShowMenu()
     {

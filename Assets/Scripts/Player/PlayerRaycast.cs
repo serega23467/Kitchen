@@ -1,12 +1,5 @@
-using NUnit.Framework;
-using System.Collections;
 using System.Collections.Generic;
-using Unity.Burst.CompilerServices;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.InputSystem.HID;
-using UnityEngine.Rendering.PostProcessing;
-using UnityEngine.WSA;
 using static UnityEngine.InputSystem.InputAction;
 
 public class PlayerRaycast : MonoBehaviour
@@ -77,10 +70,6 @@ public class PlayerRaycast : MonoBehaviour
                     dgo.OffRigidbody();
                     dgo.CanDrag = false;
                 }
-            }
-            else
-            {
-                UIElements.ShowToast("Не вся еда поместилась в тарелку!");
             }
         }
     }

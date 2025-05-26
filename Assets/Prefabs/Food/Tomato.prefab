@@ -59,8 +59,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.1975984, y: 0.17276323, z: 0.20313525}
-  m_Center: {x: -0.00035701692, y: 0.08341044, z: 0.00056676945}
+  m_Size: {x: 0.1390022, y: 0.12793612, z: 0.13498539}
+  m_Center: {x: -0.0050113206, y: 0.040307283, z: 0.0009878876}
 --- !u!54 &8582735433608745802
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -153,8 +153,8 @@ MonoBehaviour:
   OnPull:
     m_PersistentCalls:
       m_Calls: []
-  CutCount: 0
-  nextCuttedPart: {fileID: 0}
+  CutCount: 6
+  nextCuttedPart: {fileID: 4341448151582743672, guid: f5814323aa892fe40aeb426591463e33, type: 3}
   pourPrefab: {fileID: 0}
   plate: {fileID: 0}
 --- !u!1 &3367842822376754093
@@ -185,7 +185,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0, y: -0.0194, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalScale: {x: 0.35, y: 0.35, z: 0.35}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7366516722127869777}
@@ -271,7 +271,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: -0.0194, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalScale: {x: 0.35, y: 0.35, z: 0.35}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7366516722127869777}
@@ -357,7 +357,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: -0.0194, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalScale: {x: 0.35, y: 0.35, z: 0.35}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7366516722127869777}

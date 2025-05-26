@@ -26,14 +26,16 @@ public class Pot : MonoBehaviour, IHeated
 
 
     public HeatedInfo HeatedInfo { get; set; }
-
+    string foodInfoBoofer = "";
     void Start()
     {
         OnRemoveFromWater = new UnityEvent<FoodComponent>();
         info = GetComponent<ShowObjectInfo>();
-        //info.ObjectName = " астрюл€";
+        foodInfoBoofer = info.ObjectInfo;
+
         smoke = GetComponentInChildren<ParticleSystem>();
         smoke.Pause();
+
         HeatedInfo = new HeatedInfo(temperature: 20,minMassKG: 1, currentMassKG: 1, maxMassKG: 5, hasWater: false, time: 0);
 
         potWater = GetComponentInChildren<Water>();
@@ -50,7 +52,7 @@ public class Pot : MonoBehaviour, IHeated
         {
             //костыль выполнени€ метода интерфейса по умолчанию, т.к. нельз€ наследовать несколько классов чтобы использовать абстрактный
             var iheated = this as IHeated;
-            info.ObjectData = iheated.GetInfo();
+            info.ObjectInfo = foodInfoBoofer + "\n" + iheated.GetInfo();
 
             if (potWater != null && smoke != null)
             {
@@ -97,7 +99,6 @@ public class Pot : MonoBehaviour, IHeated
 
     public void PutToWater(FoodComponent food)
     {
-
         potWater.AddFood(food);
 
         OnRemoveFromWater.RemoveAllListeners();

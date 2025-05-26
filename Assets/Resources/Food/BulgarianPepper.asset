@@ -16,6 +16,6 @@ MonoBehaviour:
   FoodName: "\u0411\u043E\u043B\u0433\u0430\u0440\u0441\u043A\u0438\u0439 \u043F\u0435\u0440\u0435\u0446"
   GramsWeight: 80
   IsPour: 0
-  AllCutTypes: 00000000
+  AllCutTypes: 000000000100000003000000
   Params: []
   CurrentCutType: 0

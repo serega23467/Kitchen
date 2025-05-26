@@ -17,7 +17,7 @@ public class PlateDish : MonoBehaviour, IListable, IFinish
     ShowObjectInfo info;
     public ObservableCollection<FoodComponent> Foods { get; set; }
     public bool HasWater { get; set; }
-    public bool CanFinish { get=>canFinish; private set=> canFinish=value; }
+    public bool CanFinish { get=>canFinish; }
     public bool CanPull { get; private set; } = false;
 
     Recipe recipe;

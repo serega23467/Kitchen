@@ -153,7 +153,7 @@ MonoBehaviour:
   OnUpdateInfo:
     m_PersistentCalls:
       m_Calls: []
-  maxWeight: 600
+  maxWeight: 601
   canFinish: 1
   offset: {x: 0, y: 0.04, z: 0}
   randomRange: {x: 0.1, y: 0, z: 0.1}

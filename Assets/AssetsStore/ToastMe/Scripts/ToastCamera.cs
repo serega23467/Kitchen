@@ -27,29 +27,7 @@ namespace ToastMe
             // Resolve our references.
             _toastCamera = GetComponent<Camera>();
             _mainCamera = Camera.main;
-
-            if (_mainCamera == null)
-            {
-                gameObject.SetActive(false);
-                Debug.LogError("Main Camera has not been found in your scene.");
-                return;
-            }                        
-        }
-
-        private void FixedUpdate()
-        {
-            // Set the parent of this child camera to the main camera.
-            transform.SetParent(_mainCamera.transform);
-            
-            // Update the properties of the child camera.
-            _toastCamera.clearFlags = CameraClearFlags.Depth;
-            _toastCamera.depth = 1f;
-            
-            // Add the Toast layer to be rendered by the child camera.                         
-            _toastCamera.LayerCullingShow(_toastLayerMask);                        
-            
-            // Remove the Toast layer from being rendered by the main camera.            
-            _mainCamera.LayerCullingHide(_toastLayerMask);
+                     
         }
     }
 }

@@ -11,7 +11,7 @@ public class FryingPan : MonoBehaviour, IHeated, IListable
 
     ShowObjectInfo info;
     Plate plate;
-    string foodDataBoofer = "";
+    string foodInfoBoofer = "";
     public HeatedInfo HeatedInfo { get; set; }
     public ObservableCollection<FoodComponent> Foods { get => plate.Foods; set=>Foods = value; }
 
@@ -20,12 +20,14 @@ public class FryingPan : MonoBehaviour, IHeated, IListable
     private void Start()
     {
         info = GetComponent<ShowObjectInfo>();
+        foodInfoBoofer = info.ObjectInfo;
         HeatedInfo = new HeatedInfo(temperature: 20, minMassKG: 1, currentMassKG: 1, maxMassKG: 5, hasWater: false, time: 0);
 
         plate = GetComponent<Plate>();
         //info.ObjectName = "—ковородка";
 
         plate.OnUpdateInfo.AddListener(UpdateFoodsInfo);
+        UpdateFoodsInfo($"ћакс вес - {plate.MaxWeight} г");
         //plate.GetComponent<ShowObjectInfo>().
     }
     public List<FoodComponent> GetFoods()
@@ -41,7 +43,7 @@ public class FryingPan : MonoBehaviour, IHeated, IListable
     }
     void UpdateFoodsInfo(string data)
     {
-        foodDataBoofer = data;
+        info.ObjectData = data;
     }
     private void Update()
     {
@@ -49,7 +51,7 @@ public class FryingPan : MonoBehaviour, IHeated, IListable
         {
             //костыль выполнени€ метода интерфейса по умолчанию, т.к. нельз€ наследовать несколько классов чтобы использовать абстрактный
             var iheated = this as IHeated;
-            info.ObjectData = foodDataBoofer + "\n\n" + iheated.GetInfo(false);
+            info.ObjectInfo = foodInfoBoofer + "\n"+ iheated.GetInfo(false);
         }
     }
     public void AddWater()

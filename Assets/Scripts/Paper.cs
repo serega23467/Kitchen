@@ -14,5 +14,9 @@ public class Paper : MonoBehaviour
                 renderer.material.mainTexture = texture;
             }
         }
+        if (TryGetComponent(out ShowObjectInfo info))
+        {
+            info.ObjectInfo = BellFinish.Level.RecipeText;
+        }
     }
 }

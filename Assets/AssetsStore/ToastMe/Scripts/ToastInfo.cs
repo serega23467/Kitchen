@@ -26,7 +26,7 @@ namespace ToastMe
             get { return _persist; }
             set { _persist = value; }
         }
-
+        public int Count = 1;
         /// <summary>
         /// Used by the ToastManager to get any callbacks to invoke when showing this toast.
         /// </summary>

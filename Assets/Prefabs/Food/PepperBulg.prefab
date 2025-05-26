@@ -145,8 +145,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.21435842, y: 0.2311269, z: 0.19992211}
-  m_Center: {x: 0.0021869612, y: 0.11155468, z: -0.0045330115}
+  m_Size: {x: 0.21435842, y: 0.19768119, z: 0.19992211}
+  m_Center: {x: 0.0021869615, y: 0.094831824, z: -0.0045330077}
 --- !u!54 &1828822238474992392
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -239,8 +239,8 @@ MonoBehaviour:
   OnPull:
     m_PersistentCalls:
       m_Calls: []
-  CutCount: 0
-  nextCuttedPart: {fileID: 0}
+  CutCount: 9
+  nextCuttedPart: {fileID: 8610309044185421310, guid: fbd1e3e72990d614f88e5e496f85f4e5, type: 3}
   pourPrefab: {fileID: 0}
   plate: {fileID: 0}
 --- !u!1 &3957163800518764520

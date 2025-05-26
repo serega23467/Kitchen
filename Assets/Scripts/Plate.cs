@@ -22,10 +22,10 @@ public class Plate : MonoBehaviour, IListable, IFinish
     Vector3 randomRange = Vector3.zero;
     ShowObjectInfo info;
 
-
+    public float MaxWeight { get => maxWeight; }
     public ObservableCollection<FoodComponent> Foods { get; set; }
     public bool HasWater { get; set; }
-    public bool CanFinish { get=> canFinish; set=> canFinish=value; }
+    public bool CanFinish { get=> canFinish; }
 
     private void Awake()
     {
@@ -36,14 +36,14 @@ public class Plate : MonoBehaviour, IListable, IFinish
     {
         Foods = new ObservableCollection<FoodComponent>();
         info = GetComponent<ShowObjectInfo>();
-        //info.ObjectName = "Тарелка";
+        info.ObjectData = $"Макс вес - {maxWeight} г";
     }
     public bool TryAddFood(FoodComponent food)
     {
         if (food == null) return false;
         if (this.Foods.Sum(f => f.FoodInfo.GramsWeight) + food.FoodInfo.GramsWeight > maxWeight)
         {
-            UIElements.ShowToast($"{food.FoodName} не добавлено. Максимальная масса {maxWeight}г превышена!");
+            UIElements.ShowToast($"{food.FoodInfo.FoodName}: не добавлено. Максимальная масса {maxWeight}г превышена!");
             return false;
         }
         else
@@ -108,8 +108,8 @@ public class Plate : MonoBehaviour, IListable, IFinish
     {
         if (Foods.Count<1)
         {
-            info.ObjectData = "";
-            OnUpdateInfo.Invoke("");
+            info.ObjectData = $"Макс вес - {maxWeight} г";
+            OnUpdateInfo.Invoke(info.ObjectData);
             return;
         }
         List<FoodComponent> uniqFood = Foods.DistinctBy(f => f.FoodName).ToList();
@@ -119,8 +119,9 @@ public class Plate : MonoBehaviour, IListable, IFinish
             var weight = Foods.Where(food => food.FoodName == f.FoodName).Sum(f => f.FoodInfo.GramsWeight);
             sb.AppendLine($"{f.FoodInfo.FoodName} - {weight.ToString("N1") + " г"}\n({Translator.GetInstance().GetTranslate(f.FoodInfo.CurrentCutType.ToString())})");
         }
+        sb.AppendLine($"Макс вес - {maxWeight} г");
         info.ObjectData = sb.ToString();
-        OnUpdateInfo.Invoke(sb.ToString());
+        OnUpdateInfo.Invoke(info.ObjectData);
     }
 
     public Recipe GetRecipe()
