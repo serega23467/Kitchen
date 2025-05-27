@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 3251889006141270491}
   - component: {fileID: 156734225342205160}
   - component: {fileID: 3787974344191538016}
+  - component: {fileID: 2437493145503113353}
   m_Layer: 6
   m_Name: RiceHeap
   m_TagString: Untagged
@@ -87,7 +88,29 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ObjectName: "\u0420\u0438\u0441"
   ObjectInfo: "\u0420\u0438\u0441"
+  CanShowContent: 0
   ObjectData: 
+--- !u!65 &2437493145503113353
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 698553187863988315}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.090308666, y: 0.0060880184, z: 0.089939356}
+  m_Center: {x: 0.0005710125, y: 0.0015304089, z: -0.00010788441}
 --- !u!1 &6285805361144148207
 GameObject:
   m_ObjectHideFlags: 0

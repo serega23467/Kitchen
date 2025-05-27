@@ -22,12 +22,12 @@ public class BellFinish : MonoBehaviour
 
         if (finishPlate!=null)
         {
-            SaveDish(finishPlate.GetRecipe());
-            //int rate = Compare(out string result, Level.Recipe, finishPlate.GetRecipe());
-            //int time = UIElements.GetInstance().GetTimerTime();
-            //OnFinishMenuOpen?.Invoke();
-            //UIElements.GetInstance().ShowPanelResult(Level, rate, time, result);
-            //SettingsInit.UpdateLevelInfo(rate, time);
+            //SaveDish(finishPlate.GetRecipe());
+            int rate = Compare(out string result, Level.Recipe, finishPlate.GetRecipe());
+            int time = UIElements.GetInstance().GetTimerTime();
+            OnFinishMenuOpen?.Invoke();
+            UIElements.GetInstance().ShowPanelResult(Level, rate, time, result);
+            SettingsInit.UpdateLevelInfo(rate, time);
         }
         else
         {

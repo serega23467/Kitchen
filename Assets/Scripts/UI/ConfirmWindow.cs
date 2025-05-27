@@ -2,6 +2,7 @@ using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using static System.Net.Mime.MediaTypeNames;
 
 public class ConfirmWindow : MonoBehaviour
 {
@@ -11,6 +12,25 @@ public class ConfirmWindow : MonoBehaviour
     Button buttonNo;
     [SerializeField]
     TMP_Text askText;
+
+    RectTransform panelRect;
+    Vector3 size = Vector3.zero;
+
+    private void Awake()
+    {
+        panelRect = GetComponent<RectTransform>();
+        size = panelRect.localScale;
+        Hide();
+    }
+    public void Show(string text, Action<bool> OnConfirm)
+    {
+        panelRect.localScale = size;
+        AddListener(OnConfirm, Hide, text);
+    }
+    void Hide()
+    {
+        panelRect.localScale = Vector3.zero;
+    }
     public void AddListener(Action<bool> OnConfirm, Action OnClose, string text)
     {
         askText.text = text;

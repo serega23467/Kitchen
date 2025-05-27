@@ -125,6 +125,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ShowRecipe"",
+                    ""type"": ""Button"",
+                    ""id"": ""fb5efc08-098d-4c0c-be8d-87c1a7f5d5f5"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -292,6 +301,17 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""ShowInfo"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""91bdd3b3-ccdd-419c-b460-febbafffb2c8"",
+                    ""path"": ""<Keyboard>/i"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ShowRecipe"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -317,6 +337,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Player_TakeKnife = m_Player.FindAction("TakeKnife", throwIfNotFound: true);
         m_Player_Cut = m_Player.FindAction("Cut", throwIfNotFound: true);
         m_Player_ShowInfo = m_Player.FindAction("ShowInfo", throwIfNotFound: true);
+        m_Player_ShowRecipe = m_Player.FindAction("ShowRecipe", throwIfNotFound: true);
     }
 
     ~@PlayerControls()
@@ -394,6 +415,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_TakeKnife;
     private readonly InputAction m_Player_Cut;
     private readonly InputAction m_Player_ShowInfo;
+    private readonly InputAction m_Player_ShowRecipe;
     public struct PlayerActions
     {
         private @PlayerControls m_Wrapper;
@@ -409,6 +431,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @TakeKnife => m_Wrapper.m_Player_TakeKnife;
         public InputAction @Cut => m_Wrapper.m_Player_Cut;
         public InputAction @ShowInfo => m_Wrapper.m_Player_ShowInfo;
+        public InputAction @ShowRecipe => m_Wrapper.m_Player_ShowRecipe;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -451,6 +474,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @ShowInfo.started += instance.OnShowInfo;
             @ShowInfo.performed += instance.OnShowInfo;
             @ShowInfo.canceled += instance.OnShowInfo;
+            @ShowRecipe.started += instance.OnShowRecipe;
+            @ShowRecipe.performed += instance.OnShowRecipe;
+            @ShowRecipe.canceled += instance.OnShowRecipe;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -488,6 +514,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @ShowInfo.started -= instance.OnShowInfo;
             @ShowInfo.performed -= instance.OnShowInfo;
             @ShowInfo.canceled -= instance.OnShowInfo;
+            @ShowRecipe.started -= instance.OnShowRecipe;
+            @ShowRecipe.performed -= instance.OnShowRecipe;
+            @ShowRecipe.canceled -= instance.OnShowRecipe;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -527,5 +556,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnTakeKnife(InputAction.CallbackContext context);
         void OnCut(InputAction.CallbackContext context);
         void OnShowInfo(InputAction.CallbackContext context);
+        void OnShowRecipe(InputAction.CallbackContext context);
     }
 }

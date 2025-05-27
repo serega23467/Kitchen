@@ -27,10 +27,9 @@ public class PlayerRaycast : MonoBehaviour
     bool isShowInfo = true;
     bool isShowContent = false;
     bool isShowResult = false;
-    bool isRecipeShow = true;
+    bool isRecipeShow = false;
     bool gameIsPaused = false;
     bool knifeInHand = false;
-    //bool isInEntiractive = false;
 
     private void Awake()
     {
@@ -55,6 +54,7 @@ public class PlayerRaycast : MonoBehaviour
         playerController.PlayerControls.Player.TakeKnife.performed += TakeKnife;
         playerController.PlayerControls.Player.Cut.performed += Cut;
         playerController.PlayerControls.Player.ShowInfo.performed += ChangeInfoVisibility;
+        playerController.PlayerControls.Player.ShowRecipe.performed += ShowRecipe;
     }
     public void PickFood(FoodComponent food)
     {
@@ -108,41 +108,6 @@ public class PlayerRaycast : MonoBehaviour
                 currentInfoObject = null;
             }
         }
-        //if (Input.GetKeyDown(KeyCode.Z))
-        //{
-        //    RaycastHit hit;
-        //    if (!isShowResult && Physics.Raycast(cam.transform.position, cam.transform.forward, out hit, raycastDistance, LayerMask.GetMask("DraggableObject")))
-        //    {
-        //        if (hit.collider.TryGetComponent(out PlateDish dish))
-        //        {
-        //            if (dish.Compare(out string result))
-        //            {
-        //                UIElements.GetInstance().ShowPanelResult("Успешно!", result);
-        //            }
-        //            else
-        //            {
-        //                UIElements.GetInstance().ShowPanelResult("Неуспешно!", result);
-        //            }
-        //            isShowResult = true;
-        //            playerController.canMove = false;
-        //            Cursor.lockState = CursorLockMode.None;
-        //            Cursor.visible = true;
-        //        }
-        //    }
-        //    else if(isShowResult)
-        //    {
-        //        UIElements.GetInstance().HidePanelResult();
-        //        isShowResult = false;
-
-        //        playerController.canMove = true;
-        //        Cursor.lockState = CursorLockMode.Locked;
-        //        Cursor.visible = false;
-        //    }
-        //}
-        //if (Input.GetKeyDown(KeyCode.I))
-        //{
-        //    isShowInfo = !isShowInfo;
-        //}
         if (CurrentDraggableObject!=null && Input.GetAxis("Mouse ScrollWheel") != 0)
         {
             draggableObjectDistance = Mathf.Clamp(draggableObjectDistance+Input.GetAxis("Mouse ScrollWheel")*Time.deltaTime*20f, minDraggableObjectDistance, maxDraggableObjectDistance);
@@ -499,6 +464,18 @@ public class PlayerRaycast : MonoBehaviour
         }
 
     }
+    public void ShowRecipe(CallbackContext context)
+    {
+        isRecipeShow = !isRecipeShow;
+        if(isRecipeShow)
+        {
+            UIElements.GetInstance().ShowRecipePanel();
+        }
+        else
+        {
+            UIElements.GetInstance().HideRecipePanel();
+        }
+    }
     private void OnDisable()
     {
         playerController.PlayerControls.Player.Disable();
@@ -509,5 +486,6 @@ public class PlayerRaycast : MonoBehaviour
         playerController.PlayerControls.Player.TakeKnife.performed -= TakeKnife;
         playerController.PlayerControls.Player.Cut.performed -= Cut;
         playerController.PlayerControls.Player.ShowInfo.performed -= ChangeInfoVisibility;
+        playerController.PlayerControls.Player.ShowRecipe.performed -= ShowRecipe;
     }
 }

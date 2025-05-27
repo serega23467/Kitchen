@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2793622525800550048}
   - component: {fileID: 8812503445304025475}
   - component: {fileID: 6810015937008154135}
+  - component: {fileID: 1886596186564155915}
   m_Layer: 6
   m_Name: TomPastaHeap
   m_TagString: Untagged
@@ -87,7 +88,29 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ObjectName: "\u0422\u043E\u043C\u0430\u0442\u043D\u0430\u044F \u043F\u0430\u0441\u0442\u0430"
   ObjectInfo: "\u0422\u043E\u043C\u0430\u0442\u043D\u0430\u044F \u043F\u0430\u0441\u0442\u0430"
+  CanShowContent: 0
   ObjectData: 
+--- !u!65 &1886596186564155915
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4552472689699574859}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.06950736, y: 0.0035845041, z: 0.07014656}
+  m_Center: {x: -0.0003193617, y: 0.0011159778, z: 0}
 --- !u!1 &8116414379613073614
 GameObject:
   m_ObjectHideFlags: 0

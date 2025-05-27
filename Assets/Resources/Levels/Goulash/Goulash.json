@@ -1,0 +1,228 @@
+{
+  "Recipe": {
+    "HasWater": false,
+    "RecipeContent": [
+      {
+        "FoodId": "Beef",
+        "FoodName": "Говядина",
+        "GramsWeight": 50.0,
+        "IsPour": false,
+        "AllCutTypes": [
+          0,
+          1,
+          2
+        ],
+        "Params": [
+          {
+            "ParamName": "FryProgress",
+            "ParamValue": 156.75340270996095,
+            "IsSpice": false
+          }
+        ],
+        "CurrentCutType": 1,
+        "Count": 12
+      },
+      {
+        "FoodId": "Tomato",
+        "FoodName": "Помидор",
+        "GramsWeight": 3.3333332538604738,
+        "IsPour": false,
+        "AllCutTypes": [
+          0,
+          1,
+          3
+        ],
+        "Params": [
+          {
+            "ParamName": "FryProgress",
+            "ParamValue": 54.20964050292969,
+            "IsSpice": false
+          }
+        ],
+        "CurrentCutType": 3,
+        "Count": 48
+      },
+      {
+        "FoodId": "Garlic",
+        "FoodName": "Чеснок",
+        "GramsWeight": 0.2666666507720947,
+        "IsPour": false,
+        "AllCutTypes": [
+          0,
+          1,
+          3
+        ],
+        "Params": [
+          {
+            "ParamName": "FryProgress",
+            "ParamValue": 54.209617614746097,
+            "IsSpice": false
+          }
+        ],
+        "CurrentCutType": 3,
+        "Count": 100
+      },
+      {
+        "FoodId": "BulgarianPepper",
+        "FoodName": "Болгарский перец",
+        "GramsWeight": 0.444444477558136,
+        "IsPour": false,
+        "AllCutTypes": [
+          0,
+          1,
+          3
+        ],
+        "Params": [
+          {
+            "ParamName": "FryProgress",
+            "ParamValue": 54.20962905883789,
+            "IsSpice": false
+          }
+        ],
+        "CurrentCutType": 3,
+        "Count": 180
+      },
+      {
+        "FoodId": "ChiliPepper",
+        "FoodName": "Перец чили",
+        "GramsWeight": 5.0,
+        "IsPour": false,
+        "AllCutTypes": [
+          0,
+          3
+        ],
+        "Params": [
+          {
+            "ParamName": "FryProgress",
+            "ParamValue": 54.20962905883789,
+            "IsSpice": false
+          }
+        ],
+        "CurrentCutType": 3,
+        "Count": 6
+      },
+      {
+        "FoodId": "Carrot",
+        "FoodName": "Морковка",
+        "GramsWeight": 12.5,
+        "IsPour": false,
+        "AllCutTypes": [
+          0,
+          2,
+          3
+        ],
+        "Params": [
+          {
+            "ParamName": "FryProgress",
+            "ParamValue": 54.209632873535159,
+            "IsSpice": false
+          }
+        ],
+        "CurrentCutType": 2,
+        "Count": 5
+      },
+      {
+        "FoodId": "Carrot",
+        "FoodName": "Морковка",
+        "GramsWeight": 2.0833332538604738,
+        "IsPour": false,
+        "AllCutTypes": [
+          0,
+          2,
+          3
+        ],
+        "Params": [
+          {
+            "ParamName": "FryProgress",
+            "ParamValue": 54.209632873535159,
+            "IsSpice": false
+          }
+        ],
+        "CurrentCutType": 3,
+        "Count": 5
+      },
+      {
+        "FoodId": "Potato",
+        "FoodName": "Картошка",
+        "GramsWeight": 15.0,
+        "IsPour": false,
+        "AllCutTypes": [
+          0,
+          1,
+          2
+        ],
+        "Params": [
+          {
+            "ParamName": "FryProgress",
+            "ParamValue": 30.096065521240236,
+            "IsSpice": false
+          }
+        ],
+        "CurrentCutType": 1,
+        "Count": 30
+      },
+      {
+        "FoodId": "Butter",
+        "FoodName": "Масло",
+        "GramsWeight": 20.0,
+        "IsPour": true,
+        "AllCutTypes": [
+          0
+        ],
+        "Params": [
+          {
+            "ParamName": "PepperRed",
+            "ParamValue": 10.0,
+            "IsSpice": true
+          },
+          {
+            "ParamName": "Paprika",
+            "ParamValue": 10.0,
+            "IsSpice": true
+          },
+          {
+            "ParamName": "FryProgress",
+            "ParamValue": 174.38685607910157,
+            "IsSpice": false
+          }
+        ],
+        "CurrentCutType": 0,
+        "Count": 1
+      },
+      {
+        "FoodId": "Onion",
+        "FoodName": "Лук",
+        "GramsWeight": 0.3333333432674408,
+        "IsPour": false,
+        "AllCutTypes": [
+          0,
+          2,
+          3
+        ],
+        "Params": [
+          {
+            "ParamName": "PepperRed",
+            "ParamValue": 10.0,
+            "IsSpice": true
+          },
+          {
+            "ParamName": "Paprika",
+            "ParamValue": 10.0,
+            "IsSpice": true
+          },
+          {
+            "ParamName": "FryProgress",
+            "ParamValue": 174.38674926757813,
+            "IsSpice": false
+          }
+        ],
+        "CurrentCutType": 3,
+        "Count": 180
+      }
+    ]
+  },
+  "RecipeTextPictureName": "GoulashRecipe",
+  "RecipeFoodPictureName": "",
+  "RecipeText": "Гуляш из говядины с картофелем - время готовки 2 часа 30 минут\n-Нарежьте мелко лук 1 шт;\n-В сковороду добавьте сливочное масло и нарезанный лук, добавьте ложку папирики и молотого красного перца, жарьте лук 4 минуты на среднем огне;\n-Нарежьте говядину крупными кусками и добавьте к луку, обжарьте еще 3 минуты;\n-Снизьте огонь под сковородой до минимума и тушите ещё час;\n-Нарежьте мелко 2 помидора, 4 зубчика чеснока, болгарский перец и перец чили. Морковь нарежьте средне;\n-Добавьте нарезанные овощи в сковородку и тушите еще 15 минут;\n-Нарежьте крупно 3 картофелины и добавьте в сковородку, тушите ещё 20 минут;\n-Добавьте 2 ложки зелени, переложите блюдо в тарелку и подайте к столу;",
+  "CookTime": 9000
+}

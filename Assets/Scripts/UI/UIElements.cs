@@ -10,12 +10,10 @@ public class UIElements : MonoBehaviour
     GameObject canvas;
     UnityEngine.UI.Image panelMenu;
     UnityEngine.UI.Image panelSettings;
-    UnityEngine.UI.Image panelConfirm;
 
     Vector3 scrollViewSize;
     Vector3 panelMenuSize;
     Vector3 panelSettingsSize;
-    Vector3 panelConfirmSize;
 
     RectTransform scrollView;
     ScrollPanel scrollPanel;
@@ -25,6 +23,7 @@ public class UIElements : MonoBehaviour
     FinishWindow finishWindow;
     Timer timer;
     PanelInfo panelInfo;
+    PanelRecipe panelRecipe;
 
     static ToastInfo lastMessage;
     private static UIElements instance;
@@ -42,8 +41,7 @@ public class UIElements : MonoBehaviour
         instance.scrollView = GameObject.Find("Scroll View").GetComponent<RectTransform>();
         instance.scrollViewSize = instance.scrollView.localScale;
 
-        //instance.panelRecipe = GameObject.Find("PanelRecipe").GetComponent<UnityEngine.UI.Image>();
-        //instance.panelRecipeSize = instance.panelRecipe.rectTransform.localScale;
+        instance.panelRecipe = GameObject.Find("PanelRecipe").GetComponent<PanelRecipe>();
 
         instance.panelInfo = GameObject.Find("PanelInfo").GetComponent<PanelInfo>(); 
 
@@ -56,10 +54,7 @@ public class UIElements : MonoBehaviour
         instance.panelSettingsSize = instance.panelSettings.rectTransform.localScale;
         instance.settingsMenu = instance.panelSettings.GetComponent<SettingsMenu>();
 
-        instance.panelConfirm = GameObject.Find("PanelConfirm").GetComponent<UnityEngine.UI.Image>();
-        confirmWindow = instance.panelConfirm.GetComponent<ConfirmWindow>();
-        instance.panelConfirmSize = instance.panelConfirm.rectTransform.localScale;
-        ClosePanelConfirm();
+        instance.confirmWindow = GameObject.Find("PanelConfirm").GetComponent<ConfirmWindow>();
 
         instance.sliderMenu = GameObject.Find("SliderMenu").GetComponent<SliderMenu>();
         instance.sliderMenu.CloseSliderMenu();
@@ -89,6 +84,36 @@ public class UIElements : MonoBehaviour
         }
         lastMessage = t;
         t?.OnHide.AddListener(delegate () { if (lastMessage == t) lastMessage = null; });
+    }
+    public static int GetFontSize(int charCount)
+    {
+        int minChars = 1;
+        int maxChars = 1000;
+        int minCharsForBigValues = maxChars;
+        int maxCharsForBigValues = 2000;
+
+        int minFont = 20;
+        int minFontForBigValues = 10;
+        int maxFont = 40;
+        int maxFontForBigValues = 30;
+
+        if (charCount < minChars)
+        {
+            return 0;
+        }
+        int fontSize = 0;
+        if (charCount > maxChars)
+        {
+            float t = (float)(charCount - minCharsForBigValues) / (maxCharsForBigValues - minCharsForBigValues);
+            fontSize = (int)(maxFontForBigValues - t * (maxFontForBigValues - minFontForBigValues));
+        }
+        else
+        {
+            float t = (float)(charCount - minChars) / (maxChars - minChars);
+            fontSize = (int)(maxFont - t * (maxFont - minFont));
+        }
+
+        return fontSize;
     }
     public int GetTimerTime()
     {
@@ -160,8 +185,16 @@ public class UIElements : MonoBehaviour
     public void OpenPanelConfirm(string text, Action<bool> OnConfirm)
     {
         if (confirmWindow == null) return;
-        panelConfirm.rectTransform.localScale = panelConfirmSize;
-        confirmWindow.AddListener(OnConfirm, ClosePanelConfirm, text);
+        confirmWindow.Show(text, OnConfirm);
+
+    }
+    public void ShowRecipePanel()
+    {
+        panelRecipe.Show();
+    }
+    public void HideRecipePanel()
+    {
+        panelRecipe.Hide();
     }
     public void ExitToMainMenu()
     {
@@ -170,10 +203,5 @@ public class UIElements : MonoBehaviour
     public void Restart()
     {
         Scenes.SwitchScene("Gameplay");
-    }
-    void ClosePanelConfirm()
-    {
-        if (confirmWindow == null) return;
-        panelConfirm.rectTransform.localScale = Vector3.zero;
     }
 }

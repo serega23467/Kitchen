@@ -16,7 +16,7 @@ public class Paper : MonoBehaviour
         }
         if (TryGetComponent(out ShowObjectInfo info))
         {
-            info.ObjectInfo = BellFinish.Level.RecipeText;
+            info.ObjectData = BellFinish.Level.RecipeText;
         }
     }
 }

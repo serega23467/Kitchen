@@ -22,6 +22,7 @@ public class Plate : MonoBehaviour, IListable, IFinish
     Vector3 randomRange = Vector3.zero;
     ShowObjectInfo info;
 
+    [HideInInspector]
     public float MaxWeight { get => maxWeight; }
     public ObservableCollection<FoodComponent> Foods { get; set; }
     public bool HasWater { get; set; }
