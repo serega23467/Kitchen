@@ -34,11 +34,19 @@ public class FryingPan : MonoBehaviour, IHeated, IListable
     {
         return plate.Foods.ToList();
     }
-    public void HeatFood(float t)
+    public void HeatFood(float t, StoveFireType type)
     {
         foreach (FoodComponent food in plate?.Foods.ToList())
         {
-            food.TryAddParameterValue("FryProgress", t);
+            switch(type)
+            {
+                case StoveFireType.Oven:
+                    food.TryAddParameterValue("BakeProgress", t);
+                    break;
+                case StoveFireType.Burner:
+                    food.TryAddParameterValue("FryProgress", t);
+                    break;
+            }
         }
     }
     void UpdateFoodsInfo(string data)

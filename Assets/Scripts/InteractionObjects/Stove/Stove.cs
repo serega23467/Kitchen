@@ -7,10 +7,16 @@ public class Stove : MonoBehaviour
     Switcher[] switchers;
     [SerializeField]
     Inclose[] places;
-    
+    public static Dictionary<byte, string> FireLevels = new Dictionary<byte, string>()
+    {
+        {0, "Нет огня" },
+        {1, "Слабый огонь" },
+        {2, "Средний огонь" },
+        {3, "Сильный огонь" },
+    };
     private void Start()
     {
-        for (int i = 0; i < 4; i++)
+        for (int i = 0; i < places.Length; i++)
         {
             switchers[i].Id = (byte)i;
             places[i].Id = (byte)i;
@@ -27,7 +33,7 @@ public class Stove : MonoBehaviour
         if (hasObject)
         {
             StoveFire fire = places[id].gameObject.AddComponent<StoveFire>();
-            fire.StartFire(places[id].PickedObject.GetComponent<IHeated>(), switchers[id].Level, SettingsInit.VirtualSecond);
+            fire.StartFire(places[id].PickedObject.GetComponent<IHeated>(), switchers[id].Level, SettingsInit.VirtualSecond, switchers[id].StoveFireType);
             places[id].GetComponent<FireControl>().ChangeFire(0);
         }
         else
@@ -53,7 +59,7 @@ public class Stove : MonoBehaviour
             if (places[id].HasObject)
             {
                 StoveFire newFire = places[id].gameObject.AddComponent<StoveFire>();
-                newFire.StartFire(places[id].PickedObject.GetComponent<IHeated>(), switchers[id].Level, SettingsInit.VirtualSecond);
+                newFire.StartFire(places[id].PickedObject.GetComponent<IHeated>(), switchers[id].Level, SettingsInit.VirtualSecond, switchers[id].StoveFireType);
                 places[id].GetComponent<FireControl>().ChangeFire(0);
             }
         }

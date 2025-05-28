@@ -118,6 +118,29 @@ public class BellFinish : MonoBehaviour
                 }
                 else 
                 {
+                    foreach (var realP in foodEtalon.Params)
+                    {
+                        var paramInEtalon = foodEtalon.Params.FirstOrDefault(p => p.ParamName == realP.ParamName);
+                        if (paramInEtalon == null && realP.ParamValue>10)
+                        {
+                            if (FoodParametersPool.GetInstance().TryGetParameter(realP.ParamName, out FoodParametr fullRealParam))
+                            {
+                                sb.AppendLine($"{foodEtalon}: " + fullRealParam.NoNeedThisError);
+                            }
+                            else
+                            {
+                                sb.AppendLine($"{foodEtalon}: Лишнее: " + realP.ParamName);
+                            }
+                            if (realP.IsSpice)
+                            {
+                                hasCorrectSpiceParams = false;
+                            }
+                            else
+                            {
+                                hasCorrectCookParams = false;
+                            }
+                        }
+                    }
                     foreach (var paramEtalon in etalonFood.Params)
                     {
                         var paramInFoods = foodEtalon.Params.FirstOrDefault(p=>p.ParamName== paramEtalon.ParamName);
@@ -129,7 +152,7 @@ public class BellFinish : MonoBehaviour
                             }
                             else
                             {
-                                sb.AppendLine("Нет " + paramEtalon.ParamName + " " + etalonFood.FoodName);
+                                sb.AppendLine("Нет: " + paramEtalon.ParamName + " " + etalonFood.FoodName);
                             }
                             if(!fullParamEtalon.IsSpice)
                             {

@@ -9,6 +9,9 @@ public class Switcher : MonoBehaviour
     [Range(0, 3)]
     public byte Id { get; set; }
     [SerializeField]
+    StoveFireType stoveFireType = StoveFireType.Burner;
+    public StoveFireType StoveFireType { get=>  stoveFireType; }
+    [SerializeField]
     float rotateAngle = 30;
     float currentAngle = 0;
     public byte Level { get; private set; } = 0;
@@ -17,7 +20,13 @@ public class Switcher : MonoBehaviour
     Tween openAnim;
     Tween closeAnim;
     Tween currentAnim;
-
+    ShowObjectInfo info;
+    private void Awake()
+    {
+        info = GetComponent<ShowObjectInfo>();
+        if(info!= null )
+            info.ObjectData = Stove.FireLevels[Level];
+    }
     public void AddLevel()
     {
         if(Level+1 <= 3)
@@ -45,6 +54,10 @@ public class Switcher : MonoBehaviour
                     .SetAutoKill(false)
                     .OnComplete(() => { currentAnim = null; })
                     .Play();
+        }
+        if (info != null)
+        {
+            info.ObjectData = Stove.FireLevels[Level];
         }
     }
 }

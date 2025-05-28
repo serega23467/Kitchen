@@ -86,7 +86,8 @@ public class Pot : MonoBehaviour, IHeated
     }
     public void HeatWater(float t)
     {
-        potWater.HeatFood(t);
+        if(HeatedInfo.HasWater)
+            potWater.HeatFood(t);
     }
     public void AddWater()
     {

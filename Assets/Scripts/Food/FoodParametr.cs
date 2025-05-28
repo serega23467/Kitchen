@@ -13,6 +13,7 @@ public class FoodParametr : ScriptableObject
     public string TooMuchError = "";
     public string TooLittleError = "";
     public string NoThisError = "";
+    public string NoNeedThisError = "";
 
     public bool IsSpice = false;
     public FoodParametr Clone()

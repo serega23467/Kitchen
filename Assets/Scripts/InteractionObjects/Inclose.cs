@@ -22,7 +22,7 @@ public class Inclose : MonoBehaviour
             }
             PickedObject = ob;
             PickedObject.transform.parent = transform;
-            PickedObject.transform.position = transform.position + PickedObject.PlaceOffset;
+            PickedObject.transform.position = transform.position + PickedObject.PlaceOffset + offset;
 
             PickedObject.GetComponent<Rigidbody>().isKinematic = true;
             HasObject = true;

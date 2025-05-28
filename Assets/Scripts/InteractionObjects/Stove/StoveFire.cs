@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class StoveFire : MonoBehaviour
 {
-    public void StartFire(IHeated heated, byte level, float virtualSecondInSeconds)
+    public void StartFire(IHeated heated, byte level, float virtualSecondInSeconds, StoveFireType type = StoveFireType.Burner)
     {
         heated.StartHeating();
-        StartCoroutine(Fire(heated, level, virtualSecondInSeconds));
+        StartCoroutine(Fire(heated, level, virtualSecondInSeconds, type));
     }
-    IEnumerator Fire(IHeated heated, byte level, float second)
+    IEnumerator Fire(IHeated heated, byte level, float second, StoveFireType type)
     {
         float maxT = 250;
         if(heated.HeatedInfo.HasWater)
@@ -52,7 +52,7 @@ public class StoveFire : MonoBehaviour
                 {
                     delta /= 10;
                 }
-                pan.HeatFood(delta);
+                pan.HeatFood(delta, type);
             }
             yield return new WaitForSeconds(second);
         }
