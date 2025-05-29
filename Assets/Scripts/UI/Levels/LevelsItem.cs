@@ -41,7 +41,7 @@ public class LevelsItem : RecyclingListViewItem
             levelDesc.text = levelInfo.Description;
 
             if (levelInfo.Seconds > 0)
-                time.text = Translator.GetInstance().GetTimeBySeconds(levelInfo.Seconds);
+                time.text = Translator.GetTimeBySeconds(levelInfo.Seconds);
             else
                 time.text = "";
 
@@ -60,7 +60,8 @@ public class LevelsItem : RecyclingListViewItem
         if(int.TryParse(scoreboard.Rows[0][0].ToString(), out int result))
         {
             DB.ExecuteQueryWithoutAnswer($"UPDATE CurrentLevel SET LevelId = {levelInfo.Id} Where Id = {result}");
-            Scenes.SwitchScene("Gameplay");
+            SceneLoader.PlayHideOnAwake = true;
+            SceneLoader.SwitchScene("Gameplay");
         }
     }
 }

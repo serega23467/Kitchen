@@ -24,7 +24,7 @@ public class Timer : MonoBehaviour
         {
             if (totalSeconds > 0)
             {
-                timerText.text = Translator.GetInstance().GetTimeBySeconds(totalSeconds);
+                timerText.text = Translator.GetTimeBySeconds(totalSeconds);
             }
             totalSeconds++;
             yield return new WaitForSeconds(second);

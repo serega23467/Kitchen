@@ -13,22 +13,6 @@ public class Recipe
     {
         RecipeContent = new List<SerializableFoodInfo>();
     }
-    //public static List<SerializableFoodInfo> RemoveDuplicatesFoods(List<SerializableFoodInfo> recipe)
-    //{
-    //    List<SerializableFoodInfo> newRecipe = new List<SerializableFoodInfo>();
-    //    for (int i = 0; i < recipe.Count; i++)
-    //    {
-    //        if (!newRecipe.Contains(recipe[i]))
-    //        {
-    //            newRecipe.Add(recipe[i]);
-    //        }
-    //        else
-    //        {
-    //            newRecipe[newRecipe.IndexOf(recipe[i])].Count++;
-    //        }
-    //    }
-    //    return newRecipe;
-    //}
     public static List<SerializableFoodInfo> RemoveDuplicates(List<SerializableFoodInfo> recipe)
     {
         List<SerializableFoodInfo> newRecipe = new List<SerializableFoodInfo>();

@@ -198,10 +198,14 @@ public class UIElements : MonoBehaviour
     }
     public void ExitToMainMenu()
     {
-        Scenes.SwitchScene("MainMenu");
+        Time.timeScale = 1f;
+        SceneLoader.PlayHideOnAwake = true;
+        SceneLoader.SwitchScene("MainMenu");
     }
     public void Restart()
     {
-        Scenes.SwitchScene("Gameplay");
+        Time.timeScale = 1f;
+        SceneLoader.PlayHideOnAwake = true;
+        SceneLoader.SwitchScene("Gameplay");
     }
 }

@@ -26,7 +26,7 @@ public class Translator
     {
         return translate[word];
     }
-    public string GetTimeBySeconds(int totalSeconds)
+    public static string GetTimeBySeconds(int totalSeconds)
     {
 
         int hours = totalSeconds / 3600;

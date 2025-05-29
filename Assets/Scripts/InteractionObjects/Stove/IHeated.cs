@@ -14,7 +14,7 @@ public interface IHeated
         if (totalSeconds > 0)
         {
            
-            string time = Translator.GetInstance().GetTimeBySeconds(totalSeconds);
+            string time = Translator.GetTimeBySeconds(totalSeconds);
             if(hasWater) 
                 result= $"\nтемпература: {HeatedInfo.Temperature.ToString("F1")} C\nмасса воды: {(HeatedInfo.CurrentMassKG - HeatedInfo.MinMassKG).ToString("F1")} kg\nвремя: {time}";
             else

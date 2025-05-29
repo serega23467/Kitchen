@@ -382,6 +382,7 @@ public class PlayerRaycast : MonoBehaviour
     }
     public void Escape()
     {
+        if (SceneLoader.Instance.gameObject.activeSelf) return;
         gameIsPaused = !gameIsPaused;
         if (gameIsPaused)
         {

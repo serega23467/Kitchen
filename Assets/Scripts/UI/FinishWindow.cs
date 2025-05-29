@@ -37,8 +37,8 @@ public class FinishWindow : MonoBehaviour
             if (i > stars.Length - 1) return;
             stars[i].color = Color.yellow;
         }
-        etalonTime.text = Translator.GetInstance().GetTimeBySeconds(info.CookTime);
-        totalTime.text = Translator.GetInstance().GetTimeBySeconds(totalSeconds);
+        etalonTime.text = Translator.GetTimeBySeconds(info.CookTime);
+        totalTime.text = Translator.GetTimeBySeconds(totalSeconds);
         issuesText.text = issues;
     }
     public void Hide()
