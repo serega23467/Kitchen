@@ -56,6 +56,16 @@ public static class SettingsInit
         bool isFullScreen = GetScreenMode();
         Screen.SetResolution(Resolutions[rIndex].x, Resolutions[rIndex].y, isFullScreen);
     }
+    public static void InitAudio()
+    {
+        if(AudioManager.Instance != null && !AudioManager.Instance.IsSetted)
+        {
+            foreach (var nameValue in GetAudioValues())
+            {
+                AudioManager.Instance.ChangeVolume(nameValue.Value/100, nameValue.Key);
+            }
+        }
+    }
     public static void InitControls(PlayerControls playerControls)
     {
         List<SettingValue> controls = new List<SettingValue>();
@@ -150,5 +160,15 @@ public static class SettingsInit
             " WHERE cl.Id  = 1; ");
         levelName = scoreboard.Rows[0][0]?.ToString();
         return levelName;   
+    }
+    static Dictionary<string, float> GetAudioValues()
+    {
+        Dictionary<string, float> values = new Dictionary<string, float>();
+        DataTable scoreboard = DB.GetTable("SELECT Id, Name, Value FROM SettingsValues WHERE Name LIKE '%Громкость%'");
+        for (int i = 0; i < scoreboard.Rows.Count; i++)
+        {
+            values.Add(Translator.GetInstance().GetTranslate(scoreboard.Rows[i][1].ToString()), float.Parse(scoreboard.Rows[i][2].ToString()));
+        }
+        return values;
     }
 }

@@ -18,6 +18,8 @@ public class MainMenu : MonoBehaviour
     private void Start()
     {
         SettingsInit.InitVideo();
+        SettingsInit.InitAudio();
+        AudioManager.Instance.PlayMusic("menu");
     }
     public void OpenSettings()
     {

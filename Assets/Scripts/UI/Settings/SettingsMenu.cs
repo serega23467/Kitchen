@@ -8,6 +8,7 @@ using System.Linq;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class SettingsMenu : MonoBehaviour
@@ -33,6 +34,26 @@ public class SettingsMenu : MonoBehaviour
     TMP_Text brighValue;
 
     [SerializeField]
+    Slider sliderVolume;
+    [SerializeField]
+    TMP_Text volumeValue;
+
+    [SerializeField]
+    Slider sliderMusic;
+    [SerializeField]
+    TMP_Text musicValue;
+
+    [SerializeField]
+    Slider sliderMenuMusic;
+    [SerializeField]
+    TMP_Text menuMusicValue;
+
+    [SerializeField]
+    Slider sliderEffects;
+    [SerializeField]
+    TMP_Text effectsValue;
+
+    [SerializeField]
     TMP_Dropdown resolutionDropdown;
 
     [SerializeField]
@@ -42,6 +63,7 @@ public class SettingsMenu : MonoBehaviour
     List<SettingValue> settingValues;
     Vector3 tabScale;
     int selectedKeyId = -1;
+    bool isUpdated = false;
     private void Awake()
     {
         controlPanels = new List<SettingValue>();
@@ -58,6 +80,18 @@ public class SettingsMenu : MonoBehaviour
         sliderBrigh.maxValue = 1.8f;
         sliderBrigh.onValueChanged.AddListener(UpdateBrighValue);
 
+        UnityAction<float> updateVolumeMethod = delegate (float value) { UpdateVolumeValue(value, volumeValue, "Громкость"); };
+        sliderVolume.onValueChanged.AddListener(updateVolumeMethod);
+
+        UnityAction<float> updateMusicMethod = delegate (float value) { UpdateVolumeValue(value, musicValue, "Громкость музыки"); };
+        sliderMusic.onValueChanged.AddListener(updateMusicMethod);
+
+        UnityAction<float> updateMenuMusicMethod = delegate (float value) { UpdateVolumeValue(value, menuMusicValue, "Громкость музыки в главном меню"); };
+        sliderMenuMusic.onValueChanged.AddListener(updateMenuMusicMethod);
+
+        UnityAction<float> updateEffectsMethod = delegate (float value) { UpdateVolumeValue(value, effectsValue, "Громкость звуков"); };
+        sliderEffects.onValueChanged.AddListener(updateEffectsMethod);
+
         if (sliderTime != null)
         { 
             sliderTime.minValue = 1;
@@ -68,6 +102,7 @@ public class SettingsMenu : MonoBehaviour
         resolutionDropdown.onValueChanged.AddListener(UpdateResolution);
 
         toogle.onValueChanged.AddListener(UpdateScreenMode);
+
 
         foreach (var resolution in SettingsInit.Resolutions)
         {
@@ -88,12 +123,29 @@ public class SettingsMenu : MonoBehaviour
     }
     public void UpdateSettings()
     {
+        if (isUpdated) return;
+
         settingValues.Clear();
         DataTable scoreboard = DB.GetTable("SELECT * FROM SettingsValues;");
         for (int i = 0; i < scoreboard.Rows.Count; i++)
         {
             var info = new SettingValue() { Id = int.Parse(scoreboard.Rows[i][0].ToString()), Name = scoreboard.Rows[i][1].ToString(), Value = scoreboard.Rows[i][2].ToString() };
             settingValues.Add(info);
+        }
+
+        if(AudioManager.Instance.IsSetted)
+        {
+            sliderVolume.value = AudioManager.Instance.GetVolume(Translator.GetInstance().GetTranslate("Громкость"));
+            sliderMusic.value = AudioManager.Instance.GetVolume(Translator.GetInstance().GetTranslate("Громкость музыки"));
+            sliderMenuMusic.value = AudioManager.Instance.GetVolume(Translator.GetInstance().GetTranslate("Громкость музыки в главном меню"));
+            sliderEffects.value = AudioManager.Instance.GetVolume(Translator.GetInstance().GetTranslate("Громкость звуков"));
+        }
+        else
+        {
+            sliderVolume.value = float.Parse(settingValues.FirstOrDefault(s => s.Name == "Громкость").Value);
+            sliderMusic.value = float.Parse(settingValues.FirstOrDefault(s => s.Name == "Громкость музыки").Value);
+            sliderMenuMusic.value = float.Parse(settingValues.FirstOrDefault(s => s.Name == "Громкость музыки в главном меню").Value);
+            sliderEffects.value = float.Parse(settingValues.FirstOrDefault(s => s.Name == "Громкость звуков").Value);
         }
 
         sliderSens.value = int.Parse(settingValues.FirstOrDefault(s => s.Name == "Чувствительность").Value);
@@ -110,8 +162,10 @@ public class SettingsMenu : MonoBehaviour
 
         resolutionDropdown.value = int.Parse(settingValues.FirstOrDefault(s => s.Name == "Разрешение").Value);
 
-
         toogle.isOn = Convert.ToBoolean(int.Parse(settingValues.FirstOrDefault(s => s.Name == "Режим экрана").Value));
+        isUpdated = true;
+
+
     }
     void RetrieveData(List<SettingValue> panels)
     {
@@ -168,9 +222,11 @@ public class SettingsMenu : MonoBehaviour
             }
         }
         BrightnessSingleton.GetInstance().IsSetted = false;
+        AudioManager.Instance.IsSetted = false;
         UpdateKeys();
         UpdateSettings();
         SettingsInit.InitVideo();
+        SettingsInit.InitAudio();
     }
     public void HideSettings()
     {
@@ -204,6 +260,13 @@ public class SettingsMenu : MonoBehaviour
         timeValue.text = time.ToString();
         var set = settingValues.FirstOrDefault(s => s.Name == "Множитель времени");
         if (set != null) set.Value = timeValue.text;
+    }
+    void UpdateVolumeValue(float volume, TMP_Text tmpText, string setName)
+    {
+        tmpText.text = volume.ToString();
+        var set = settingValues.FirstOrDefault(s => s.Name == setName);
+        if (set != null) set.Value = tmpText.text;
+        AudioManager.Instance.ChangeVolume(volume/100, Translator.GetInstance().GetTranslate(setName));
     }
     void Update()
     {

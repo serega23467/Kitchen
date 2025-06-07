@@ -8,6 +8,7 @@ namespace BrightnessPlugin
     {
         public static BrightnessSingleton Instance;
         public bool DoubleBright = false;
+        [HideInInspector]
         public bool IsSetted = false;
         float brValue = 0f;
         UseBrightnessPlugin bPlugin, bPlugin2;

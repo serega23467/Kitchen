@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -18,6 +18,10 @@ public class Translator
                 { "Large", "крупно" },
                 { "Medium", "средне" },
                 { "Finely", "мелко" },
+                {  "Громкость", "MasterVolume" },
+                { "Громкость музыки", "MusicVolume" },
+                { "Громкость музыки в главном меню", "MainMenuMusicVolume" },
+                {  "Громкость звуков", "EffectsVolume"},
             };
         }
         return instance;

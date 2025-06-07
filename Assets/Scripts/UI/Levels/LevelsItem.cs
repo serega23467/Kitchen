@@ -62,6 +62,7 @@ public class LevelsItem : RecyclingListViewItem
             DB.ExecuteQueryWithoutAnswer($"UPDATE CurrentLevel SET LevelId = {levelInfo.Id} Where Id = {result}");
             SceneLoader.PlayHideOnAwake = true;
             SceneLoader.SwitchScene("Gameplay");
+            AudioManager.Instance.PlayMusic("gameplay");
         }
     }
 }

@@ -252,6 +252,10 @@ public class PlayerRaycast : MonoBehaviour
                                     pour.OnPull.AddListener(pot.OnRemoveFromWater.Invoke);
                                 }
                             }
+                            else
+                            {
+                                UIElements.ShowToast("Наполните кастрюлю водой чтобы положить в неё что либо!");
+                            }
                         }
                     }
                     else
@@ -276,6 +280,10 @@ public class PlayerRaycast : MonoBehaviour
                                 food.OnPull.AddListener(pot.OnRemoveFromWater.Invoke);
                                 CurrentDraggableObject.StopFollowingObject();
                                 CurrentDraggableObject = null;
+                            }
+                            else
+                            {
+                                UIElements.ShowToast("Наполните кастрюлю водой чтобы положить в неё что либо!");
                             }
                         }
                     }                 
@@ -306,6 +314,10 @@ public class PlayerRaycast : MonoBehaviour
                             }
                             pot.PutToWater(foods);
                         }
+                        else
+                        {
+                            UIElements.ShowToast("Наполните кастрюлю водой чтобы положить в неё что либо!");
+                        }
                     }
                     else if (hit.collider.TryGetComponent(out Plate plate2))
                     {
@@ -325,6 +337,10 @@ public class PlayerRaycast : MonoBehaviour
                             var foods = pot.GetFoodsClone();
                             if(foods.Count > 0)
                                 dish.AddDish(foods, pot.HeatedInfo.HasWater);
+                        }
+                        else
+                        {
+                            UIElements.ShowToast("В кастрюле нет воды, наполните!");
                         }
                     }
                 }
@@ -453,6 +469,7 @@ public class PlayerRaycast : MonoBehaviour
                     currentInfoObject.ShowContent(list, hasPlate);
                     contentInfoObject = currentInfoObject;
                     playerController.OnMenuMode();
+                    if (!hasPlate && list.CanPull) UIElements.ShowToast("Чтобы вытащить продукт в руках должна быть тарелка!");
                 }
             }
             else
