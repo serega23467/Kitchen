@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
 
-[RequireComponent(typeof(AudioSource))]
 [RequireComponent(typeof(ShowObjectInfo))]
 public class DraggableObject : MonoBehaviour
 {
     Rigidbody rb;
     Vector3 targetPosition;
+    [SerializeField]
     AudioSource audioSource;
     bool follow;
 
@@ -25,7 +25,6 @@ public class DraggableObject : MonoBehaviour
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
-        audioSource = GetComponent<AudioSource>();
         rb.maxAngularVelocity = 1f;
         rb.maxLinearVelocity = 15f;
     }
@@ -82,6 +81,7 @@ public class DraggableObject : MonoBehaviour
     }
     private void OnCollisionEnter(Collision collision)
     {
+        if (audioSource == null) return;
         float collisionForce = collision.relativeVelocity.magnitude;
 
         float volume = Mathf.Clamp((collisionForce - minCollisionForce) / (maxCollisionForce - minCollisionForce), 0, 1) * maxVolume;
@@ -89,7 +89,8 @@ public class DraggableObject : MonoBehaviour
         if (volume > 0)
         {
             audioSource.volume = volume;
-            audioSource.pitch = Random.Range(audioSource.pitch - 0.5f, audioSource.pitch + 0.5f);
+
+            audioSource.pitch = 1.0f + Random.Range(0f, 0.2f); 
             audioSource.Play();
         }
     }

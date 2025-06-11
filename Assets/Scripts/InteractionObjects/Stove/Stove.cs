@@ -43,8 +43,8 @@ public class Stove : MonoBehaviour
             if (places[id].gameObject.TryGetComponent<StoveFire>(out StoveFire fire))
             {
                 Destroy(fire);
-                places[id].PickedObject.GetComponent<IHeated>().StopHeating();
             }
+            places[id].PickedObject?.GetComponent<IHeated>()?.StopHeating();
         }
     }
     void EditFire(byte id, byte level)
@@ -52,8 +52,8 @@ public class Stove : MonoBehaviour
         if (places[id].gameObject.TryGetComponent<StoveFire>(out StoveFire fire))
         {
             Destroy(fire);
-            places[id].PickedObject.GetComponent<IHeated>().StopHeating();
         }
+        places[id].PickedObject?.GetComponent<IHeated>()?.StopHeating();
         if (switchers[id].Level != 0)
         {
             places[id].GetComponent<FireControl>().ChangeFire(level);

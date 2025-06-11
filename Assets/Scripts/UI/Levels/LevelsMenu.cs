@@ -26,8 +26,13 @@ public class LevelsMenu : MonoBehaviour
                 ImageName = scoreboard.Rows[i][3].ToString(), 
                 Rate = int.Parse(scoreboard.Rows[i][4].ToString()),
                 Seconds = int.Parse(scoreboard.Rows[i][5].ToString()),
-                FolderName = scoreboard.Rows[i][6].ToString()
+                FolderName = scoreboard.Rows[i][6].ToString(),             
             };
+            if(CheckLock(info.Id))
+            {
+                info.IsLocked = CheckLock(info.Id);
+                info.ImageName = "";
+            }
             levels.Add(info);
         }
         RetrieveData(levels);
@@ -51,5 +56,14 @@ public class LevelsMenu : MonoBehaviour
     {
         var child = item as LevelsItem;
         child.LevelInfo = levelsList[rowIndex];
+    }
+    bool CheckLock(int levelId)
+    {
+        DataTable scoreboard = DB.GetTable($"SELECT LockedId FROM LockedLevels WHERE LockedId = {levelId}");
+        if(scoreboard.Rows.Count>0)
+        {
+            return true;
+        }
+        return false;
     }
 }

@@ -12,13 +12,16 @@ using UnityEngine.Rendering;
 [RequireComponent(typeof(ShowObjectInfo))]
 public class Pot : MonoBehaviour, IHeated
 {
-    [HideInInspector]
-    public UnityEvent<FoodComponent> OnRemoveFromWater;
-    [SerializeField]
-    Water potWater = null;
     [SerializeField]
     Material waterWithFoodMaterial;
     Material waterMaterial;
+
+    [SerializeField]
+    AudioSource potSource;
+
+    [HideInInspector]
+    public UnityEvent<FoodComponent> OnRemoveFromWater;
+    Water potWater = null;
 
     Renderer waterRend;
     ShowObjectInfo info;
@@ -87,7 +90,11 @@ public class Pot : MonoBehaviour, IHeated
     public void HeatWater(float t)
     {
         if(HeatedInfo.HasWater)
+        {
+            if (potSource != null && !potSource.isPlaying)
+                potSource.Play();
             potWater.HeatFood(t);
+        }
     }
     public void AddWater()
     {
@@ -156,6 +163,8 @@ public class Pot : MonoBehaviour, IHeated
     public void StopHeating()
     {
         StartCoroutine(Cooling());
+        if (potSource != null && potSource.isPlaying)
+            potSource.Stop();
     }
     IEnumerator Cooling()
     {

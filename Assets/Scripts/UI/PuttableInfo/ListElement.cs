@@ -38,12 +38,9 @@ public class ListElement : RecyclingListViewItem
             foodWeight.text = value.FoodInfo.GramsWeight.ToString("N1") + " ã";
             if(!HasPlate || !CanPull)
             {
+                Button.enabled = false;
                 Button.gameObject.transform.localScale = Vector3.zero;
             }    
-            else
-            {
-                Button.gameObject.transform.localScale = Vector3.one;
-            }
         }
     }
 }

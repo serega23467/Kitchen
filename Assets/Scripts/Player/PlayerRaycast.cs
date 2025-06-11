@@ -211,6 +211,14 @@ public class PlayerRaycast : MonoBehaviour
                     {
                         tap.FillContainer(heated);
                     }
+                    else
+                    {
+                        UIElements.ShowToast("В кастрюле уже есть вода!");
+                    }
+                }
+                else
+                {
+                    UIElements.ShowToast("Возьмите в руку кастрюлю для набора воды!");
                 }
             }
             else if (hit.collider.TryGetComponent(out BellFinish bell))
@@ -422,6 +430,7 @@ public class PlayerRaycast : MonoBehaviour
         else
         {
             knife.gameObject.SetActive(true);
+            knife.TakeKnife();
             knifeInHand = true;
         }
     }

@@ -8,6 +8,8 @@ using UnityEngine.Events;
 [RequireComponent(typeof(ShowObjectInfo))]
 public class FryingPan : MonoBehaviour, IHeated, IListable
 {
+    [SerializeField]
+    AudioSource fryingPanSource;
 
     ShowObjectInfo info;
     Plate plate;
@@ -36,6 +38,8 @@ public class FryingPan : MonoBehaviour, IHeated, IListable
     }
     public void HeatFood(float t, StoveFireType type)
     {
+        if(fryingPanSource !=null && !fryingPanSource.isPlaying) 
+            fryingPanSource.Play();
         foreach (FoodComponent food in plate?.Foods.ToList())
         {
             switch(type)
@@ -73,6 +77,8 @@ public class FryingPan : MonoBehaviour, IHeated, IListable
     public void StopHeating()
     {
         StartCoroutine(Cooling());
+        if (fryingPanSource != null  && fryingPanSource.isPlaying)
+            fryingPanSource.Stop();
     }
     IEnumerator Cooling()
     {

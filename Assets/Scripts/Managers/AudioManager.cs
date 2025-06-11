@@ -54,12 +54,14 @@ public class AudioManager : MonoBehaviour
             case "menu":
                 source.outputAudioMixerGroup = menuMixer;
                 source.clip = mainMenuMusic;
+                source.volume = 0.1f;
                 source.Play();
                 break;
             case "gameplay":
                 source.Stop();
                 source.outputAudioMixerGroup = musicMixer;
                 source.clip = gameplayMusic;
+                source.volume = 1.0f;
                 source.Play();
                 break;
         }

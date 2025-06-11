@@ -110,11 +110,16 @@ public static class SettingsInit
 
         if(rate > oldRate)
         {
-            DB.ExecuteQueryWithoutAnswer($"UPDATE Levels SET Rate = {rate}, Seconds = {time} Where Id = {levelId}");
+            DB.ExecuteQueryWithoutAnswer($"UPDATE Levels SET Rate = {rate}, Seconds = {time} WHERE Id = {levelId}");
         }
         else if (rate == oldRate)
         {
-            DB.ExecuteQueryWithoutAnswer($"UPDATE Levels SET Seconds = {time} Where Id = {levelId}");
+            DB.ExecuteQueryWithoutAnswer($"UPDATE Levels SET Seconds = {time} WHERE Id = {levelId}");
+        }
+
+        if(rate>=3)
+        {
+            DB.ExecuteQueryWithoutAnswer($"DELETE FROM LockedLevels WHERE NeedForUnlockId = {levelId}");
         }
     }
     public static float GetSensetivity()

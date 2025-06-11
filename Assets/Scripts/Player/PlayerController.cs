@@ -16,10 +16,11 @@ public class PlayerController : MonoBehaviour
     public float LookSpeed = 2.0f;
     public float LookXLimit = 45.0f;
     public float CrouchHeight = 0.6f;
+    [SerializeField]
+    AudioSource playerSource;
     Tween downAnim;
     Tween upAnim;
     Tween currentAnim;
-
     CharacterController characterController;
     Vector3 moveDirection = Vector3.zero;
     float rotationX = 0;
@@ -62,6 +63,13 @@ public class PlayerController : MonoBehaviour
         {
             curSpeedX /= 1.5f;
             curSpeedY /= 1.5f;
+            playerSource.pitch = 0.8f + Random.Range(-0.1f, 0.1f);
+            playerSource.volume = 0.05f;
+        }
+        else
+        {
+            playerSource.pitch = 1.0f+Random.Range(-0.1f, 0.1f);
+            playerSource.volume = 0.1f;
         }
         float movementDirectionY = moveDirection.y;
         moveDirection = (forward * curSpeedX) + (right * curSpeedY);
@@ -70,10 +78,16 @@ public class PlayerController : MonoBehaviour
         {
             moveDirection.y -= Gravity * Time.deltaTime;
         }
-        characterController.Move(moveDirection * Time.deltaTime);
-
         if (canMove)
         {
+            characterController.Move(moveDirection * Time.deltaTime);
+            if (new Vector3(moveDirection.x,0,moveDirection.z).magnitude > 0.1f && characterController.isGrounded)
+            {
+                if (playerSource != null && !playerSource.isPlaying)
+                {
+                    playerSource.Play();
+                }
+            }
             rotationX += -PlayerControls.Player.Look.ReadValue<Vector2>().y * LookSpeed;
             rotationX = Mathf.Clamp(rotationX, -LookXLimit, LookXLimit);
             PlayerCamera.transform.localRotation = Quaternion.Euler(rotationX, 0, 0);

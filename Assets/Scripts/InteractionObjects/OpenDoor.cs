@@ -10,6 +10,11 @@ public class OpenDoor : MonoBehaviour
     Vector3 angle = new Vector3(0, 90, 0);
     [SerializeField]
     float zDelta = 1;
+
+    [SerializeField]
+    AudioSource openSource;
+    [SerializeField]
+    AudioSource closeSource;
     public bool IsOpen { get; private set; }
     Tween openAnim;
     Tween closeAnim;
@@ -49,6 +54,7 @@ public class OpenDoor : MonoBehaviour
         }
         currentAnim = openAnim;
         openAnim.Restart();
+        if (openSource != null) openSource.Play();
     }
     public void Close()
     {
@@ -58,5 +64,6 @@ public class OpenDoor : MonoBehaviour
         }
         currentAnim = closeAnim;
         closeAnim.Restart();
+        if(closeSource!=null) closeSource.Play();
     }
 }

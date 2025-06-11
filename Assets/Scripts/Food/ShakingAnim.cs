@@ -7,6 +7,8 @@ public class ShakingAnim : MonoBehaviour
     Vector3 angle = new Vector3(0, 0, 10);
     [SerializeField]
     float time = 0.5f;
+    [SerializeField]
+    AudioSource addSource;
     Tween shakeAnim;
     private void Awake()
     {
@@ -18,5 +20,6 @@ public class ShakingAnim : MonoBehaviour
     public void Shake()
     {
         shakeAnim.Restart();
+        if (addSource != null) addSource.Play();
     }
 }

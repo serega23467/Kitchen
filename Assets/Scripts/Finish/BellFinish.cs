@@ -10,11 +10,17 @@ public class BellFinish : MonoBehaviour
 {
     [SerializeField]
     TableCollisions table;
+    [SerializeField]
+    AudioSource dingSource;
     public static LevelInfo Level { get; private set; }
     private void Awake()
     {
         SettingsInit.UpdateCurrentLevelName();
         Level = JsonLoader.LoadLevelInfo(SettingsInit.CurrentLevelName);      
+    }
+    private void Start()
+    {
+        if (dingSource != null) dingSource.volume = 0.2f;
     }
     public void DingBell(Action OnFinishMenuOpen)
     {
@@ -25,6 +31,7 @@ public class BellFinish : MonoBehaviour
             //SaveDish(finishPlate.GetRecipe());
             int rate = Compare(out string result, Level.Recipe, finishPlate.GetRecipe());
             int time = UIElements.GetInstance().GetTimerTime();
+            if(dingSource!=null) dingSource.Play();
             OnFinishMenuOpen?.Invoke();
             UIElements.GetInstance().ShowPanelResult(Level, rate, time, result);
             SettingsInit.UpdateLevelInfo(rate, time);

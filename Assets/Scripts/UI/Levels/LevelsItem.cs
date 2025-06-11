@@ -51,7 +51,15 @@ public class LevelsItem : RecyclingListViewItem
                 stars[i].color = Color.yellow;
             }
             buttonPlay.onClick.RemoveAllListeners();
-            buttonPlay.onClick.AddListener(LoadLevel);
+            if(levelInfo.IsLocked)
+            {
+                buttonPlay.enabled = false;
+                buttonPlay.gameObject.transform.localScale = Vector3.zero;
+            }
+            else
+            {
+                buttonPlay.onClick.AddListener(LoadLevel);               
+            }
         }
     }
     void LoadLevel()
