@@ -7,15 +7,9 @@ using UnityEngine;
 
 public class UIElements : MonoBehaviour
 {
-    GameObject canvas;
     UnityEngine.UI.Image panelMenu;
-    UnityEngine.UI.Image panelSettings;
-
-    Vector3 scrollViewSize;
     Vector3 panelMenuSize;
-    Vector3 panelSettingsSize;
 
-    RectTransform scrollView;
     ScrollPanel scrollPanel;
     SettingsMenu settingsMenu;
     SliderMenu sliderMenu;
@@ -24,6 +18,7 @@ public class UIElements : MonoBehaviour
     Timer timer;
     PanelInfo panelInfo;
     PanelRecipe panelRecipe;
+    PanelTutorial panelTutorial;
 
     static ToastInfo lastMessage;
     private static UIElements instance;
@@ -35,33 +30,29 @@ public class UIElements : MonoBehaviour
         else
             instance = this;
 
-        instance.canvas = GameObject.Find("Canvas");
-        instance.scrollPanel = instance.canvas.GetComponent<ScrollPanel>();
+        scrollPanel = GameObject.Find("PanelContent").GetComponent<ScrollPanel>();
 
-        instance.scrollView = GameObject.Find("Scroll View").GetComponent<RectTransform>();
-        instance.scrollViewSize = instance.scrollView.localScale;
+        panelRecipe = GameObject.Find("PanelRecipe").GetComponent<PanelRecipe>();
 
-        instance.panelRecipe = GameObject.Find("PanelRecipe").GetComponent<PanelRecipe>();
+        panelInfo = GameObject.Find("PanelInfo").GetComponent<PanelInfo>(); 
 
-        instance.panelInfo = GameObject.Find("PanelInfo").GetComponent<PanelInfo>(); 
+        finishWindow = GameObject.Find("PanelResult").GetComponent<FinishWindow>();
 
-        instance.finishWindow = GameObject.Find("PanelResult").GetComponent<FinishWindow>();
+        panelMenu = GameObject.Find("PanelMenu").GetComponent<UnityEngine.UI.Image>();
+        panelMenuSize = panelMenu.rectTransform.localScale;
 
-        instance.panelMenu = GameObject.Find("PanelMenu").GetComponent<UnityEngine.UI.Image>();
-        instance.panelMenuSize = instance.panelMenu.rectTransform.localScale;
+        settingsMenu = GameObject.Find("Settings").GetComponent<SettingsMenu>();
 
-        instance.panelSettings = GameObject.Find("Settings").GetComponent<UnityEngine.UI.Image>();
-        instance.panelSettingsSize = instance.panelSettings.rectTransform.localScale;
-        instance.settingsMenu = instance.panelSettings.GetComponent<SettingsMenu>();
+        confirmWindow = GameObject.Find("PanelConfirm").GetComponent<ConfirmWindow>();
 
-        instance.confirmWindow = GameObject.Find("PanelConfirm").GetComponent<ConfirmWindow>();
+        sliderMenu = GameObject.Find("SliderMenu").GetComponent<SliderMenu>();
 
-        instance.sliderMenu = GameObject.Find("SliderMenu").GetComponent<SliderMenu>();
-        instance.sliderMenu.CloseSliderMenu();
+        panelTutorial = GameObject.Find("PanelTutorial").GetComponent<PanelTutorial>();
 
+        timer = GameObject.Find("Timer").GetComponent<Timer>();
         SettingsInit.UpdateVirtualSecond();
-        instance.timer = GameObject.Find("Timer").GetComponent<Timer>();
-        instance.timer.StartTimer();
+        timer.StartTimer();
+
     }
     public static UIElements GetInstance()
     {
@@ -117,22 +108,22 @@ public class UIElements : MonoBehaviour
     }
     public int GetTimerTime()
     {
-        if (instance.timer == null) return -1;
-        return instance.timer.TotalSeconds;
+        if (timer == null) return -1;
+        return timer.TotalSeconds;
     }
     public void ShowPanelResult(LevelInfo info, int playerRate, int totalSeconds, string issues)
     {
-        if(instance.finishWindow != null) 
-            instance.finishWindow.Show(info, playerRate, totalSeconds, issues);
+        if(finishWindow != null) 
+            finishWindow.Show(info, playerRate, totalSeconds, issues);
     }
     public void HidePanelResult()
     {
-        instance.finishWindow.Hide();
+        finishWindow.Hide();
     }
     public void ShowObjectContent(IListable list, bool hasPlate = true)
     {
+        scrollPanel.Show();
         scrollPanel.RetrieveData(list.Foods.ToList(), hasPlate, list.CanPull);
-        scrollView.localScale = scrollViewSize;
     }
     public void UpdateObjectContent(IListable list)
     {
@@ -140,11 +131,11 @@ public class UIElements : MonoBehaviour
     }
     public void HideObjectContent()
     {
-        scrollView.localScale = Vector3.zero;
+        scrollPanel.Hide();
     }
     public void ShowObjectInfo(string nameText, string descText, string dataText)
     {
-        instance.panelInfo.ShowInfo(nameText, descText, dataText);
+        panelInfo.ShowInfo(nameText, descText, dataText);
     }
     public void HideObjectInfo()
     {
@@ -166,14 +157,14 @@ public class UIElements : MonoBehaviour
     }
     public void ShowSettings()
     {
-        panelSettings.gameObject.SetActive(true);
+        settingsMenu.Show();
         settingsMenu.OpenTab("Game");
         settingsMenu.UpdateKeys();
         settingsMenu.UpdateSettings();
     }
     public void HideSettings()
     {
-        panelSettings.gameObject.SetActive(false);
+        settingsMenu.Hide();
     }
     public void OpenSliderMenu(Action<List<FoodComponent>, int> onSelect, List<FoodComponent> list)
     {
@@ -195,6 +186,10 @@ public class UIElements : MonoBehaviour
     public void HideRecipePanel()
     {
         panelRecipe.Hide();
+    }
+    public void ShowTutorialPanel()
+    {
+        panelTutorial.Show();
     }
     public void ExitToMainMenu()
     {

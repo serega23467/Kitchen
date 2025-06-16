@@ -61,11 +61,12 @@ public class SceneLoader : MonoBehaviour
     {
         if (instance == null) return;
 
-        instance.loadingSceneOperation = SceneManager.LoadSceneAsync(sceneName);
-        instance.loadingSceneOperation.allowSceneActivation = false;
-
         instance.gameObject.SetActive(true);
         instance.showAnim.onComplete = () => { instance.loadingSceneOperation.allowSceneActivation = true; };
         instance.showAnim.Restart();
+
+        instance.loadingSceneOperation = SceneManager.LoadSceneAsync(sceneName);
+        instance.loadingSceneOperation.allowSceneActivation = false;
+
     }
 }

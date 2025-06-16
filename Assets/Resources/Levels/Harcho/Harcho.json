@@ -121,7 +121,7 @@
       {
         "FoodId": "Onion",
         "FoodName": "Лук",
-        "GramsWeight": 0.555555522441864,
+        "GramsWeight": 0.3333333,
         "IsPour": false,
         "AllCutTypes": [
           0,

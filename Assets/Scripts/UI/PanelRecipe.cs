@@ -13,12 +13,12 @@ public class PanelRecipe : MonoBehaviour
     {       
         panelRect = GetComponent<RectTransform>();
         size = panelRect.localScale;
-        Hide();
     }
     private void Start()
     {
         recipeText.text = BellFinish.Level.RecipeText;
         recipeText.fontSize = UIElements.GetFontSize(recipeText.text.Length);
+        Hide();
     }
     public void Show()
     {

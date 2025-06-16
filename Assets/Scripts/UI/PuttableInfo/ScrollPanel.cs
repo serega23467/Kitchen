@@ -7,7 +7,8 @@ using UnityEngine.InputSystem.HID;
 
 public class ScrollPanel : MonoBehaviour
 {
-    public RecyclingListView theList;
+    [SerializeField]
+    private RecyclingListView theList;
     private List<FoodComponent> allElements = new List<FoodComponent>();
     private List<FoodComponent> data = new List<FoodComponent>();
     bool hasPlateInHands = false;
@@ -15,6 +16,7 @@ public class ScrollPanel : MonoBehaviour
     void Start()
     {
         RetrieveData(new List<FoodComponent>());
+        Hide();
     }
 
     public void RetrieveData(List<FoodComponent> food, bool hasPlate = true, bool canPull = false)
@@ -32,6 +34,19 @@ public class ScrollPanel : MonoBehaviour
         }
         theList.RowCount = data.Count;
         theList.Refresh();
+    }
+    public void Show()
+    {
+        gameObject.SetActive(true);
+    }
+    public void Hide()
+    {
+        Clear();
+        gameObject.SetActive(false);
+    }
+    void Clear()
+    {
+        RetrieveData(new List<FoodComponent>());
     }
     private void PopulateItem(RecyclingListViewItem item, int rowIndex)
     {

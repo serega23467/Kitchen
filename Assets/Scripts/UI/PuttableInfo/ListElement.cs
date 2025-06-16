@@ -36,11 +36,14 @@ public class ListElement : RecyclingListViewItem
             food = value;
             foodName.text = value.FoodInfo.FoodName;
             foodWeight.text = value.FoodInfo.GramsWeight.ToString("N1") + " ã";
-            if(!HasPlate || !CanPull)
+            if (HasPlate && CanPull)
             {
-                Button.enabled = false;
-                Button.gameObject.transform.localScale = Vector3.zero;
-            }    
+                Button.gameObject.SetActive(true);
+            }
+            else
+            {
+                Button.gameObject.SetActive(false);
+            }
         }
     }
 }

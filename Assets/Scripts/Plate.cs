@@ -62,6 +62,7 @@ public class Plate : MonoBehaviour, IListable, IFinish
             randomOffset.z = UnityEngine.Random.Range(-randomRange.z, randomRange.z);
 
             food.gameObject.transform.position = transform.position + offset + randomOffset;
+            food.gameObject.transform.localRotation = Quaternion.identity;
             food.gameObject.transform.parent = transform;
             food.plate = this;
             UpdateInfo();

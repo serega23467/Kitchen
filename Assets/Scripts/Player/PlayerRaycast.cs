@@ -79,7 +79,7 @@ public class PlayerRaycast : MonoBehaviour
         {
             RaycastHit infoHit;
             if (Physics.Raycast(cam.transform.position, cam.transform.forward, out infoHit, showInfoDistance, LayerMask.GetMask("DraggableObject") | LayerMask.GetMask("InteractiveObject"))
-            && infoHit.collider.TryGetComponent(out ShowObjectInfo info))
+            &&  ComponentGetter.TryGetComponent(infoHit.collider, out ShowObjectInfo info))
             {
                 if (currentInfoObject == null)
                 {
@@ -129,7 +129,7 @@ public class PlayerRaycast : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(cam.transform.position, cam.transform.forward, out hit, raycastDistance, LayerMask.GetMask("DraggableObject")))
         {
-            if (hit.collider.TryGetComponent(out DraggableObject draggableObject))
+            if (ComponentGetter.TryGetComponent(hit.collider, out DraggableObject draggableObject))
             {
                 if (draggableObject.CanDrag)
                 {
@@ -238,7 +238,7 @@ public class PlayerRaycast : MonoBehaviour
                 {
                     if(food.FoodInfo.IsPour)
                     {
-                        if(hit.collider.TryGetComponent(out Plate plate))
+                        if(ComponentGetter.TryGetComponent(hit.collider, out Plate plate))
                         {
                             if(food.GetPour(out FoodComponent pour))
                             {
@@ -248,7 +248,7 @@ public class PlayerRaycast : MonoBehaviour
                                 }
                             }
                         }
-                        else if (hit.collider.TryGetComponent(out Pot pot))
+                        else if (ComponentGetter.TryGetComponent(hit.collider, out Pot pot))
                         {
                             if (pot.HeatedInfo.HasWater)
                             {
@@ -268,7 +268,7 @@ public class PlayerRaycast : MonoBehaviour
                     }
                     else
                     {
-                        if (hit.collider.TryGetComponent(out Plate plate))
+                        if (ComponentGetter.TryGetComponent(hit.collider, out Plate plate))
                         {
                             if (plate.TryAddFood(food))
                             {
@@ -278,7 +278,7 @@ public class PlayerRaycast : MonoBehaviour
                                 CurrentDraggableObject = null;
                             }
                         }
-                        else if (hit.collider.TryGetComponent(out Pot pot))
+                        else if (ComponentGetter.TryGetComponent(hit.collider, out Pot pot))
                         {
                             if (pot.HeatedInfo.HasWater)
                             {
@@ -298,18 +298,18 @@ public class PlayerRaycast : MonoBehaviour
                 }
                 else if (CurrentDraggableObject.TryGetComponent(out SpiceComponent spice))
                 {
-                    if (hit.collider.TryGetComponent(out Plate plate))
+                    if (ComponentGetter.TryGetComponent(hit.collider, out Plate plate))
                     {
                         plate.SpiceFood(spice);
                     }
-                    else if (hit.collider.TryGetComponent(out Pot pot))
+                    else if (ComponentGetter.TryGetComponent(hit.collider, out Pot pot))
                     {
                         pot.SpiceFood(spice);
                     }
                 }
                 else if (CurrentDraggableObject.TryGetComponent(out Plate plate))
                 {
-                    if (hit.collider.TryGetComponent(out Pot pot))
+                    if (ComponentGetter.TryGetComponent(hit.collider, out Pot pot))
                     {
                         if (pot.HeatedInfo.HasWater)
                         {
@@ -327,7 +327,7 @@ public class PlayerRaycast : MonoBehaviour
                             UIElements.ShowToast("Наполните кастрюлю водой чтобы положить в неё что либо!");
                         }
                     }
-                    else if (hit.collider.TryGetComponent(out Plate plate2))
+                    else if (ComponentGetter.TryGetComponent(hit.collider, out Plate plate2))
                     {
                         var foodList = new List<FoodComponent>(plate.Foods);
                         foreach (var f in foodList)
@@ -338,7 +338,7 @@ public class PlayerRaycast : MonoBehaviour
                 }
                 else if (CurrentDraggableObject.TryGetComponent(out PlateDish dish))
                 {
-                    if (hit.collider.TryGetComponent(out Pot pot))
+                    if (ComponentGetter.TryGetComponent(hit.collider, out Pot pot))
                     {
                         if (pot.HeatedInfo.HasWater)
                         {
@@ -353,7 +353,7 @@ public class PlayerRaycast : MonoBehaviour
                     }
                 }
             }
-            else if (hit.collider.TryGetComponent(out FoodComponent food))
+            else if (ComponentGetter.TryGetComponent(hit.collider, out FoodComponent food))
             {
                 if(CurrentDraggableObject == null)
                 {
@@ -402,7 +402,7 @@ public class PlayerRaycast : MonoBehaviour
     public void UpdateSettings()
     {
         SettingsInit.InitControls(playerController.PlayerControls);
-        playerController.LookSpeed = SettingsInit.GetSensetivity();
+        playerController.LookSpeed = DB.GetSensetivity();
     }
     public void Escape()
     {
@@ -441,7 +441,7 @@ public class PlayerRaycast : MonoBehaviour
             RaycastHit hit;
             if (Physics.Raycast(cam.transform.position, cam.transform.forward, out hit, raycastDistance, LayerMask.GetMask("DraggableObject")))
             {
-                if (hit.collider.TryGetComponent(out FoodComponent food))
+                if (ComponentGetter.TryGetComponent(hit.collider, out FoodComponent food))
                 {
                     if (CurrentDraggableObject != null)
                     {

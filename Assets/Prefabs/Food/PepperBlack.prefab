@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4725712042618114395}
   - component: {fileID: 8856778042426921633}
   - component: {fileID: 4069784024370661980}
+  - component: {fileID: 749357291573743695}
   m_Layer: 6
   m_Name: Pepper_Black
   m_TagString: Untagged
@@ -88,6 +89,28 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &749357291573743695
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4187067089583524297}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 6464131658325821580, guid: 8fe93c7e5202e264680b4411b77776c4, type: 3}
 --- !u!1 &5110383501165917024
 GameObject:
   m_ObjectHideFlags: 0
@@ -97,7 +120,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4293361640646186754}
-  - component: {fileID: 2316025413833278016}
   - component: {fileID: 4711932783984804815}
   - component: {fileID: 8335401847885417126}
   - component: {fileID: 4319830819758998388}
@@ -129,27 +151,6 @@ Transform:
   - {fileID: 4725712042618114395}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &2316025413833278016
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5110383501165917024}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.1, y: 0.2, z: 0.1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &4711932783984804815
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -175,7 +176,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 1
-  m_Constraints: 112
+  m_Constraints: 0
   m_CollisionDetection: 0
 --- !u!114 &8335401847885417126
 MonoBehaviour:
@@ -226,7 +227,7 @@ MonoBehaviour:
   audioSource: {fileID: 8192028622649148981}
   minCollisionForce: 0.5
   maxCollisionForce: 60
-  maxVolume: 0.8
+  maxVolume: 0.6
   Type: 2
   CanDrag: 1
   PlaceOffset: {x: 0, y: 0, z: 0}

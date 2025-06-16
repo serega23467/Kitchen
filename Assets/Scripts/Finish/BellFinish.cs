@@ -34,7 +34,7 @@ public class BellFinish : MonoBehaviour
             if(dingSource!=null) dingSource.Play();
             OnFinishMenuOpen?.Invoke();
             UIElements.GetInstance().ShowPanelResult(Level, rate, time, result);
-            SettingsInit.UpdateLevelInfo(rate, time);
+            DB.UpdateLevelInfo(rate, time);
         }
         else
         {

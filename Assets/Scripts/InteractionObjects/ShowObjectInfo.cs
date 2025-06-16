@@ -22,8 +22,14 @@ public class ShowObjectInfo : MonoBehaviour
     }
     void Start()
     {
-        UIElements.GetInstance().HideObjectInfo();
-        UIElements.GetInstance().HideObjectContent();
+        if (ObjectInfo != "" && ObjectInfo.Contains('\''))
+        {
+            ObjectInfo = Translator.ReplaceActionToKey(ObjectInfo);
+        }
+        if(ObjectData!="" && ObjectData.Contains('\''))
+        {
+            ObjectData = Translator.ReplaceActionToKey(ObjectData);
+        }
     }
     public void ShowInfo()
     {

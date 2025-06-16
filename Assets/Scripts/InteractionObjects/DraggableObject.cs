@@ -6,18 +6,20 @@ using UnityEngine.Audio;
 [RequireComponent(typeof(ShowObjectInfo))]
 public class DraggableObject : MonoBehaviour
 {
-    Rigidbody rb;
-    Vector3 targetPosition;
     [SerializeField]
     AudioSource audioSource;
-    bool follow;
 
     [SerializeField]
     float minCollisionForce = 10f;
     [SerializeField]
     float maxCollisionForce = 60f;
     [SerializeField]
-    float maxVolume = 1f;
+    float maxVolume = 0.6f;
+
+    Rigidbody rb;
+    bool follow;
+    Vector3 targetPosition;
+    List<Collider> colliders;
 
     public DraggableType Type = DraggableType.Food;
     public bool CanDrag = true;
@@ -36,7 +38,7 @@ public class DraggableObject : MonoBehaviour
             if (!follow)
                 return;
             Vector3 moveDirection = targetPosition - rb.position;
-            rb.linearVelocity = moveDirection * 15f;
+            rb.linearVelocity = moveDirection * 10f;
         }
     }
     public void StartFollowingObject()
@@ -44,11 +46,13 @@ public class DraggableObject : MonoBehaviour
         if (CanDrag && !follow)
         {
             follow = true;
-            gameObject.layer = LayerMask.NameToLayer("Default");
+            gameObject.layer = LayerMask.NameToLayer("OnHands");
             foreach (Transform child in transform)
             {
-                child.gameObject.layer = LayerMask.NameToLayer("Default");
+                child.gameObject.layer = LayerMask.NameToLayer("OnHands");
             }
+            rb.gameObject.transform.localRotation = Quaternion.identity;
+            rb.constraints = RigidbodyConstraints.FreezeRotation;
         }
     }
     public void SetTargetPosition(Vector3 newTargetPosition)
@@ -59,12 +63,13 @@ public class DraggableObject : MonoBehaviour
     public void StopFollowingObject()
     {
         follow = false;
-        rb.linearVelocity = Vector3.zero;
+        //rb.linearVelocity = Vector3.zero;
         gameObject.layer = LayerMask.NameToLayer("DraggableObject");
         foreach (Transform child in transform)
         {
             child.gameObject.layer = LayerMask.NameToLayer("DraggableObject");
         }
+        rb.constraints = RigidbodyConstraints.None;      
     }
     public void OffRigidbody()
     {
@@ -76,8 +81,7 @@ public class DraggableObject : MonoBehaviour
         var rb = gameObject.AddComponent<Rigidbody>();
         this.rb = rb;
         this.rb.maxAngularVelocity = 1f;
-        this.rb.maxLinearVelocity = 15f;
-        this.rb.constraints = RigidbodyConstraints.FreezeRotation;
+        this.rb.maxLinearVelocity = 15f;     
     }
     private void OnCollisionEnter(Collision collision)
     {

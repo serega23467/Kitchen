@@ -62,6 +62,7 @@ public class SettingsMenu : MonoBehaviour
     List<SettingValue> controlPanels;
     List<SettingValue> settingValues;
     Vector3 tabScale;
+    
     int selectedKeyId = -1;
     bool isUpdated = false;
     private void Awake()
@@ -109,15 +110,16 @@ public class SettingsMenu : MonoBehaviour
             resolutionDropdown.options.Add(new TMP_Dropdown.OptionData(resolution.x + "x" + resolution.y));
         }
     }
+    private void Start()
+    {
+        Hide();
+    }
     public void UpdateKeys()
     {
-        List<SettingValue> controls = new List<SettingValue>();
-        DataTable scoreboard = DB.GetTable("SELECT * FROM SettingsControls;");
-        for (int i = 0; i < scoreboard.Rows.Count; i++)
+        List<SettingValue> controls = DB.GetControls();
+        foreach(var control in controls)
         {
-            var info = new SettingValue() { Id = int.Parse(scoreboard.Rows[i][0].ToString()), Name = scoreboard.Rows[i][1].ToString(), Value = scoreboard.Rows[i][2].ToString() };
-            info.OnValueChange.AddListener(ChangeButton);
-            controls.Add(info);
+            control.OnValueChange.AddListener(ChangeButton);
         }
         RetrieveData(controls);
     }
@@ -126,12 +128,7 @@ public class SettingsMenu : MonoBehaviour
         if (isUpdated) return;
 
         settingValues.Clear();
-        DataTable scoreboard = DB.GetTable("SELECT * FROM SettingsValues;");
-        for (int i = 0; i < scoreboard.Rows.Count; i++)
-        {
-            var info = new SettingValue() { Id = int.Parse(scoreboard.Rows[i][0].ToString()), Name = scoreboard.Rows[i][1].ToString(), Value = scoreboard.Rows[i][2].ToString() };
-            settingValues.Add(info);
-        }
+        settingValues = DB.GetSettingValues();
 
         if(AudioManager.Instance.IsSetted)
         {
@@ -203,24 +200,11 @@ public class SettingsMenu : MonoBehaviour
     }
     public void Apply()
     {
-        DataTable scoreboard = DB.GetTable("SELECT Id, Action, Button FROM SettingsControls UNION ALL SELECT * FROM SettingsValues ;");
         int endControlsIndex = controlPanels.Count - 1;
         controlPanels.AddRange(settingValues);
-        for (int i = 0; i < scoreboard.Rows.Count; i++)
-        {
-            var info = new SettingValue() { Id = int.Parse(scoreboard.Rows[i][0].ToString()), Name = scoreboard.Rows[i][1].ToString(), Value = scoreboard.Rows[i][2].ToString() };
-            if (!controlPanels[i].Equals(info) && controlPanels[i].Id == info.Id)
-            {
-                if (i > endControlsIndex)
-                {
-                    DB.ExecuteQueryWithoutAnswer($"UPDATE SettingsValues SET Value = '{controlPanels[i].Value}' Where Id = {info.Id}");
-                }
-                else
-                {
-                    DB.ExecuteQueryWithoutAnswer($"UPDATE SettingsControls SET Button = '{controlPanels[i].Value}' Where Id = {info.Id}");
-                }
-            }
-        }
+        DB.ApplySettings(controlPanels, endControlsIndex);
+       
+
         BrightnessSingleton.GetInstance().IsSetted = false;
         AudioManager.Instance.IsSetted = false;
         UpdateKeys();
@@ -228,7 +212,11 @@ public class SettingsMenu : MonoBehaviour
         SettingsInit.InitVideo();
         SettingsInit.InitAudio();
     }
-    public void HideSettings()
+    public void Show()
+    {
+        gameObject.SetActive(true);
+    }
+    public void Hide()
     {
         gameObject.SetActive(false);
     }    

@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 30781512151900477}
   m_Layer: 6
   m_Name: Pot_thing5
-  m_TagString: Untagged
+  m_TagString: Puttable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -99,7 +99,7 @@ GameObject:
   - component: {fileID: 982971859435876399}
   m_Layer: 6
   m_Name: Pot_thing10
-  m_TagString: Untagged
+  m_TagString: Puttable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -185,7 +185,7 @@ GameObject:
   - component: {fileID: 6771729893819810392}
   m_Layer: 6
   m_Name: Pot_thing9
-  m_TagString: Untagged
+  m_TagString: Puttable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -271,7 +271,7 @@ GameObject:
   - component: {fileID: 2572385059879712702}
   m_Layer: 6
   m_Name: Pot_thing6
-  m_TagString: Untagged
+  m_TagString: Puttable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -357,7 +357,7 @@ GameObject:
   - component: {fileID: 5746608418431904128}
   m_Layer: 6
   m_Name: Pot_handleLf
-  m_TagString: Untagged
+  m_TagString: Puttable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -441,9 +441,10 @@ GameObject:
   - component: {fileID: 3135745506489806508}
   - component: {fileID: 7375082471680484267}
   - component: {fileID: 7604894731023708068}
+  - component: {fileID: 4017741082209442918}
   m_Layer: 6
   m_Name: Pot
-  m_TagString: Untagged
+  m_TagString: Puttable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -516,6 +517,28 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &4017741082209442918
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1508092912725989080}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -8517725900640002782, guid: 991721be711fc614bb0235b598e47ae7, type: 3}
 --- !u!1 &1888726533911042126
 GameObject:
   m_ObjectHideFlags: 0
@@ -529,7 +552,7 @@ GameObject:
   - component: {fileID: 8642532920127701849}
   m_Layer: 6
   m_Name: Pot_thing8
-  m_TagString: Untagged
+  m_TagString: Puttable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -615,7 +638,7 @@ GameObject:
   - component: {fileID: 8953305743747953303}
   m_Layer: 6
   m_Name: Pot_thing11
-  m_TagString: Untagged
+  m_TagString: Puttable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -699,9 +722,9 @@ GameObject:
   - component: {fileID: 2591459551818708360}
   - component: {fileID: 4754046170893834535}
   - component: {fileID: 8915976413275069829}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: water_surface
-  m_TagString: Untagged
+  m_TagString: Puttable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -787,7 +810,7 @@ GameObject:
   - component: {fileID: 5318240334324730093}
   m_Layer: 6
   m_Name: Pot_thing4
-  m_TagString: Untagged
+  m_TagString: Puttable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -869,7 +892,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2146938713544269997}
-  - component: {fileID: 3839633108949170598}
   - component: {fileID: 6960445673761959552}
   - component: {fileID: 3145517475702059233}
   - component: {fileID: 6771633315385725390}
@@ -916,27 +938,6 @@ Transform:
   - {fileID: 984396519885657923}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &3839633108949170598
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4008679443556146913}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.27665165, y: 0.11586305, z: 0.26}
-  m_Center: {x: 0.00023298795, y: 0.02647667, z: 0}
 --- !u!54 &6960445673761959552
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -962,7 +963,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 1
-  m_Constraints: 112
+  m_Constraints: 0
   m_CollisionDetection: 0
 --- !u!114 &3145517475702059233
 MonoBehaviour:
@@ -979,7 +980,7 @@ MonoBehaviour:
   audioSource: {fileID: 7122843588183681142}
   minCollisionForce: 0.5
   maxCollisionForce: 60
-  maxVolume: 0.8
+  maxVolume: 0.6
   Type: 0
   CanDrag: 1
   PlaceOffset: {x: 0, y: 0.025, z: 0}
@@ -5862,7 +5863,7 @@ GameObject:
   - component: {fileID: 8259893406054847754}
   m_Layer: 6
   m_Name: Pot_thing2
-  m_TagString: Untagged
+  m_TagString: Puttable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5948,7 +5949,7 @@ GameObject:
   - component: {fileID: 6928294868248092029}
   m_Layer: 6
   m_Name: Pot_thing7
-  m_TagString: Untagged
+  m_TagString: Puttable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6034,7 +6035,7 @@ GameObject:
   - component: {fileID: 4393024184418697171}
   m_Layer: 6
   m_Name: Pot_thing3
-  m_TagString: Untagged
+  m_TagString: Puttable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6120,7 +6121,7 @@ GameObject:
   - component: {fileID: 1062941934280076666}
   m_Layer: 6
   m_Name: Pot_thing
-  m_TagString: Untagged
+  m_TagString: Puttable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6206,7 +6207,7 @@ GameObject:
   - component: {fileID: 7901332774278870973}
   m_Layer: 6
   m_Name: Pot_handleRt
-  m_TagString: Untagged
+  m_TagString: Puttable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6289,9 +6290,9 @@ GameObject:
   m_Component:
   - component: {fileID: 978212690666975392}
   - component: {fileID: 406750413741519694}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Water_Surface
-  m_TagString: Untagged
+  m_TagString: Puttable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6337,7 +6338,7 @@ GameObject:
   - component: {fileID: 910388997233195453}
   m_Layer: 6
   m_Name: Pot_thing1
-  m_TagString: Untagged
+  m_TagString: Puttable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

@@ -89,7 +89,7 @@ public class PlateDish : MonoBehaviour, IListable, IFinish
             {
                 return false;
             }
-            else if (sortedFoods1[i].GramsWeight != sortedFoods2[i].GramsWeight)
+            else if (sortedFoods1[i].GramsWeight - sortedFoods2[i].GramsWeight > 0.001f)
             {
                 return false;
             }

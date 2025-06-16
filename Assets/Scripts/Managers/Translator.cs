@@ -1,6 +1,7 @@
  using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
+using static UnityEngine.UI.Image;
 
 public class Translator
 {
@@ -29,6 +30,27 @@ public class Translator
     public string GetTranslate(string word)
     {
         return translate[word];
+    }
+    public static string ReplaceActionToKey(string original)
+    {
+        int startIndex = original.IndexOf('\'');
+
+        int endIndex = original.IndexOf('\'', startIndex + 1);
+
+        if (startIndex != -1 && endIndex != -1)
+        {
+            string prefix = original.Substring(0, startIndex);
+            string suffix = original.Substring(endIndex + 1);
+
+            var actionKeyDict = DB.GetActionKeyPairs();
+            string actionName = original.Substring(startIndex+1, endIndex-startIndex-1);
+            if (actionKeyDict.TryGetValue(actionName, out string keyboardKey))
+            {
+                return $"{prefix}{keyboardKey}{suffix}";
+            }
+        }
+        return original;
+
     }
     public static string GetTimeBySeconds(int totalSeconds)
     {

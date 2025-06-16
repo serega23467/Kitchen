@@ -12,32 +12,16 @@ public class LevelsMenu : MonoBehaviour
     {
         levelsList = new List<Level>();
     }
+    private void Start()
+    {
+        Hide();
+    }
     public void UpdateLevels()
     {
-        List<Level> levels = new List<Level>();
-        DataTable scoreboard = DB.GetTable("SELECT l.Id, l.Name, l.Description, l.ImageName, l.Rate, l.Seconds, r.RecipeFileName " +
-            "FROM Levels l JOIN Recipes r ON r.Id = l.RecipeId;");
-        for (int i = 0; i < scoreboard.Rows.Count; i++)
-        {
-            var info = new Level() { 
-                Id = int.Parse(scoreboard.Rows[i][0].ToString()),
-                Name = scoreboard.Rows[i][1].ToString(), 
-                Description = scoreboard.Rows[i][2].ToString(), 
-                ImageName = scoreboard.Rows[i][3].ToString(), 
-                Rate = int.Parse(scoreboard.Rows[i][4].ToString()),
-                Seconds = int.Parse(scoreboard.Rows[i][5].ToString()),
-                FolderName = scoreboard.Rows[i][6].ToString(),             
-            };
-            if(CheckLock(info.Id))
-            {
-                info.IsLocked = CheckLock(info.Id);
-                info.ImageName = "";
-            }
-            levels.Add(info);
-        }
+        var levels = DB.GetLevels();
         RetrieveData(levels);
     }
-    public void HideLevelsMenu()
+    public void Hide()
     {
         gameObject.SetActive(false);
     }
@@ -56,14 +40,5 @@ public class LevelsMenu : MonoBehaviour
     {
         var child = item as LevelsItem;
         child.LevelInfo = levelsList[rowIndex];
-    }
-    bool CheckLock(int levelId)
-    {
-        DataTable scoreboard = DB.GetTable($"SELECT LockedId FROM LockedLevels WHERE LockedId = {levelId}");
-        if(scoreboard.Rows.Count>0)
-        {
-            return true;
-        }
-        return false;
-    }
+    }  
 }

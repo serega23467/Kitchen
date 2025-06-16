@@ -20,6 +20,9 @@ public class ConfirmWindow : MonoBehaviour
     {
         panelRect = GetComponent<RectTransform>();
         size = panelRect.localScale;
+    }
+    private void Start()
+    {
         Hide();
     }
     public void Show(string text, Action<bool> OnConfirm)

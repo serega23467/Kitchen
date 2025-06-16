@@ -40,6 +40,7 @@ public class Water : MonoBehaviour, IListable
     {
         food.gameObject.transform.parent = transform;
         food.gameObject.transform.localScale = Vector3.zero;
+        food.gameObject.transform.position = transform.parent.position;
         Foods.Add(food);;
     }
     public void AddFood(List<FoodComponent> foods)

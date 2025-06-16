@@ -53,21 +53,19 @@ public class LevelsItem : RecyclingListViewItem
             buttonPlay.onClick.RemoveAllListeners();
             if(levelInfo.IsLocked)
             {
-                buttonPlay.enabled = false;
-                buttonPlay.gameObject.transform.localScale = Vector3.zero;
+                buttonPlay.gameObject.SetActive(false);
             }
             else
             {
-                buttonPlay.onClick.AddListener(LoadLevel);               
+                buttonPlay.gameObject.SetActive(true);
+                buttonPlay.onClick.AddListener(LoadLevel);
             }
         }
     }
     void LoadLevel()
     {
-        DataTable scoreboard = DB.GetTable("SELECT Id FROM CurrentLevel;");
-        if(int.TryParse(scoreboard.Rows[0][0].ToString(), out int result))
-        {
-            DB.ExecuteQueryWithoutAnswer($"UPDATE CurrentLevel SET LevelId = {levelInfo.Id} Where Id = {result}");
+        if(DB.TryUpdateCurrentLevel(levelInfo.Id))
+        {         
             SceneLoader.PlayHideOnAwake = true;
             SceneLoader.SwitchScene("Gameplay");
             AudioManager.Instance.PlayMusic("gameplay");

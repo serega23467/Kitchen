@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1797997978504582069}
-  - component: {fileID: 5510023734008773528}
   - component: {fileID: 1101237710825075962}
   - component: {fileID: 8553076662230865949}
   - component: {fileID: 3494398411276301254}
@@ -38,27 +37,6 @@ Transform:
   - {fileID: 1121757054246917700}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &5510023734008773528
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2268019715151204667}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.06945801, y: 0.016254544, z: 0.06453514}
-  m_Center: {x: 0.015882492, y: 0.0063485187, z: -0.0037907083}
 --- !u!54 &1101237710825075962
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -132,6 +110,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40c7831c80d51e147bf7ed9575b49d41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  audioSource: {fileID: 0}
+  minCollisionForce: 10
+  maxCollisionForce: 60
+  maxVolume: 0.6
   Type: 2
   CanDrag: 1
   PlaceOffset: {x: 0, y: 0, z: 0}
@@ -166,6 +148,7 @@ GameObject:
   - component: {fileID: 1121757054246917700}
   - component: {fileID: 6564769828572763660}
   - component: {fileID: 2710141772270233172}
+  - component: {fileID: 3351614706470081808}
   m_Layer: 6
   m_Name: potato_cube
   m_TagString: Untagged
@@ -241,3 +224,25 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &3351614706470081808
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3418317176634944260}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -7102350196987980496, guid: 55150294fadcc9d4e8b3490a2c756f03, type: 3}

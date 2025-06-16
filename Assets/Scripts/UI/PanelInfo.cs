@@ -17,6 +17,9 @@ public class PanelInfo : MonoBehaviour
     {
         panelRect = GetComponent<RectTransform>();
         size = panelRect.localScale;
+    }
+    private void Start()
+    {
         Hide();
     }
     public void ShowInfo(string header, string info, string data)

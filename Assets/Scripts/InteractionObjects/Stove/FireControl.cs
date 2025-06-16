@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class FireControl : MonoBehaviour
 {
+    [SerializeField]
+    AudioSource fireSource;
     ParticleSystem flame;
     Dictionary<byte, Vector3> dictFlame = new Dictionary<byte, Vector3>();
     void Start()
@@ -19,6 +21,8 @@ public class FireControl : MonoBehaviour
 
             flame.Pause();
         }
+
+        if (fireSource != null) fireSource.volume = 0.9f;
     }
     public void ChangeFire(byte level)
     {
@@ -30,15 +34,22 @@ public class FireControl : MonoBehaviour
                 {
                     flame.Pause();
                     flame.gameObject.SetActive(false);
+                    if (fireSource != null && fireSource.isPlaying)
+                    {
+                        fireSource.Stop();
+                    }
                 }
             }
             else
-            {
-            
+            {            
                 if (flame.isPaused || !flame.gameObject.activeSelf)
                 {
                     flame.gameObject.SetActive(true);
                     flame.Play();
+                    if(fireSource != null && !fireSource.isPlaying)
+                    {
+                        fireSource.Play();
+                    }
                 }
                 flame.gameObject.transform.localScale = dictFlame[level];
             }

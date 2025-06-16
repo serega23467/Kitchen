@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 872709345961549723}
   - component: {fileID: 933300757469734746}
   - component: {fileID: 8791467524310701758}
+  - component: {fileID: 7672379443113666750}
   m_Layer: 6
   m_Name: Tomato
   m_TagString: Untagged
@@ -87,6 +88,28 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &7672379443113666750
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1793913692986456790}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -1340541719380434750, guid: d21c598bdc9150a4cb625f306fc71e99, type: 3}
 --- !u!1 &4341448151582743672
 GameObject:
   m_ObjectHideFlags: 0
@@ -96,7 +119,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6862822338063414190}
-  - component: {fileID: 287861977121411754}
   - component: {fileID: 6377680522418103768}
   - component: {fileID: 8874314087039714536}
   - component: {fileID: 1684472227190178753}
@@ -125,27 +147,6 @@ Transform:
   - {fileID: 872709345961549723}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &287861977121411754
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4341448151582743672}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.13196087, y: 0.010660887, z: 0.13373375}
-  m_Center: {x: -0.0002875328, y: -0.00021135807, z: 0.00006198883}
 --- !u!54 &6377680522418103768
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -219,6 +220,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40c7831c80d51e147bf7ed9575b49d41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  audioSource: {fileID: 0}
+  minCollisionForce: 10
+  maxCollisionForce: 60
+  maxVolume: 0.6
   Type: 2
   CanDrag: 1
   PlaceOffset: {x: 0, y: 0, z: 0}

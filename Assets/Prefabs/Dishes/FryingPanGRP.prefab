@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 9164827137640122596}
   m_Layer: 6
   m_Name: Pan
-  m_TagString: Untagged
+  m_TagString: Puttable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -99,7 +99,6 @@ GameObject:
   - component: {fileID: 5100076291667912770}
   - component: {fileID: 2993007698421538732}
   - component: {fileID: 2033113858294938228}
-  - component: {fileID: 6672220623395965134}
   - component: {fileID: 8938718122866156906}
   - component: {fileID: 7180362544129518130}
   - component: {fileID: 6140813830351167474}
@@ -124,6 +123,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 2367479533848333880}
   - {fileID: 4391231744692283927}
   - {fileID: 7529384746146218410}
   - {fileID: 2405479599683942227}
@@ -142,7 +142,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ObjectName: "\u0421\u043A\u043E\u0432\u043E\u0440\u043E\u0434\u043A\u0430"
-  ObjectInfo: "\u041D\u0430\u0436\u043C\u0438\u0442\u0435 X \u0434\u0435\u0440\u0436\u0430
+  ObjectInfo: "\u041D\u0430\u0436\u043C\u0438\u0442\u0435 '\u041F\u0435\u0440\u0435\u043C\u0435\u0441\u0442\u0438\u0442\u044C
+    \u0432 \u0451\u043C\u043A\u043E\u0441\u0442\u044C' \u0434\u0435\u0440\u0436\u0430
     \u0432 \u0440\u0443\u043A\u0430\u0445 \u0442\u0430\u0440\u0435\u043B\u043A\u0443
     \u0438\u043B\u0438 \u043F\u0440\u043E\u0434\u0443\u043A\u0442 \u0447\u0442\u043E\u0431\u044B
     \u043F\u0435\u0440\u0435\u043B\u043E\u0436\u0438\u0442\u044C"
@@ -163,7 +164,7 @@ MonoBehaviour:
   audioSource: {fileID: 6140813830351167474}
   minCollisionForce: 0.5
   maxCollisionForce: 60
-  maxVolume: 0.8
+  maxVolume: 0.6
   Type: 0
   CanDrag: 1
   PlaceOffset: {x: 0, y: 0, z: 0}
@@ -175,7 +176,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 368887823956514368}
   serializedVersion: 4
-  m_Mass: 5000
+  m_Mass: 5
   m_Drag: 1
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -192,7 +193,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 1
-  m_Constraints: 112
+  m_Constraints: 0
   m_CollisionDetection: 0
 --- !u!114 &2033113858294938228
 MonoBehaviour:
@@ -207,27 +208,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fryingPanSource: {fileID: 7511186956106745657}
---- !u!65 &6672220623395965134
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 368887823956514368}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.49, y: 0.036282204, z: 0.46}
-  m_Center: {x: 0, y: -0.0068588965, z: 0}
 --- !u!114 &8938718122866156906
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -470,9 +450,10 @@ GameObject:
   - component: {fileID: 2405479599683942227}
   - component: {fileID: 3075249650083711596}
   - component: {fileID: 4790303202220184274}
+  - component: {fileID: 3509947785057887898}
   m_Layer: 6
   m_Name: PanMetal
-  m_TagString: Untagged
+  m_TagString: Puttable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -545,6 +526,82 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &3509947785057887898
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 561284770410202439}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 358271914170653804, guid: 991721be711fc614bb0235b598e47ae7, type: 3}
+--- !u!1 &2367125945217966836
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2367479533848333880}
+  - component: {fileID: 6447243200490711057}
+  m_Layer: 6
+  m_Name: Pan (1)
+  m_TagString: Puttable
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2367479533848333880
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2367125945217966836}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: -0.020399988, z: 0.0080013275}
+  m_LocalScale: {x: 1.5000006, y: 0.24, z: 1.5000006}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8755052872836458583}
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+--- !u!64 &6447243200490711057
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2367125945217966836}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -7921095120403375834, guid: 991721be711fc614bb0235b598e47ae7, type: 3}
 --- !u!1 &5255426164020021698
 GameObject:
   m_ObjectHideFlags: 0
@@ -556,9 +613,10 @@ GameObject:
   - component: {fileID: 4391231744692283927}
   - component: {fileID: 4368668423253804423}
   - component: {fileID: 6852292753148243922}
+  - component: {fileID: 8391695578816797873}
   m_Layer: 6
   m_Name: Handle
-  m_TagString: Untagged
+  m_TagString: Puttable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -631,3 +689,25 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &8391695578816797873
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5255426164020021698}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -6659003102834268097, guid: 991721be711fc614bb0235b598e47ae7, type: 3}

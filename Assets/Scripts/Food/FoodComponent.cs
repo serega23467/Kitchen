@@ -35,20 +35,21 @@ public class FoodComponent : MonoBehaviour, ICloneable
             //FoodInfo.CurrentCutType = CutType.None;
         }
         //FoodInfo.Params = new List<FoodParametr>();
+        info.ObjectInfo = "Нажмите 'Переместить в ёмкость' на посуду чтобы положить";
         if (FoodInfo.IsPour)
         {
             if (isInstanceSpawned)
             {
-                info.ObjectInfo = $"{FoodInfo.GramsWeight} г";
+                info.ObjectInfo += $"\n{FoodInfo.GramsWeight} г";
             }
             else
             {
-                info.ObjectInfo = $"{FoodInfo.GramsWeight} г за раз";
+                info.ObjectInfo += $"\n{FoodInfo.GramsWeight} г за раз";
             }
         }
         else
         {
-            info.ObjectInfo = $"{FoodInfo.GramsWeight.ToString("N1")} г\n({Translator.GetInstance().GetTranslate(FoodInfo.CurrentCutType.ToString())})";
+            info.ObjectInfo += $"\n{FoodInfo.GramsWeight.ToString("N1")} г\n({Translator.GetInstance().GetTranslate(FoodInfo.CurrentCutType.ToString())})";
         }
         OnPull = new UnityEvent<FoodComponent>();
         UpdateParamsData();

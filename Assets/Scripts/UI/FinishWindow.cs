@@ -14,20 +14,15 @@ public class FinishWindow : MonoBehaviour
     TMP_Text issuesText;
     [SerializeField]
     Image[] stars;
-    RectTransform rect;
     Vector3 size = Vector3.zero;
-    private void Awake()
-    {
-        rect = GetComponent<RectTransform>();
-    }
+
     private void Start()
     {
-        size = rect.localScale;
         Hide();
     }
     public void Show(LevelInfo info, int playerRate, int totalSeconds, string issues)
     {
-        rect.localScale = size;
+        gameObject.SetActive(true);
         if (playerRate > 0)
             resultText.text = "спнбемэ опнидем";
         else
@@ -43,7 +38,7 @@ public class FinishWindow : MonoBehaviour
     }
     public void Hide()
     {
-        rect.localScale = Vector3.zero;
+        gameObject.SetActive(false);
     }
 
 }

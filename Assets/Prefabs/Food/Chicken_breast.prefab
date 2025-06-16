@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 3937276867769487320}
   - component: {fileID: 4033385817261183473}
   - component: {fileID: 8782749212696160907}
+  - component: {fileID: 8811381128154792306}
   m_Layer: 6
   m_Name: Object_4
   m_TagString: Untagged
@@ -86,6 +87,28 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &8811381128154792306
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 922326997144173227}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -864259460963330315, guid: 098e1cc2035807640b7f4ea77947a5f5, type: 3}
 --- !u!1 &2083131816141447163
 GameObject:
   m_ObjectHideFlags: 0
@@ -98,7 +121,6 @@ GameObject:
   - component: {fileID: 101344524890839199}
   - component: {fileID: 487946243137065937}
   - component: {fileID: 1936757391370093877}
-  - component: {fileID: 2454783986700996559}
   - component: {fileID: 4047119387245770814}
   - component: {fileID: 5472788516595409326}
   - component: {fileID: 550848293012962592}
@@ -150,7 +172,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 1
-  m_Constraints: 112
+  m_Constraints: 0
   m_CollisionDetection: 0
 --- !u!114 &487946243137065937
 MonoBehaviour:
@@ -185,31 +207,10 @@ MonoBehaviour:
   audioSource: {fileID: 550848293012962592}
   minCollisionForce: 0.5
   maxCollisionForce: 60
-  maxVolume: 0.8
+  maxVolume: 0.6
   Type: 2
   CanDrag: 1
   PlaceOffset: {x: 0, y: 0, z: 0}
---- !u!65 &2454783986700996559
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2083131816141447163}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.41, y: 0.09, z: 0.34}
-  m_Center: {x: 0.02, y: 0.03, z: 0.01}
 --- !u!114 &4047119387245770814
 MonoBehaviour:
   m_ObjectHideFlags: 0

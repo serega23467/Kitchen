@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 3100732571931114833}
   - component: {fileID: 3811374613240864048}
   - component: {fileID: 275851174344385904}
-  - component: {fileID: 7500287614221606839}
   - component: {fileID: 7867311579132900994}
   - component: {fileID: 1241542918548725827}
   - component: {fileID: 6212631770348351043}
@@ -64,7 +63,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 1
-  m_Constraints: 112
+  m_Constraints: 0
   m_CollisionDetection: 0
 --- !u!114 &3811374613240864048
 MonoBehaviour:
@@ -99,31 +98,10 @@ MonoBehaviour:
   audioSource: {fileID: 6212631770348351043}
   minCollisionForce: 0.5
   maxCollisionForce: 60
-  maxVolume: 0.8
+  maxVolume: 0.6
   Type: 2
   CanDrag: 1
   PlaceOffset: {x: 0, y: 0, z: 0}
---- !u!65 &7500287614221606839
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1307061283553276490}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.07595408, y: 0.07145957, z: 0.07922602}
-  m_Center: {x: 0.01943177, y: 0.019751586, z: 0.00010180473}
 --- !u!114 &7867311579132900994
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -270,6 +248,7 @@ GameObject:
   - component: {fileID: 1131871073909662387}
   - component: {fileID: 1457097499584223920}
   - component: {fileID: 1726298068204166085}
+  - component: {fileID: 7842875803496627540}
   m_Layer: 6
   m_Name: garlic_01_LOD0
   m_TagString: Untagged
@@ -345,3 +324,25 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &7842875803496627540
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5097857627993254003}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -2092553437029558778, guid: c3afef402cbc6bc48b90c1c288ea5554, type: 3}

@@ -15,6 +15,8 @@ public class MainMenu : MonoBehaviour
     SettingsMenu settingsMenu;
     [SerializeField]
     LevelsMenu levelsMenu;
+    [SerializeField]
+    PanelTutorial tutorial;
     private void Start()
     {
         SettingsInit.InitVideo();
@@ -37,6 +39,13 @@ public class MainMenu : MonoBehaviour
         {
             levelsMenu.gameObject.SetActive(true);
             levelsMenu.UpdateLevels();
+        }
+    }
+    public void ShowTutorial()
+    {
+        if(tutorial!=null)
+        {
+            tutorial.Show();
         }
     }
     public void Quit()

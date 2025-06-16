@@ -30,6 +30,8 @@ public class SliderMenu : MonoBehaviour
         sliderCount.maxValue = 1;
         sliderCount.onValueChanged.AddListener(UpdateSliderValue);
         UpdateSliderValue(sliderCount.value);
+
+        Hide();
     }
     public void OpenSliderMenu(Action<List<FoodComponent>, int> onSelect, List<FoodComponent> list)
     {
@@ -39,11 +41,11 @@ public class SliderMenu : MonoBehaviour
 
         button.onClick.RemoveAllListeners();
         button.onClick.AddListener(delegate() { onSelect.Invoke(list, Convert.ToInt32(sliderCount.value));});
-        button.onClick.AddListener(CloseSliderMenu);
+        button.onClick.AddListener(Hide);
         rectTransform.localScale = menuSize;
         IsOpen = true;
     }
-    public void CloseSliderMenu()
+    public void Hide()
     {
         rectTransform.localScale = Vector3.zero;
         sliderCount.value = 0;
