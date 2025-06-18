@@ -5,12 +5,14 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 public static class SettingsInit 
 {
     static float virtualSecond = 0;
 
     static string currentLevelName;
+    static UnityEvent onUpdateKeys;
     public static float VirtualSecond
     {
         get 
@@ -93,5 +95,15 @@ public static class SettingsInit
     public static void UpdateCurrentLevelName()
     {
         currentLevelName = DB.GetCurrentLevelName();
+    }
+    public static void AddListenerOnUpdateKeys(UnityAction action)
+    {
+        if (action == null) return;
+        if(onUpdateKeys==null) onUpdateKeys = new UnityEvent();
+        onUpdateKeys.AddListener(action);
+    }
+    public static void UpdateKeysInterface()
+    {
+        onUpdateKeys.Invoke();
     }
 }

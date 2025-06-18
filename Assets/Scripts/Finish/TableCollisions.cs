@@ -8,7 +8,7 @@ public class TableCollisions : MonoBehaviour
     public IFinish finishPlate;
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.collider.TryGetComponent(out IFinish plate))
+        if (ComponentGetter.TryGetComponent(collision.collider,out IFinish plate))
         {
             if (plate.CanFinish)
             {
@@ -23,7 +23,7 @@ public class TableCollisions : MonoBehaviour
     }
     private void OnCollisionExit(Collision collision)
     {
-        if (collision.collider.TryGetComponent(out IFinish plate))
+        if (ComponentGetter.TryGetComponent(collision.collider, out IFinish plate))
         {
             plate.SetFinishOutline(false);
             if(plate == finishPlate)

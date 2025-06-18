@@ -49,9 +49,9 @@ public class FoodComponent : MonoBehaviour, ICloneable
         }
         else
         {
-            info.ObjectInfo += $"\n{FoodInfo.GramsWeight.ToString("N1")} ã\n({Translator.GetInstance().GetTranslate(FoodInfo.CurrentCutType.ToString())})";
+            info.ObjectInfo += $"\n{FoodInfo.GramsWeight.ToString("N1")} ã\n({Translator.GetInstance().GetTranslate(FoodInfo.CurrentCutType.ToString())})";           
         }
-        OnPull = new UnityEvent<FoodComponent>();
+        if(OnPull==null) OnPull = new UnityEvent<FoodComponent>();
         UpdateParamsData();
     }
     public bool TryAddParameterValue(string paramName, float value)
@@ -121,7 +121,8 @@ public class FoodComponent : MonoBehaviour, ICloneable
             }
             if(plateForParts != null)
             {
-                if(plateForParts.TryAddFood(partFoodComponent))
+                partFoodComponent.OnPull = new UnityEvent<FoodComponent>();
+                if (plateForParts.TryAddFood(partFoodComponent))
                 {
                     var dgo = part.GetComponent<DraggableObject>();
                     if(dgo!=null)
@@ -193,5 +194,9 @@ public class FoodComponent : MonoBehaviour, ICloneable
             return false;
         }
         return false;
+    }
+    private void OnDestroy()
+    {
+        OnPull.RemoveAllListeners();
     }
 }

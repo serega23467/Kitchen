@@ -46,7 +46,7 @@ public class Translator
             string actionName = original.Substring(startIndex+1, endIndex-startIndex-1);
             if (actionKeyDict.TryGetValue(actionName, out string keyboardKey))
             {
-                return $"{prefix}{keyboardKey}{suffix}";
+                return $"{prefix}'{keyboardKey}'{suffix}";
             }
         }
         return original;

@@ -6,23 +6,19 @@ using UnityEngine;
 using UnityEngine.Events;
 
 [RequireComponent(typeof(ShowObjectInfo))]
-public class FryingPan : MonoBehaviour, IHeated, IListable
+public class FryingPan : MonoBehaviour, IHeated
 {
     [SerializeField]
     AudioSource fryingPanSource;
 
     ShowObjectInfo info;
     Plate plate;
-    string foodInfoBoofer = "";
+    string foodDataBoofer = "";
     public HeatedInfo HeatedInfo { get; set; }
-    public ObservableCollection<FoodComponent> Foods { get => plate.Foods; set=>Foods = value; }
-
-    public bool CanPull { get; private set; } = false;
 
     private void Start()
     {
         info = GetComponent<ShowObjectInfo>();
-        foodInfoBoofer = info.ObjectInfo;
         HeatedInfo = new HeatedInfo(temperature: 20, minMassKG: 1, currentMassKG: 1, maxMassKG: 5, hasWater: false, time: 0);
 
         plate = GetComponent<Plate>();
@@ -36,26 +32,31 @@ public class FryingPan : MonoBehaviour, IHeated, IListable
     {
         return plate.Foods.ToList();
     }
-    public void HeatFood(float t, StoveFireType type)
+    public void Heat(float t, StoveFireType type)
     {
         if(fryingPanSource !=null && !fryingPanSource.isPlaying) 
             fryingPanSource.Play();
-        foreach (FoodComponent food in plate?.Foods.ToList())
+        float temp = t;
+        if(plate.Foods.Where(f => f.FoodName == "Butter").Any())
+        {
+            temp /= 10;
+        }
+        foreach (FoodComponent food in plate.Foods.ToList())
         {
             switch(type)
             {
                 case StoveFireType.Oven:
-                    food.TryAddParameterValue("BakeProgress", t);
+                    food.TryAddParameterValue("BakeProgress", temp);
                     break;
                 case StoveFireType.Burner:
-                    food.TryAddParameterValue("FryProgress", t);
+                    food.TryAddParameterValue("FryProgress", temp);
                     break;
             }
         }
     }
     void UpdateFoodsInfo(string data)
     {
-        info.ObjectData = data;
+        foodDataBoofer = data;
     }
     private void Update()
     {
@@ -63,7 +64,7 @@ public class FryingPan : MonoBehaviour, IHeated, IListable
         {
             //костыль выполнения метода интерфейса по умолчанию, т.к. нельзя наследовать несколько классов чтобы использовать абстрактный
             var iheated = this as IHeated;
-            info.ObjectInfo = foodInfoBoofer + "\n"+ iheated.GetInfo(false);
+            info.ObjectData = iheated.GetInfo(false) + "\n" + foodDataBoofer;
         }
     }
     public void AddWater()
@@ -108,5 +109,9 @@ public class FryingPan : MonoBehaviour, IHeated, IListable
     public void OnBoiling(byte level)
     {
         throw new System.NotImplementedException();
+    }
+    public void PutFood(FoodComponent food)
+    {
+        plate.PutFood(food);
     }
 }

@@ -23,6 +23,7 @@ public class UIElements : MonoBehaviour
     static ToastInfo lastMessage;
     private static UIElements instance;
 
+    Stack<IHideble> openedPanels;
     private void Awake()
     {
         if (instance != null && instance != this)
@@ -30,6 +31,7 @@ public class UIElements : MonoBehaviour
         else
             instance = this;
 
+        openedPanels = new Stack<IHideble>();
         scrollPanel = GameObject.Find("PanelContent").GetComponent<ScrollPanel>();
 
         panelRecipe = GameObject.Find("PanelRecipe").GetComponent<PanelRecipe>();
@@ -53,6 +55,10 @@ public class UIElements : MonoBehaviour
         SettingsInit.UpdateVirtualSecond();
         timer.StartTimer();
 
+    }
+    private void Start()
+    {
+        HideMenu();
     }
     public static UIElements GetInstance()
     {
@@ -113,8 +119,11 @@ public class UIElements : MonoBehaviour
     }
     public void ShowPanelResult(LevelInfo info, int playerRate, int totalSeconds, string issues)
     {
-        if(finishWindow != null) 
+        if(finishWindow != null)
+        {
             finishWindow.Show(info, playerRate, totalSeconds, issues);
+            openedPanels.Push(finishWindow);
+        }
     }
     public void HidePanelResult()
     {
@@ -124,6 +133,7 @@ public class UIElements : MonoBehaviour
     {
         scrollPanel.Show();
         scrollPanel.RetrieveData(list.Foods.ToList(), hasPlate, list.CanPull);
+        openedPanels.Push(scrollPanel);
     }
     public void UpdateObjectContent(IListable list)
     {
@@ -133,6 +143,10 @@ public class UIElements : MonoBehaviour
     {
         scrollPanel.Hide();
     }
+    public bool IsContentShowed()
+    {
+        return scrollPanel.isActiveAndEnabled;
+    }    
     public void ShowObjectInfo(string nameText, string descText, string dataText)
     {
         panelInfo.ShowInfo(nameText, descText, dataText);
@@ -161,6 +175,7 @@ public class UIElements : MonoBehaviour
         settingsMenu.OpenTab("Game");
         settingsMenu.UpdateKeys();
         settingsMenu.UpdateSettings();
+        openedPanels.Push(settingsMenu);
     }
     public void HideSettings()
     {
@@ -168,15 +183,17 @@ public class UIElements : MonoBehaviour
     }
     public void OpenSliderMenu(Action<List<FoodComponent>, int> onSelect, List<FoodComponent> list)
     {
-        if(sliderMenu != null && !sliderMenu.IsOpen)
+        if(sliderMenu != null && !sliderMenu.IsActive)
         {
             sliderMenu.OpenSliderMenu(onSelect, list);
+            openedPanels.Push(sliderMenu);
         }
     }
     public void OpenPanelConfirm(string text, Action<bool> OnConfirm)
     {
         if (confirmWindow == null) return;
         confirmWindow.Show(text, OnConfirm);
+        openedPanels.Push(confirmWindow);
 
     }
     public void ShowRecipePanel()
@@ -190,6 +207,21 @@ public class UIElements : MonoBehaviour
     public void ShowTutorialPanel()
     {
         panelTutorial.Show();
+        openedPanels.Push(panelTutorial);
+    }
+    public bool TryEscape()
+    {
+        if(openedPanels.TryPop(out IHideble panel))
+        {
+            if(!panel.IsActive)
+            {
+                return TryEscape();
+            }
+            panel.Hide();
+            return false;
+        }
+        return true;
+
     }
     public void ExitToMainMenu()
     {

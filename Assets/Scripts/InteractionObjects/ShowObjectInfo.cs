@@ -2,8 +2,6 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Scripting;
-using UnityEngine.UI;
 
 [RequireComponent(typeof(Outline))]
 public class ShowObjectInfo : MonoBehaviour
@@ -13,6 +11,9 @@ public class ShowObjectInfo : MonoBehaviour
     public bool CanShowContent = false;
     [HideInInspector]
     public string ObjectData = "";
+
+    string translatedInfo = "";
+
     Outline outline;
     bool hasFinishOutline = false;
     private void Awake()
@@ -22,19 +23,25 @@ public class ShowObjectInfo : MonoBehaviour
     }
     void Start()
     {
+        UpdateTranslate();
+        SettingsInit.AddListenerOnUpdateKeys(UpdateTranslate);
+    }
+    void UpdateTranslate()
+    {
         if (ObjectInfo != "" && ObjectInfo.Contains('\''))
         {
-            ObjectInfo = Translator.ReplaceActionToKey(ObjectInfo);
-        }
-        if(ObjectData!="" && ObjectData.Contains('\''))
-        {
-            ObjectData = Translator.ReplaceActionToKey(ObjectData);
+            translatedInfo = Translator.ReplaceActionToKey(ObjectInfo);
         }
     }
     public void ShowInfo()
     {
         if (ObjectInfo != "" || ObjectData!="" || ObjectName !="")
-            UIElements.GetInstance().ShowObjectInfo(ObjectName + "\n", ObjectInfo, ObjectData);
+        {
+            if(translatedInfo!="")
+                UIElements.GetInstance().ShowObjectInfo(ObjectName + "\n", translatedInfo, ObjectData);
+            else
+                UIElements.GetInstance().ShowObjectInfo(ObjectName + "\n", ObjectInfo, ObjectData);
+        }
     }
     public void HideInfo()
     {

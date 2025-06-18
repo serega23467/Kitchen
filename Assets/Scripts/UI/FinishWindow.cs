@@ -2,7 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class FinishWindow : MonoBehaviour
+public class FinishWindow : MonoBehaviour, IHideble
 {
     [SerializeField]
     TMP_Text resultText;
@@ -14,8 +14,7 @@ public class FinishWindow : MonoBehaviour
     TMP_Text issuesText;
     [SerializeField]
     Image[] stars;
-    Vector3 size = Vector3.zero;
-
+    public bool IsActive => gameObject.activeSelf;
     private void Start()
     {
         Hide();

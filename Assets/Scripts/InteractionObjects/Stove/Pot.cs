@@ -10,7 +10,7 @@ using UnityEngine.InputSystem.Utilities;
 using UnityEngine.Rendering;
 
 [RequireComponent(typeof(ShowObjectInfo))]
-public class Pot : MonoBehaviour, IHeated
+public class Pot : MonoBehaviour, IHeated, IListable
 {
     [SerializeField]
     Material waterWithFoodMaterial;
@@ -19,20 +19,23 @@ public class Pot : MonoBehaviour, IHeated
     [SerializeField]
     AudioSource potSource;
 
-    [HideInInspector]
-    public UnityEvent<FoodComponent> OnRemoveFromWater;
     Water potWater = null;
 
     Renderer waterRend;
     ShowObjectInfo info;
     ParticleSystem smoke;
 
+    public bool CanPull { get; private set; } = true;
+    public ObservableCollection<FoodComponent> Foods { get; set; }
 
     public HeatedInfo HeatedInfo { get; set; }
     string foodInfoBoofer = "";
+    private void Awake()
+    {
+        Foods = new ObservableCollection<FoodComponent>();
+    }
     void Start()
     {
-        OnRemoveFromWater = new UnityEvent<FoodComponent>();
         info = GetComponent<ShowObjectInfo>();
         foodInfoBoofer = info.ObjectInfo;
 
@@ -45,7 +48,7 @@ public class Pot : MonoBehaviour, IHeated
         waterRend = potWater.gameObject.GetComponentInChildren<Renderer>();
         waterMaterial = waterRend.material;
 
-        potWater.Foods.CollectionChanged += ChangeWaterMaterial;
+        Foods.CollectionChanged += ChangeWaterMaterial;
         potWater.gameObject.SetActive(false);
     }
 
@@ -77,7 +80,7 @@ public class Pot : MonoBehaviour, IHeated
     {
         if(potWater!=null && waterRend!=null && waterWithFoodMaterial!=null)
         {
-            if (potWater.Foods.Count() > 0)
+            if (Foods.Count() > 0)
                 waterRend.material = waterWithFoodMaterial;
             else
                 waterRend.material = waterMaterial;
@@ -85,15 +88,21 @@ public class Pot : MonoBehaviour, IHeated
     }
     public void SpiceFood(SpiceComponent spice)
     {
-        potWater.SpiceFood(spice);
+        foreach (FoodComponent food in Foods)
+        {
+            spice.AddSpiceTo(food);
+        }
     }
-    public void HeatWater(float t)
+    public void Heat(float t, StoveFireType type=StoveFireType.Burner)
     {
         if(HeatedInfo.HasWater)
         {
             if (potSource != null && !potSource.isPlaying)
                 potSource.Play();
-            potWater.HeatFood(t);
+            foreach (FoodComponent food in Foods)
+            {
+                food.TryAddParameterValue("BoilProgress", t);
+            }
         }
     }
     public void AddWater()
@@ -104,27 +113,28 @@ public class Pot : MonoBehaviour, IHeated
         potWater.gameObject.SetActive(true);
         potWater.ChangeWaterLevel(HeatedInfo.CurrentMassKG, HeatedInfo.MinMassKG, HeatedInfo.MaxMassKG);
     }
-
-    public void PutToWater(FoodComponent food)
+    public void AddFood(FoodComponent food)
     {
-        potWater.AddFood(food);
+        food.gameObject.transform.parent = transform;
+        food.gameObject.transform.localScale = Vector3.zero;
+        Foods.Add(food);
 
-        OnRemoveFromWater.RemoveAllListeners();
-        OnRemoveFromWater.AddListener(potWater.PutFood);
+        food.OnPull.RemoveAllListeners();
+        food.OnPull.AddListener(PutFood);
     }
-    public void PutToWater(List<FoodComponent> foods)
+    public void AddFood(List<FoodComponent> foods)
     {
-        potWater.AddFood(foods);
-
-        OnRemoveFromWater.RemoveAllListeners();
-        OnRemoveFromWater.AddListener(potWater.PutFood);
+        for (int i = 0; i < foods.Count; i++)
+        {
+            AddFood(foods[i]);
+        }
     }
     public ObservableCollection<FoodComponent> GetFoodsClone()
     {
         ObservableCollection<FoodComponent> foods = new ObservableCollection<FoodComponent>();
-        for(int i = 0; i< potWater.Foods.Count; i++)
+        for(int i = 0; i< Foods.Count; i++)
         {
-            foods.Add(potWater.Foods[i].Clone() as FoodComponent);
+            foods.Add(Foods[i].Clone() as FoodComponent);
         }
         return foods;
     }
@@ -165,6 +175,14 @@ public class Pot : MonoBehaviour, IHeated
         StartCoroutine(Cooling());
         if (potSource != null && potSource.isPlaying)
             potSource.Stop();
+    }
+    public void PutFood(FoodComponent food)
+    {
+        if (Parents.GetInstance().Player.PickFood(food))
+        {
+            Foods.Remove(food);
+            UIElements.GetInstance().UpdateObjectContent(this);
+        }
     }
     IEnumerator Cooling()
     {

@@ -7,6 +7,7 @@ public interface IHeated
     public void OnBoiling(byte level);
     public void StopHeating();
     public void StartHeating();
+    public void Heat(float t, StoveFireType type);
     string GetInfo(bool hasWater = true)
     {
         string result = string.Empty;

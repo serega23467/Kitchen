@@ -8,7 +8,7 @@ using Newtonsoft.Json;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class PlateDish : MonoBehaviour, IListable, IFinish
+public class PlateDish : MonoBehaviour, IFinish
 {
     [SerializeField]
     GameObject content;
@@ -18,7 +18,6 @@ public class PlateDish : MonoBehaviour, IListable, IFinish
     public ObservableCollection<FoodComponent> Foods { get; set; }
     public bool HasWater { get; set; }
     public bool CanFinish { get=>canFinish; }
-    public bool CanPull { get; private set; } = false;
 
     Recipe recipe;
     MeshRenderer contentMaterial;

@@ -7,23 +7,15 @@ using UnityEngine.Events;
 using System.Collections.Generic;
 using System.Linq;
 
-public class SliderMenu : MonoBehaviour
+public class SliderMenu : MonoBehaviour, IHideble
 {
-    public bool IsOpen { get; private set; }
     [SerializeField]
     Slider sliderCount;
     [SerializeField]
     TMP_Text countValue;
     [SerializeField]
     Button button;
-
-    RectTransform rectTransform;
-    Vector3 menuSize;
-    private void Awake()
-    {
-        rectTransform = GetComponent<RectTransform>();
-        menuSize = rectTransform.localScale;
-    }
+    public bool IsActive => gameObject.activeSelf;
     void Start()
     {
         sliderCount.minValue = 0;
@@ -42,14 +34,12 @@ public class SliderMenu : MonoBehaviour
         button.onClick.RemoveAllListeners();
         button.onClick.AddListener(delegate() { onSelect.Invoke(list, Convert.ToInt32(sliderCount.value));});
         button.onClick.AddListener(Hide);
-        rectTransform.localScale = menuSize;
-        IsOpen = true;
+        gameObject.SetActive(true);
     }
     public void Hide()
     {
-        rectTransform.localScale = Vector3.zero;
         sliderCount.value = 0;
-        IsOpen = false;
+        gameObject.SetActive(false);
     }
     void UpdateSliderValue(float value)
     {

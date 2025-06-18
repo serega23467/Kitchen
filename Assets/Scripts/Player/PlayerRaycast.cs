@@ -39,9 +39,6 @@ public class PlayerRaycast : MonoBehaviour
     }
     private void Start()
     {
-        UIElements.GetInstance().HideMenu();
-        UIElements.GetInstance().HideSettings();
-
         UpdateSettings();
     }
     private void OnEnable()
@@ -56,9 +53,9 @@ public class PlayerRaycast : MonoBehaviour
         playerController.PlayerControls.Player.ShowInfo.performed += ChangeInfoVisibility;
         playerController.PlayerControls.Player.ShowRecipe.performed += ShowRecipe;
     }
-    public void PickFood(FoodComponent food)
+    public bool PickFood(FoodComponent food)
     {
-        if (CurrentDraggableObject == null) return;
+        if (CurrentDraggableObject == null) return false;
         if (CurrentDraggableObject.TryGetComponent(out Plate plate) && food != null)
         {
             if(plate.TryAddFood(food))
@@ -70,8 +67,10 @@ public class PlayerRaycast : MonoBehaviour
                     dgo.OffRigidbody();
                     dgo.CanDrag = false;
                 }
+                return true;
             }
         }
+        return false;
     }
     void Update()
     {
@@ -254,10 +253,7 @@ public class PlayerRaycast : MonoBehaviour
                             {
                                 if (food.GetPour(out FoodComponent pour))
                                 {
-                                    pot.PutToWater(pour);
-                                    pour.OnPull.RemoveAllListeners();
-                                    pour.OnPull.AddListener(PickFood);
-                                    pour.OnPull.AddListener(pot.OnRemoveFromWater.Invoke);
+                                    pot.AddFood(pour);
                                 }
                             }
                             else
@@ -282,10 +278,7 @@ public class PlayerRaycast : MonoBehaviour
                         {
                             if (pot.HeatedInfo.HasWater)
                             {
-                                pot.PutToWater(food);
-                                food.OnPull.RemoveAllListeners();
-                                food.OnPull.AddListener(PickFood);
-                                food.OnPull.AddListener(pot.OnRemoveFromWater.Invoke);
+                                pot.AddFood(food);
                                 CurrentDraggableObject.StopFollowingObject();
                                 CurrentDraggableObject = null;
                             }
@@ -314,13 +307,7 @@ public class PlayerRaycast : MonoBehaviour
                         if (pot.HeatedInfo.HasWater)
                         {
                             var foods = plate.MoveAllFood();
-                            foreach(var f in foods)
-                            {
-                                f.OnPull.RemoveAllListeners();
-                                f.OnPull.AddListener(PickFood);
-                                f.OnPull.AddListener(pot.OnRemoveFromWater.Invoke);
-                            }
-                            pot.PutToWater(foods);
+                            pot.AddFood(foods);
                         }
                         else
                         {
@@ -407,17 +394,25 @@ public class PlayerRaycast : MonoBehaviour
     public void Escape()
     {
         if (SceneLoader.Instance.gameObject.activeSelf) return;
-        gameIsPaused = !gameIsPaused;
-        if (gameIsPaused)
+
+        if(UIElements.GetInstance().TryEscape())
         {
-            UIElements.GetInstance().ShowMenu();
-            playerController.canMove = false;
+            gameIsPaused = !gameIsPaused;
+            if (gameIsPaused)
+            {
+                UIElements.GetInstance().ShowMenu();
+                playerController.OnMenuMode();
+            }
+            else
+            {
+                UIElements.GetInstance().HideSettings();
+                UIElements.GetInstance().HideMenu();
+                playerController.OffMenuMode();
+            }
         }
-        else
+        else if (!gameIsPaused)
         {
-            UIElements.GetInstance().HideSettings();
-            UIElements.GetInstance().HideMenu();
-            playerController.canMove = true;
+            playerController.OffMenuMode();
         }
     }
     void TakeKnife(CallbackContext context)
@@ -458,6 +453,11 @@ public class PlayerRaycast : MonoBehaviour
     }
     public void ChangeInfoVisibility(CallbackContext context)
     {
+        if(!UIElements.GetInstance().IsContentShowed())
+        {
+            contentInfoObject = null;
+            isShowContent = false;
+        }
         if (contentInfoObject!=null)
         {
             isShowContent = false;

@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using static System.Net.Mime.MediaTypeNames;
 
-public class ConfirmWindow : MonoBehaviour
+public class ConfirmWindow : MonoBehaviour, IHideble
 {
     [SerializeField]
     Button buttonYes;
@@ -13,26 +13,22 @@ public class ConfirmWindow : MonoBehaviour
     [SerializeField]
     TMP_Text askText;
 
-    RectTransform panelRect;
-    Vector3 size = Vector3.zero;
-
-    private void Awake()
-    {
-        panelRect = GetComponent<RectTransform>();
-        size = panelRect.localScale;
-    }
+    public bool IsActive => gameObject.activeSelf;
     private void Start()
     {
         Hide();
     }
     public void Show(string text, Action<bool> OnConfirm)
     {
-        panelRect.localScale = size;
+        gameObject.SetActive(true);
         AddListener(OnConfirm, Hide, text);
     }
-    void Hide()
+    public void Hide()
     {
-        panelRect.localScale = Vector3.zero;
+        buttonYes.onClick.RemoveAllListeners();
+        buttonNo.onClick.RemoveAllListeners();
+        gameObject.SetActive(false);
+        
     }
     public void AddListener(Action<bool> OnConfirm, Action OnClose, string text)
     {

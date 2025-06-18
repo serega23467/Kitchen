@@ -5,14 +5,17 @@ using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine.InputSystem.HID;
 
-public class ScrollPanel : MonoBehaviour
+public class ScrollPanel : MonoBehaviour, IHideble
 {
     [SerializeField]
     private RecyclingListView theList;
+    public bool IsActive => gameObject.activeSelf;
     private List<FoodComponent> allElements = new List<FoodComponent>();
     private List<FoodComponent> data = new List<FoodComponent>();
     bool hasPlateInHands = false;
     bool canPullFood = false;
+
+
     void Start()
     {
         RetrieveData(new List<FoodComponent>());

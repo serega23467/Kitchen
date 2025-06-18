@@ -11,7 +11,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-public class SettingsMenu : MonoBehaviour
+public class SettingsMenu : MonoBehaviour, IHideble
 {
     [SerializeField]
     List<Image> tabs;
@@ -59,6 +59,7 @@ public class SettingsMenu : MonoBehaviour
     [SerializeField]
     Toggle toogle;
 
+    public bool IsActive => gameObject.activeSelf;
     List<SettingValue> controlPanels;
     List<SettingValue> settingValues;
     Vector3 tabScale;
@@ -211,6 +212,7 @@ public class SettingsMenu : MonoBehaviour
         UpdateSettings();
         SettingsInit.InitVideo();
         SettingsInit.InitAudio();
+        SettingsInit.UpdateKeysInterface();
     }
     public void Show()
     {

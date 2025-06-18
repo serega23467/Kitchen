@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PanelTutorial : MonoBehaviour
+public class PanelTutorial : MonoBehaviour, IHideble
 {
     [SerializeField]
     Image slideImage;
@@ -15,6 +15,7 @@ public class PanelTutorial : MonoBehaviour
     Sprite[] sprites;
     string[] texts;
     int currentIndex = 0;
+    public bool IsActive => gameObject.activeSelf;
     void Awake()
     {
         sprites = Resources.LoadAll<Sprite>("Tutorials/Sprites")?.OrderBy(s=>int.Parse(s.name)).ToArray();
@@ -23,11 +24,12 @@ public class PanelTutorial : MonoBehaviour
         if (sprites.Length > 0)
         {
             slideImage.sprite = sprites[currentIndex];
-            SetText(texts[currentIndex]);
+            SetText();
         }
     }
     private void Start()
     {
+        SettingsInit.AddListenerOnUpdateKeys(SetText);
         Hide();
     }
     public void NextImage()
@@ -39,7 +41,7 @@ public class PanelTutorial : MonoBehaviour
         }
 
         slideImage.sprite = sprites[currentIndex];
-        SetText(texts[currentIndex]);
+        SetText();
     }
     public void BackImage()
     {
@@ -49,7 +51,7 @@ public class PanelTutorial : MonoBehaviour
             currentIndex = sprites.Length - 1;
         }
         slideImage.sprite = sprites[currentIndex];
-        SetText(texts[currentIndex]);
+        SetText();
     }
     public void Show()
     {
@@ -59,9 +61,9 @@ public class PanelTutorial : MonoBehaviour
     {
         gameObject.SetActive(false);
     }
-    void SetText(string text)
+    void SetText()
     {
-        currentText.text = Translator.ReplaceActionToKey(text);
+        currentText.text = Translator.ReplaceActionToKey(texts[currentIndex]);
         countText.text = $"{currentIndex + 1}/{sprites.Length}";
     }
 }

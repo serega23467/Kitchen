@@ -40,20 +40,7 @@ public class StoveFire : MonoBehaviour
                 delta = deltaTemperature;
             }
             heated.HeatedInfo.HeatingTime++;
-            if (heated is Pot)
-            {
-                Pot pot = heated as Pot;
-                pot.HeatWater(delta);
-            }
-            else if (heated is FryingPan)
-            {
-                FryingPan pan = heated as FryingPan;
-                if (pan.GetFoods().Where(f=>f.FoodName=="Butter").Any())
-                {
-                    delta /= 10;
-                }
-                pan.HeatFood(delta, type);
-            }
+            heated.Heat(delta, type);
             yield return new WaitForSeconds(second);
         }
     }

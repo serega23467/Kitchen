@@ -38,7 +38,7 @@ public class DraggableObject : MonoBehaviour
             if (!follow)
                 return;
             Vector3 moveDirection = targetPosition - rb.position;
-            rb.linearVelocity = moveDirection * 10f;
+            rb.linearVelocity = moveDirection * 5f;
         }
     }
     public void StartFollowingObject()

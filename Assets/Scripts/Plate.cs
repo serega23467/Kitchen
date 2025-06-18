@@ -9,7 +9,7 @@ using UnityEngine.Events;
 [RequireComponent(typeof(ShowObjectInfo))]
 public class Plate : MonoBehaviour, IListable, IFinish
 {
-    public bool CanPull { get; private set; } = false;
+    public bool CanPull { get; private set; } = true;
     [HideInInspector]
     public UnityEvent<string> OnUpdateInfo;
     [SerializeField]
@@ -62,9 +62,11 @@ public class Plate : MonoBehaviour, IListable, IFinish
             randomOffset.z = UnityEngine.Random.Range(-randomRange.z, randomRange.z);
 
             food.gameObject.transform.position = transform.position + offset + randomOffset;
-            food.gameObject.transform.localRotation = Quaternion.identity;
+            food.gameObject.transform.localRotation = transform.localRotation;
             food.gameObject.transform.parent = transform;
             food.plate = this;
+            food.OnPull.RemoveAllListeners();
+            food.OnPull.AddListener(PutFood);
             UpdateInfo();
             return true;
         }
@@ -144,5 +146,13 @@ public class Plate : MonoBehaviour, IListable, IFinish
     public void SetFinishOutline(bool hasOutline)
     {
         info.SetFinishOutline(hasOutline);
+    }
+
+    public void PutFood(FoodComponent food)
+    {
+        if (Parents.GetInstance().Player.PickFood(food))
+        {
+            UIElements.GetInstance().UpdateObjectContent(this);
+        }
     }
 }
