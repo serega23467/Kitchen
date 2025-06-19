@@ -946,7 +946,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4008679443556146913}
   serializedVersion: 4
-  m_Mass: 10000
+  m_Mass: 100
   m_Drag: 1
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -998,9 +998,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   waterWithFoodMaterial: {fileID: 2100000, guid: 957eaea0b83a7094787cff696329b01a, type: 2}
   potSource: {fileID: 497788444982282642}
-  OnRemoveFromWater:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!114 &8866408317882887899
 MonoBehaviour:
   m_ObjectHideFlags: 0

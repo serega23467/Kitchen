@@ -24,6 +24,7 @@ public class DraggableObject : MonoBehaviour
     public DraggableType Type = DraggableType.Food;
     public bool CanDrag = true;
     public Vector3 PlaceOffset = Vector3.zero;
+    public float RbMass { get => rb.mass; } 
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -38,7 +39,7 @@ public class DraggableObject : MonoBehaviour
             if (!follow)
                 return;
             Vector3 moveDirection = targetPosition - rb.position;
-            rb.linearVelocity = moveDirection * 5f;
+            rb.linearVelocity = moveDirection * 7f;
         }
     }
     public void StartFollowingObject()

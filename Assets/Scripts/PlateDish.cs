@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
 using System.Text;
 using Newtonsoft.Json;
 using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 
 public class PlateDish : MonoBehaviour, IFinish
@@ -38,6 +40,8 @@ public class PlateDish : MonoBehaviour, IFinish
             contentEtalonTexture = Resources.Load<Texture2D>("Levels/" + SettingsInit.CurrentLevelName + "/" + BellFinish.Level.RecipeFoodPictureName);
         }
         content.SetActive(false);
+
+        Foods.CollectionChanged += UpdateContent;
         info = GetComponent<ShowObjectInfo>();
     }
     public void AddDish(ObservableCollection<FoodComponent> foods, bool hasWater)
@@ -45,31 +49,40 @@ public class PlateDish : MonoBehaviour, IFinish
         Foods.Clear();
         if (foods.Count > 0)
         {
+            Foods.AddRange(foods);           
+        }
+
+    }
+    void UpdateContent(object sender, NotifyCollectionChangedEventArgs e)
+    {
+        if (Foods.Count > 0)
+        {
             content.SetActive(true);
-            Foods.AddRange(foods);
-
+        }
+        else
+        {
+            content.SetActive(false);
+            return;
+        }
+        if (contentMaterial != null && contentEtalonTexture != null && contentDefaultTexture != null)
+        {
             var etalonFoods = BellFinish.Level.Recipe.RecipeContent;
-            if (contentMaterial != null && contentEtalonTexture != null && contentDefaultTexture != null)
+            if (CompareWithEtalon(etalonFoods))
             {
-                if (CompareWithEtalon(etalonFoods))
+                contentMaterial.material.mainTexture = contentEtalonTexture;
+            }
+            else
+            {
+                if (contentMaterial.material.mainTexture != contentDefaultTexture)
                 {
-                    contentMaterial.material.mainTexture = contentEtalonTexture;
+                    contentMaterial.material.mainTexture = contentDefaultTexture;
                 }
-                else
-                {
-                    if(contentMaterial.material.mainTexture != contentDefaultTexture)
-                    {
-                        contentMaterial.material.mainTexture = contentDefaultTexture;
-                    }
-                }
-
             }
         }
         else
         {
             content.SetActive(false);
         }
-
     }
     bool CompareWithEtalon(List<SerializableFoodInfo> foods)
     {
@@ -79,16 +92,16 @@ public class PlateDish : MonoBehaviour, IFinish
         {
             return false;
         }
-        var sortedFoods1 = dishFood.OrderBy(f=>f.FoodId).ThenBy(f=>f.CurrentCutType).ToList();
-        var sortedFoods2 = foods.OrderBy(f => f.FoodId).ThenBy(f => f.CurrentCutType).ToList();
+        var sortedFoodsEtalon = dishFood.OrderBy(f=>f.FoodId).ThenBy(f=>f.CurrentCutType).ToList();
+        var sortedFoodsCurrent = foods.OrderBy(f => f.FoodId).ThenBy(f => f.CurrentCutType).ToList();
 
         for (int i = 0; i<foods.Count; i++)
         {
-            if (sortedFoods1[i].FoodId != sortedFoods2[i].FoodId)
+            if (sortedFoodsEtalon[i].FoodId != sortedFoodsCurrent[i].FoodId)
             {
                 return false;
             }
-            else if (sortedFoods1[i].GramsWeight - sortedFoods2[i].GramsWeight > 0.001f)
+            else if (sortedFoodsEtalon[i].GramsWeight - sortedFoodsCurrent[i].GramsWeight > 0.001f)
             {
                 return false;
             }

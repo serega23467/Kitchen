@@ -21,6 +21,7 @@ public class Inclose : MonoBehaviour
                 ob.gameObject.layer = LayerMask.NameToLayer("DraggableObject");
             }
             PickedObject = ob;
+            PickedObject.transform.localRotation = Quaternion.identity;
             PickedObject.transform.parent = transform;
             PickedObject.transform.position = transform.position + PickedObject.PlaceOffset + offset;
 

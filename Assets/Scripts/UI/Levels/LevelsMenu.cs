@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using System.Data;
 using UnityEngine;
 
-public class LevelsMenu : MonoBehaviour
+public class LevelsMenu : MonoBehaviour, IHideble
 {
     [SerializeField]
     RecyclingListView theList;
     List<Level> levelsList;
+
+    public bool IsActive => gameObject.activeSelf;
+
     private void Awake()
     {
         levelsList = new List<Level>();

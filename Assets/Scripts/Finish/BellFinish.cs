@@ -28,13 +28,13 @@ public class BellFinish : MonoBehaviour
 
         if (finishPlate!=null)
         {
-            //SaveDish(finishPlate.GetRecipe());
-            int rate = Compare(out string result, Level.Recipe, finishPlate.GetRecipe());
-            int time = UIElements.GetInstance().GetTimerTime();
-            if(dingSource!=null) dingSource.Play();
-            OnFinishMenuOpen?.Invoke();
-            UIElements.GetInstance().ShowPanelResult(Level, rate, time, result);
-            DB.UpdateLevelInfo(rate, time);
+            SaveDish(finishPlate.GetRecipe());
+            //int rate = Compare(out string result, Level.Recipe, finishPlate.GetRecipe());
+            //int time = UIElements.GetInstance().GetTimerTime();
+            //if(dingSource!=null) dingSource.Play();
+            //OnFinishMenuOpen?.Invoke();
+            //UIElements.GetInstance().ShowPanelResult(Level, rate, time, result);
+            //DB.UpdateLevelInfo(rate, time);
         }
         else
         {
@@ -49,7 +49,7 @@ public class BellFinish : MonoBehaviour
         Level.RecipeFoodPictureName = "";
         Level.Recipe = recipe;
         Level.CookTime = UIElements.GetInstance().GetTimerTime();
-        JsonLoader.SaveLevelInfo(Level, "Goulash");
+        JsonLoader.SaveLevelInfo(Level, "CremlinMeat");
 
         UIElements.ShowToast($"Успешно!");
     }
@@ -113,30 +113,30 @@ public class BellFinish : MonoBehaviour
             }
             else 
             {
-                var foodEtalon = foodsWithEtalonId.FirstOrDefault(f => f.CurrentCutType == etalonFood.CurrentCutType);
-                if (foodEtalon == null)
+                var currentFood = foodsWithEtalonId.FirstOrDefault(f => f.CurrentCutType == etalonFood.CurrentCutType);
+                if (currentFood == null)
                 {
                     continue;
                 }
-                if (GetDiffPercent(foodEtalon.Count, etalonFood.Count) > 20f || GetDiffPercent(foodEtalon.Count, etalonFood.Count) < -20f)
+                if (GetDiffPercent(currentFood.Count, etalonFood.Count) > 20f || GetDiffPercent(currentFood.Count, etalonFood.Count) < -20f)
                 {
-                    sb.AppendLine("Не соответствует количество " + etalonFood.FoodName + $" {foodEtalon.Count}/{etalonFood.Count}");
+                    sb.AppendLine("Не соответствует количество " + etalonFood.FoodName + $" {currentFood.Count}/{etalonFood.Count}");
                     hasRightAmountOfProducts = false;
                 }
                 else 
                 {
-                    foreach (var realP in foodEtalon.Params)
+                    foreach (var realP in currentFood.Params)
                     {
-                        var paramInEtalon = foodEtalon.Params.FirstOrDefault(p => p.ParamName == realP.ParamName);
+                        var paramInEtalon = currentFood.Params.FirstOrDefault(p => p.ParamName == realP.ParamName);
                         if (paramInEtalon == null && realP.ParamValue>10)
                         {
                             if (FoodParametersPool.GetInstance().TryGetParameter(realP.ParamName, out FoodParametr fullRealParam))
                             {
-                                sb.AppendLine($"{foodEtalon}: " + fullRealParam.NoNeedThisError);
+                                sb.AppendLine($"{currentFood}: " + fullRealParam.NoNeedThisError);
                             }
                             else
                             {
-                                sb.AppendLine($"{foodEtalon}: Лишнее: " + realP.ParamName);
+                                sb.AppendLine($"{currentFood}: Лишнее: " + realP.ParamName);
                             }
                             if (realP.IsSpice)
                             {
@@ -150,7 +150,7 @@ public class BellFinish : MonoBehaviour
                     }
                     foreach (var paramEtalon in etalonFood.Params)
                     {
-                        var paramInFoods = foodEtalon.Params.FirstOrDefault(p=>p.ParamName== paramEtalon.ParamName);
+                        var paramInFoods = currentFood.Params.FirstOrDefault(p=>p.ParamName== paramEtalon.ParamName);
                         if(paramInFoods == null)
                         {
                             if(FoodParametersPool.GetInstance().TryGetParameter(paramEtalon.ParamName, out FoodParametr fullParamEtalon))
@@ -216,7 +216,7 @@ public class BellFinish : MonoBehaviour
         }
         return score;
     }
-    float GetDiffPercent(float a, float b)
+    public static float GetDiffPercent(float a, float b)
     {
         float dif = a - b;
         float avg = (a + b) / 2;

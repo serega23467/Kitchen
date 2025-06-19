@@ -48,7 +48,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1327751514614330664}
   serializedVersion: 4
-  m_Mass: 500
+  m_Mass: 1
   m_Drag: 1
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -136,7 +136,7 @@ MonoBehaviour:
   OnPull:
     m_PersistentCalls:
       m_Calls: []
-  CutCount: 6
+  CutCount: 4
   nextCuttedPart: {fileID: 4341448151582743672, guid: f5814323aa892fe40aeb426591463e33, type: 3}
   pourPrefab: {fileID: 0}
   plate: {fileID: 0}

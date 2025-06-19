@@ -114,7 +114,12 @@ public class PlayerRaycast : MonoBehaviour
         }
         if (CurrentDraggableObject != null)
         {
-            CurrentDraggableObject.SetTargetPosition((cam.transform.position + cam.transform.forward * draggableObjectDistance) + offset);
+            Vector3 dragOffset = cam.transform.forward * offset.z + cam.transform.right * offset.x + cam.transform.up * offset.y;
+            if(CurrentDraggableObject.RbMass<=50f)
+            {
+                dragOffset /= 2f;
+            }
+            CurrentDraggableObject.SetTargetPosition((cam.transform.position + cam.transform.forward * draggableObjectDistance) + dragOffset);
         }
     }
     void TakeItem(CallbackContext context)

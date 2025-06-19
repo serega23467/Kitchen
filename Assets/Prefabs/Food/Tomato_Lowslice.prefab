@@ -30,14 +30,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3859860371406171794}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0.5243281, z: -0, w: 0.8515163}
+  m_LocalRotation: {x: 0, y: -0.5243277, z: 0, w: 0.85151654}
   m_LocalPosition: {x: -7.9843483, y: -2.9890237, z: 3.7265196}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4935667275711327513}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -63.246, z: 0}
 --- !u!65 &2081367907162295589
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -57,8 +57,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.06779957, y: 0.011187315, z: 0.06853676}
-  m_Center: {x: 0.008962154, y: -0.0000055134296, z: -0.0040388107}
+  m_Size: {x: 0.046465132, y: 0.011187315, z: 0.04893569}
+  m_Center: {x: -0.001705062, y: -0.0000055134296, z: 0.0057617356}
 --- !u!54 &3599519868127970960
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -132,6 +132,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40c7831c80d51e147bf7ed9575b49d41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  audioSource: {fileID: 0}
+  minCollisionForce: 10
+  maxCollisionForce: 60
+  maxVolume: 1
   Type: 2
   CanDrag: 1
   PlaceOffset: {x: 0, y: 0, z: 0}
@@ -183,7 +187,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0.000000022476454, y: 0.7071069, z: 0.70710665, w: 0.00000008429369}
   m_LocalPosition: {x: -0.0237, y: 0, z: 0.0281}
-  m_LocalScale: {x: 6.5, y: 6.5, z: 0.5}
+  m_LocalScale: {x: 4.5, y: 4.5, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 664043124889504451}

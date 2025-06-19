@@ -1,14 +1,17 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
 
 [RequireComponent(typeof(ShowObjectInfo))]
 public class Plate : MonoBehaviour, IListable, IFinish
 {
+
     public bool CanPull { get; private set; } = true;
     [HideInInspector]
     public UnityEvent<string> OnUpdateInfo;
@@ -20,7 +23,12 @@ public class Plate : MonoBehaviour, IListable, IFinish
     Vector3 offset = Vector3.zero;
     [SerializeField]
     Vector3 randomRange = Vector3.zero;
+    [SerializeField]
+    GameObject content;
+    bool isShowedContent = false;
     ShowObjectInfo info;
+    MeshRenderer contentMaterial;
+    Texture2D contentEtalonTexture;
 
     [HideInInspector]
     public float MaxWeight { get => maxWeight; }
@@ -36,6 +44,17 @@ public class Plate : MonoBehaviour, IListable, IFinish
     private void Start()
     {
         Foods = new ObservableCollection<FoodComponent>();
+        Foods.CollectionChanged += UpdateInfo;
+        if(content!= null)
+        {
+            contentMaterial = content.GetComponent<MeshRenderer>();
+            if (contentMaterial != null)
+            {
+                contentEtalonTexture = Resources.Load<Texture2D>("Levels/" + SettingsInit.CurrentLevelName + "/" + BellFinish.Level.RecipeFoodPictureName);
+                contentMaterial.material.mainTexture = contentEtalonTexture;
+            }
+            content.SetActive(false);
+        }
         info = GetComponent<ShowObjectInfo>();
         info.ObjectData = $"Макс вес - {maxWeight} г";
     }
@@ -61,13 +80,16 @@ public class Plate : MonoBehaviour, IListable, IFinish
             randomOffset.y = UnityEngine.Random.Range(-randomRange.y, randomRange.y);
             randomOffset.z = UnityEngine.Random.Range(-randomRange.z, randomRange.z);
 
-            food.gameObject.transform.position = transform.position + offset + randomOffset;
-            food.gameObject.transform.localRotation = transform.localRotation;
             food.gameObject.transform.parent = transform;
+            food.gameObject.transform.localPosition = Vector3.zero + offset + randomOffset;
+            food.gameObject.transform.localRotation = Quaternion.identity;
+            if(isShowedContent && content!=null)
+            {
+                food.gameObject.transform.localScale = Vector3.zero;
+            }
             food.plate = this;
             food.OnPull.RemoveAllListeners();
             food.OnPull.AddListener(PutFood);
-            UpdateInfo();
             return true;
         }
     }
@@ -86,8 +108,6 @@ public class Plate : MonoBehaviour, IListable, IFinish
                 child.gameObject.layer = LayerMask.NameToLayer("DraggableObject");
             }
         }
-
-        UpdateInfo();   
     }
     public void SpiceFood(SpiceComponent spice)
     {
@@ -105,10 +125,9 @@ public class Plate : MonoBehaviour, IListable, IFinish
         }
         List<FoodComponent> list = Foods.ToList();
         Foods = new ObservableCollection<FoodComponent>();
-        UpdateInfo();
         return list;
     }
-    public void UpdateInfo()
+    public void UpdateInfo(object sender=null, NotifyCollectionChangedEventArgs e=null)
     {
         if (Foods.Count<1)
         {
@@ -125,9 +144,71 @@ public class Plate : MonoBehaviour, IListable, IFinish
         }
         sb.AppendLine($"Макс вес - {maxWeight} г");
         info.ObjectData = sb.ToString();
+        UpdateContent();
         OnUpdateInfo.Invoke(info.ObjectData);
-    }
 
+
+    }
+    void UpdateContent()
+    {
+        if (content == null) return;
+        if (Foods.Count <= 0)
+        {
+            content.SetActive(false);
+            return;
+        }
+        if (contentMaterial != null && contentEtalonTexture != null)
+        {
+            var etalonFoods = BellFinish.Level.Recipe.RecipeContent;
+            if (CompareWithEtalon(etalonFoods))
+            {
+                foreach(var f in Foods)
+                {
+                    f.transform.localScale = Vector3.zero;
+                }
+                content.SetActive(true);
+                isShowedContent = true;
+                return;
+            }
+
+        }
+        if (Foods.Select(f=>f.gameObject.transform).Any(t=>t.localScale==Vector3.zero))
+        {
+            foreach (var f in Foods)
+            {
+                f.transform.localScale = Vector3.one;
+            }
+        }
+        content.SetActive(false);
+    }
+    bool CompareWithEtalon(List<SerializableFoodInfo> foods)
+    {
+        var dishFood = Foods.Select(f => f.FoodInfo.GetSerializableFoodInfo()).ToList();
+        dishFood = Recipe.RemoveDuplicates(dishFood);
+        if (dishFood.Count != foods.Count)
+        {
+            return false;
+        }
+        var sortedFoodsCurrent = dishFood.OrderBy(f => f.FoodId).ThenBy(f => f.CurrentCutType).ToList();
+        var sortedFoodsEtalon = foods.OrderBy(f => f.FoodId).ThenBy(f => f.CurrentCutType).ToList();
+
+        for (int i = 0; i < foods.Count; i++)
+        {
+            if (sortedFoodsCurrent[i].FoodId != sortedFoodsEtalon[i].FoodId)
+            {
+                return false;
+            }
+            else if (sortedFoodsCurrent[i].GramsWeight - sortedFoodsEtalon[i].GramsWeight > 0.01f)
+            {
+                return false;
+            }
+            else if (BellFinish.GetDiffPercent(sortedFoodsCurrent[i].Count, sortedFoodsEtalon[i].Count) > 20f || BellFinish.GetDiffPercent(sortedFoodsCurrent[i].Count, sortedFoodsEtalon[i].Count) < -20f)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
     public Recipe GetRecipe()
     {
         ObservableCollection<FoodComponent> foods = new ObservableCollection<FoodComponent>();
