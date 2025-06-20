@@ -217,12 +217,12 @@ public class PlayerRaycast : MonoBehaviour
                     }
                     else
                     {
-                        UIElements.ShowToast("� �������� ��� ���� ����!");
+                        UIElements.ShowToast("В кастрюле уже есть вода!");
                     }
                 }
                 else
                 {
-                    UIElements.ShowToast("�������� � ���� �������� ��� ������ ����!");
+                    UIElements.ShowToast("Возьмите в руку кастрюлю для набора воды!");
                 }
             }
             else if (hit.collider.TryGetComponent(out BellFinish bell))
@@ -263,7 +263,7 @@ public class PlayerRaycast : MonoBehaviour
                             }
                             else
                             {
-                                UIElements.ShowToast("��������� �������� ����� ����� �������� � �� ��� ����!");
+                                UIElements.ShowToast("Наполните кастрюлю водой чтобы положить в неё что либо!");
                             }
                         }
                     }
@@ -289,7 +289,7 @@ public class PlayerRaycast : MonoBehaviour
                             }
                             else
                             {
-                                UIElements.ShowToast("��������� �������� ����� ����� �������� � �� ��� ����!");
+                                UIElements.ShowToast("Наполните кастрюлю водой чтобы положить в неё что либо!");
                             }
                         }
                     }                 
@@ -316,7 +316,7 @@ public class PlayerRaycast : MonoBehaviour
                         }
                         else
                         {
-                            UIElements.ShowToast("��������� �������� ����� ����� �������� � �� ��� ����!");
+                            UIElements.ShowToast("Наполните кастрюлю водой чтобы положить в неё что либо!");
                         }
                     }
                     else if (ComponentGetter.TryGetComponent(hit.collider, out Plate plate2))
@@ -340,7 +340,7 @@ public class PlayerRaycast : MonoBehaviour
                         }
                         else
                         {
-                            UIElements.ShowToast("� �������� ��� ����, ���������!");
+                            UIElements.ShowToast("В кастрюле нет воды, наполните!");
                         }
                     }
                 }
@@ -379,7 +379,7 @@ public class PlayerRaycast : MonoBehaviour
                                 playerController.OffMenuMode();
                             };
                             playerController.OnMenuMode();
-                            UIElements.GetInstance().OpenPanelConfirm($"�������� ��������: {food.FoodInfo.FoodName}", action);
+                            UIElements.GetInstance().OpenPanelConfirm($"Удаление продукта: {food.FoodInfo.FoodName}", action);
                         }
                     }
                 }
@@ -483,7 +483,7 @@ public class PlayerRaycast : MonoBehaviour
                     currentInfoObject.ShowContent(list, hasPlate);
                     contentInfoObject = currentInfoObject;
                     playerController.OnMenuMode();
-                    if (!hasPlate && list.CanPull) UIElements.ShowToast("����� �������� ������� � ����� ������ ���� �������!");
+                    if (!hasPlate && list.CanPull) UIElements.ShowToast("Чтобы вытащить продукт в руках должна быть тарелка!");
                 }
             }
             else

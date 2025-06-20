@@ -28,17 +28,17 @@ public class BellFinish : MonoBehaviour
 
         if (finishPlate!=null)
         {
-            SaveDish(finishPlate.GetRecipe());
-            //int rate = Compare(out string result, Level.Recipe, finishPlate.GetRecipe());
-            //int time = UIElements.GetInstance().GetTimerTime();
-            //if(dingSource!=null) dingSource.Play();
-            //OnFinishMenuOpen?.Invoke();
-            //UIElements.GetInstance().ShowPanelResult(Level, rate, time, result);
-            //DB.UpdateLevelInfo(rate, time);
+            //SaveDish(finishPlate.GetRecipe());
+            int rate = Compare(out string result, Level.Recipe, finishPlate.GetRecipe());
+            int time = UIElements.GetInstance().GetTimerTime();
+            if (dingSource != null) dingSource.Play();
+            OnFinishMenuOpen?.Invoke();
+            UIElements.GetInstance().ShowPanelResult(Level, rate, time, result);
+            DB.UpdateLevelInfo(rate, time);
         }
         else
         {
-            UIElements.ShowToast($"�������� ����� �� ����!");
+            UIElements.ShowToast($"Положите блюдо на стол!");
         }
 
     }
@@ -51,7 +51,7 @@ public class BellFinish : MonoBehaviour
         Level.CookTime = UIElements.GetInstance().GetTimerTime();
         JsonLoader.SaveLevelInfo(Level, "CremlinMeat");
 
-        UIElements.ShowToast($"�������!");
+        UIElements.ShowToast($"Успешно!");
     }
     public int Compare(out string result, Recipe recipeEtalon, Recipe recipe)
     {
@@ -67,11 +67,11 @@ public class BellFinish : MonoBehaviour
         {
             if (recipeEtalon.HasWater)
             {
-                sb.AppendLine("����� ������ ���� �����, ���������� � ������� �������!");
+                sb.AppendLine("Блюдо должно быть супом, подаваемым в суповой тарелке!");
             }
             else
             {
-                sb.AppendLine("����� ������ ���������� � ������� �������!");
+                sb.AppendLine("Блюдо должно подаваться в обычной тарелке!");
             }
             result = sb.ToString();
 
@@ -85,7 +85,7 @@ public class BellFinish : MonoBehaviour
         {
             if (!etalonContent.Select(f => f.FoodId).Contains(r.FoodId))
             {
-                sb.AppendLine("������ ������� " + r.FoodName);
+                sb.AppendLine("Лишний продукт " + r.FoodName);
                 hasRightAmountOfProducts = false;
             }
             else
@@ -96,7 +96,7 @@ public class BellFinish : MonoBehaviour
                 {
                     if(!etalonFoods.Select(f=>f.CurrentCutType).Contains(food.CurrentCutType))
                     {
-                        sb.AppendLine("������������ ������� " + food.FoodName);
+                        sb.AppendLine("Неправильная нарезка " + food.FoodName);
                         hasRightAmountOfProducts = false;
                     }
                 }
@@ -108,7 +108,7 @@ public class BellFinish : MonoBehaviour
             var foodsWithEtalonId = recipeContent.Where(f => f.FoodId == etalonFood.FoodId);
             if (foodsWithEtalonId == null || foodsWithEtalonId.Count()<=0)
             {
-                sb.AppendLine("��� " + etalonFood.FoodName);
+                sb.AppendLine("Нет " + etalonFood.FoodName);
                 hasRightAmountOfProducts = false;
             }
             else 
@@ -120,7 +120,7 @@ public class BellFinish : MonoBehaviour
                 }
                 if (GetDiffPercent(currentFood.Count, etalonFood.Count) > 20f || GetDiffPercent(currentFood.Count, etalonFood.Count) < -20f)
                 {
-                    sb.AppendLine("�� ������������� ���������� " + etalonFood.FoodName + $" {currentFood.Count}/{etalonFood.Count}");
+                    sb.AppendLine("Не соответствует количество " + etalonFood.FoodName + $" {currentFood.Count}/{etalonFood.Count}");
                     hasRightAmountOfProducts = false;
                 }
                 else 
@@ -136,7 +136,7 @@ public class BellFinish : MonoBehaviour
                             }
                             else
                             {
-                                sb.AppendLine($"{currentFood}: ������: " + realP.ParamName);
+                                sb.AppendLine($"{currentFood}: Лишнее: " + realP.ParamName);
                             }
                             if (realP.IsSpice)
                             {
@@ -159,7 +159,7 @@ public class BellFinish : MonoBehaviour
                             }
                             else
                             {
-                                sb.AppendLine("���: " + paramEtalon.ParamName + " " + etalonFood.FoodName);
+                                sb.AppendLine("Нет: " + paramEtalon.ParamName + " " + etalonFood.FoodName);
                             }
                             if(!fullParamEtalon.IsSpice)
                             {
