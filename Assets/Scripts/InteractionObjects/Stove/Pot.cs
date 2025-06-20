@@ -42,7 +42,7 @@ public class Pot : MonoBehaviour, IHeated, IListable
         smoke = GetComponentInChildren<ParticleSystem>();
         smoke.Pause();
 
-        HeatedInfo = new HeatedInfo(temperature: 20,minMassKG: 1, currentMassKG: 1, maxMassKG: 5, hasWater: false, time: 0);
+        HeatedInfo = new HeatedInfo(temperature: 20,minMassKG: 0, currentMassKG: 0, maxMassKG: 5, hasWater: false, time: 0);
 
         potWater = GetComponentInChildren<Water>();
         waterRend = potWater.gameObject.GetComponentInChildren<Renderer>();
@@ -97,10 +97,23 @@ public class Pot : MonoBehaviour, IHeated, IListable
     }
     public void AddWater()
     {
-        HeatedInfo.HasWater = true;
-        HeatedInfo.CurrentMassKG = HeatedInfo.MaxMassKG;
-        HeatedInfo.Temperature = 20f;
-        potWater.gameObject.SetActive(true);
+        if(!HeatedInfo.HasWater)
+        {
+            HeatedInfo.HasWater = true;
+            HeatedInfo.CurrentMassKG = HeatedInfo.MaxMassKG;
+            HeatedInfo.Temperature = 20f;
+            potWater.gameObject.SetActive(true);
+        }
+        else
+        {
+            StopAllCoroutines();
+            if (HeatedInfo.Temperature < 20f) HeatedInfo.Temperature = 20f;
+            float addMass = HeatedInfo.MaxMassKG - HeatedInfo.CurrentMassKG;
+            float t = ((HeatedInfo.CurrentMassKG * HeatedInfo.Temperature) + (addMass * 20f)) / (addMass + HeatedInfo.CurrentMassKG);
+            HeatedInfo.CurrentMassKG = HeatedInfo.MaxMassKG;
+            HeatedInfo.Temperature = t;
+            StartCoroutine(Cooling());
+        }
         potWater.ChangeWaterLevel(HeatedInfo.CurrentMassKG, HeatedInfo.MinMassKG, HeatedInfo.MaxMassKG);
     }
     public void AddFood(FoodComponent food)
@@ -190,7 +203,8 @@ public class Pot : MonoBehaviour, IHeated, IListable
     }
     IEnumerator Cooling()
     {
-        byte time = 0;
+        int time = 0;
+        float startT = HeatedInfo.Temperature;
         while (HeatedInfo.Temperature > 20f)
         {
             if(time > 2)
@@ -199,14 +213,13 @@ public class Pot : MonoBehaviour, IHeated, IListable
                 {
                     HeatedInfo.HeatingTime = 0;
                 }
-                HeatedInfo.Temperature += -0.1f * (HeatedInfo.Temperature - 20f);
+
+                HeatedInfo.Temperature = startT* Mathf.Exp(-0.0008f*(1/ Mathf.Clamp(HeatedInfo.CurrentMassKG,0.1f, float.MaxValue))*time);
             }
-            else
-            { 
-                time++;
-            }
+            time++;
             yield return new WaitForSeconds(SettingsInit.VirtualSecond);
         }
+        if (HeatedInfo.Temperature < 20f) HeatedInfo.Temperature = 20f;
     }
     private void OnDestroy()
     {

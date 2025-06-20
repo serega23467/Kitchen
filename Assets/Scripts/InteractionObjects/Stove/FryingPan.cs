@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -19,7 +20,7 @@ public class FryingPan : MonoBehaviour, IHeated
     private void Start()
     {
         info = GetComponent<ShowObjectInfo>();
-        HeatedInfo = new HeatedInfo(temperature: 20, minMassKG: 1, currentMassKG: 1, maxMassKG: 5, hasWater: false, time: 0);
+        HeatedInfo = new HeatedInfo(temperature: 20, minMassKG: 0, currentMassKG: 0, maxMassKG: 5, hasWater: false, time: 0);
 
         plate = GetComponent<Plate>();
 
@@ -81,7 +82,8 @@ public class FryingPan : MonoBehaviour, IHeated
     }
     IEnumerator Cooling()
     {
-        byte time = 0;
+        int time = 0;
+        float startT = HeatedInfo.Temperature;
         while (HeatedInfo.Temperature > 20f)
         {
             if (time > 2)
@@ -90,14 +92,12 @@ public class FryingPan : MonoBehaviour, IHeated
                 {
                     HeatedInfo.HeatingTime = 0;
                 }
-                HeatedInfo.Temperature += -0.1f * (HeatedInfo.Temperature - 20f);
+                HeatedInfo.Temperature = startT * Mathf.Exp(-0.0008f * (1 / Mathf.Clamp(plate.Foods.Sum(f=>f.FoodInfo.GramsWeight)/5, 0.08f, float.MaxValue)) * time);
             }
-            else
-            {
-                time++;
-            }
+            time++;
             yield return new WaitForSeconds(SettingsInit.VirtualSecond);
         }
+        if (HeatedInfo.Temperature < 20f) HeatedInfo.Temperature = 20f;
     }
     private void OnDestroy()
     {

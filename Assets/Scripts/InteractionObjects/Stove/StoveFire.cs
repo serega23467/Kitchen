@@ -26,7 +26,7 @@ public class StoveFire : MonoBehaviour
             if (heated.HeatedInfo.Temperature < maxT)
             {
                 float heatAdded = level * 1000;
-                float mass = heated.HeatedInfo.CurrentMassKG;
+                float mass = Mathf.Clamp(heated.HeatedInfo.CurrentMassKG, 1f, float.MaxValue);
                 float deltaTemperature = (heatAdded / (mass * 4180f));
                 heated.HeatedInfo.Temperature += deltaTemperature;
                 delta = deltaTemperature;

@@ -211,7 +211,7 @@ public class PlayerRaycast : MonoBehaviour
             {
                 if (CurrentDraggableObject.TryGetComponent(out IHeated heated))
                 {
-                    if (!heated.HeatedInfo.HasWater)
+                    if (!heated.HeatedInfo.HasWater || Mathf.Abs(heated.HeatedInfo.CurrentMassKG - heated.HeatedInfo.MaxMassKG) > 0.5f)
                     {
                         tap.FillContainer(heated);
                     }

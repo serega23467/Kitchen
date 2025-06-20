@@ -65,7 +65,7 @@
       {
         "FoodId": "BulgarianPepper",
         "FoodName": "Болгарский перец",
-        "GramsWeight": 0.444444477558136,
+        "GramsWeight": 1.1,
         "IsPour": false,
         "AllCutTypes": [
           0,
@@ -80,7 +80,7 @@
           }
         ],
         "CurrentCutType": 3,
-        "Count": 180
+        "Count": 150
       },
       {
         "FoodId": "ChiliPepper",

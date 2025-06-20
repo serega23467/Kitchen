@@ -222,7 +222,7 @@ MonoBehaviour:
   OnPull:
     m_PersistentCalls:
       m_Calls: []
-  CutCount: 9
+  CutCount: 5
   nextCuttedPart: {fileID: 8610309044185421310, guid: fbd1e3e72990d614f88e5e496f85f4e5, type: 3}
   pourPrefab: {fileID: 0}
   plate: {fileID: 0}
