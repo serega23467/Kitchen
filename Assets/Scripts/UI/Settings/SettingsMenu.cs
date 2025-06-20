@@ -1,4 +1,4 @@
-using Assets.Scripts.UI;
+п»їusing Assets.Scripts.UI;
 using BrightnessPlugin;
 using System;
 using System.Collections;
@@ -82,16 +82,16 @@ public class SettingsMenu : MonoBehaviour, IHideble
         sliderBrigh.maxValue = 1.8f;
         sliderBrigh.onValueChanged.AddListener(UpdateBrighValue);
 
-        UnityAction<float> updateVolumeMethod = delegate (float value) { UpdateVolumeValue(value, volumeValue, "Громкость"); };
+        UnityAction<float> updateVolumeMethod = delegate (float value) { UpdateVolumeValue(value, volumeValue, "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ"); };
         sliderVolume.onValueChanged.AddListener(updateVolumeMethod);
 
-        UnityAction<float> updateMusicMethod = delegate (float value) { UpdateVolumeValue(value, musicValue, "Громкость музыки"); };
+        UnityAction<float> updateMusicMethod = delegate (float value) { UpdateVolumeValue(value, musicValue, "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ"); };
         sliderMusic.onValueChanged.AddListener(updateMusicMethod);
 
-        UnityAction<float> updateMenuMusicMethod = delegate (float value) { UpdateVolumeValue(value, menuMusicValue, "Громкость музыки в главном меню"); };
+        UnityAction<float> updateMenuMusicMethod = delegate (float value) { UpdateVolumeValue(value, menuMusicValue, "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ"); };
         sliderMenuMusic.onValueChanged.AddListener(updateMenuMusicMethod);
 
-        UnityAction<float> updateEffectsMethod = delegate (float value) { UpdateVolumeValue(value, effectsValue, "Громкость звуков"); };
+        UnityAction<float> updateEffectsMethod = delegate (float value) { UpdateVolumeValue(value, effectsValue, "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ"); };
         sliderEffects.onValueChanged.AddListener(updateEffectsMethod);
 
         if (sliderTime != null)
@@ -133,34 +133,34 @@ public class SettingsMenu : MonoBehaviour, IHideble
 
         if(AudioManager.Instance.IsSetted)
         {
-            sliderVolume.value = AudioManager.Instance.GetVolume(Translator.GetInstance().GetTranslate("Громкость"));
-            sliderMusic.value = AudioManager.Instance.GetVolume(Translator.GetInstance().GetTranslate("Громкость музыки"));
-            sliderMenuMusic.value = AudioManager.Instance.GetVolume(Translator.GetInstance().GetTranslate("Громкость музыки в главном меню"));
-            sliderEffects.value = AudioManager.Instance.GetVolume(Translator.GetInstance().GetTranslate("Громкость звуков"));
+            sliderVolume.value = AudioManager.Instance.GetVolume(Translator.GetInstance().GetTranslate("пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ"));
+            sliderMusic.value = AudioManager.Instance.GetVolume(Translator.GetInstance().GetTranslate("пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ"));
+            sliderMenuMusic.value = AudioManager.Instance.GetVolume(Translator.GetInstance().GetTranslate("пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ"));
+            sliderEffects.value = AudioManager.Instance.GetVolume(Translator.GetInstance().GetTranslate("пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ"));
         }
         else
         {
-            sliderVolume.value = float.Parse(settingValues.FirstOrDefault(s => s.Name == "Громкость").Value);
-            sliderMusic.value = float.Parse(settingValues.FirstOrDefault(s => s.Name == "Громкость музыки").Value);
-            sliderMenuMusic.value = float.Parse(settingValues.FirstOrDefault(s => s.Name == "Громкость музыки в главном меню").Value);
-            sliderEffects.value = float.Parse(settingValues.FirstOrDefault(s => s.Name == "Громкость звуков").Value);
+            sliderVolume.value = float.Parse(settingValues.FirstOrDefault(s => s.Name == "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ").Value);
+            sliderMusic.value = float.Parse(settingValues.FirstOrDefault(s => s.Name == "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ").Value);
+            sliderMenuMusic.value = float.Parse(settingValues.FirstOrDefault(s => s.Name == "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ").Value);
+            sliderEffects.value = float.Parse(settingValues.FirstOrDefault(s => s.Name == "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ").Value);
         }
 
-        sliderSens.value = int.Parse(settingValues.FirstOrDefault(s => s.Name == "Чувствительность").Value);
+        sliderSens.value = int.Parse(settingValues.FirstOrDefault(s => s.Name == "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ").Value);
         if (BrightnessSingleton.GetInstance().IsSetted)
         {
             sliderBrigh.value = BrightnessSingleton.GetInstance().GetBrightness();
         }
         else
         {
-            sliderBrigh.value = float.Parse(settingValues.FirstOrDefault(s => s.Name == "Яркость").Value);
+            sliderBrigh.value = float.Parse(settingValues.FirstOrDefault(s => s.Name == "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ").Value);
         }
         if (sliderTime != null)
-            sliderTime.value = float.Parse(settingValues.FirstOrDefault(s => s.Name == "Множитель времени").Value);
+            sliderTime.value = float.Parse(settingValues.FirstOrDefault(s => s.Name == "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ").Value);
 
-        resolutionDropdown.value = int.Parse(settingValues.FirstOrDefault(s => s.Name == "Разрешение").Value);
+        resolutionDropdown.value = int.Parse(settingValues.FirstOrDefault(s => s.Name == "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ").Value);
 
-        toogle.isOn = Convert.ToBoolean(int.Parse(settingValues.FirstOrDefault(s => s.Name == "Режим экрана").Value));
+        toogle.isOn = Convert.ToBoolean(int.Parse(settingValues.FirstOrDefault(s => s.Name == "пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ").Value));
         isUpdated = true;
 
 
@@ -224,31 +224,31 @@ public class SettingsMenu : MonoBehaviour, IHideble
     }    
     void UpdateScreenMode(bool mode)
     {
-        var set = settingValues.FirstOrDefault(s => s.Name == "Режим экрана");
+        var set = settingValues.FirstOrDefault(s => s.Name == "пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
         if (set != null) set.Value = Convert.ToInt32(mode).ToString();
     }
     void UpdateResolution(int index)
     {
-        var set = settingValues.FirstOrDefault(s => s.Name == "Разрешение");
+        var set = settingValues.FirstOrDefault(s => s.Name == "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
         if (set != null) set.Value = index.ToString();
     }
     void UpdateSensValue(float value)
     {
         sensValue.text = Convert.ToInt32(value).ToString();
-        var set = settingValues.FirstOrDefault(s => s.Name == "Чувствительность");
+        var set = settingValues.FirstOrDefault(s => s.Name == "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
         if (set != null) set.Value = sensValue.text;
     }
     void UpdateBrighValue(float value)
     {
         brighValue.text = Math.Round(value, 1).ToString();
-        var set = settingValues.FirstOrDefault(s => s.Name == "Яркость");
+        var set = settingValues.FirstOrDefault(s => s.Name == "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
         if (set != null) set.Value = brighValue.text;
         SettingsInit.ChangeBrighNoSave(value);
     }
     void UpdateTimeValue(float time)
     {
         timeValue.text = time.ToString();
-        var set = settingValues.FirstOrDefault(s => s.Name == "Множитель времени");
+        var set = settingValues.FirstOrDefault(s => s.Name == "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
         if (set != null) set.Value = timeValue.text;
     }
     void UpdateVolumeValue(float volume, TMP_Text tmpText, string setName)

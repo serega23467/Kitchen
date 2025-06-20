@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+п»їusing System.Collections.Generic;
 using UnityEngine;
 using static UnityEngine.InputSystem.InputAction;
 
@@ -217,12 +217,12 @@ public class PlayerRaycast : MonoBehaviour
                     }
                     else
                     {
-                        UIElements.ShowToast("В кастрюле уже есть вода!");
+                        UIElements.ShowToast("пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ!");
                     }
                 }
                 else
                 {
-                    UIElements.ShowToast("Возьмите в руку кастрюлю для набора воды!");
+                    UIElements.ShowToast("пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ!");
                 }
             }
             else if (hit.collider.TryGetComponent(out BellFinish bell))
@@ -263,7 +263,7 @@ public class PlayerRaycast : MonoBehaviour
                             }
                             else
                             {
-                                UIElements.ShowToast("Наполните кастрюлю водой чтобы положить в неё что либо!");
+                                UIElements.ShowToast("пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ!");
                             }
                         }
                     }
@@ -289,7 +289,7 @@ public class PlayerRaycast : MonoBehaviour
                             }
                             else
                             {
-                                UIElements.ShowToast("Наполните кастрюлю водой чтобы положить в неё что либо!");
+                                UIElements.ShowToast("пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ!");
                             }
                         }
                     }                 
@@ -316,7 +316,7 @@ public class PlayerRaycast : MonoBehaviour
                         }
                         else
                         {
-                            UIElements.ShowToast("Наполните кастрюлю водой чтобы положить в неё что либо!");
+                            UIElements.ShowToast("пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ!");
                         }
                     }
                     else if (ComponentGetter.TryGetComponent(hit.collider, out Plate plate2))
@@ -340,7 +340,7 @@ public class PlayerRaycast : MonoBehaviour
                         }
                         else
                         {
-                            UIElements.ShowToast("В кастрюле нет воды, наполните!");
+                            UIElements.ShowToast("пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ!");
                         }
                     }
                 }
@@ -379,7 +379,7 @@ public class PlayerRaycast : MonoBehaviour
                                 playerController.OffMenuMode();
                             };
                             playerController.OnMenuMode();
-                            UIElements.GetInstance().OpenPanelConfirm($"Удаление продукта: {food.FoodInfo.FoodName}", action);
+                            UIElements.GetInstance().OpenPanelConfirm($"пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ: {food.FoodInfo.FoodName}", action);
                         }
                     }
                 }
@@ -483,7 +483,7 @@ public class PlayerRaycast : MonoBehaviour
                     currentInfoObject.ShowContent(list, hasPlate);
                     contentInfoObject = currentInfoObject;
                     playerController.OnMenuMode();
-                    if (!hasPlate && list.CanPull) UIElements.ShowToast("Чтобы вытащить продукт в руках должна быть тарелка!");
+                    if (!hasPlate && list.CanPull) UIElements.ShowToast("пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ!");
                 }
             }
             else

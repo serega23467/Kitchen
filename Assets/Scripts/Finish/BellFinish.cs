@@ -1,4 +1,4 @@
-using System;
+п»їusing System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -38,7 +38,7 @@ public class BellFinish : MonoBehaviour
         }
         else
         {
-            UIElements.ShowToast($"Положите блюдо на стол!");
+            UIElements.ShowToast($"пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ!");
         }
 
     }
@@ -51,7 +51,7 @@ public class BellFinish : MonoBehaviour
         Level.CookTime = UIElements.GetInstance().GetTimerTime();
         JsonLoader.SaveLevelInfo(Level, "CremlinMeat");
 
-        UIElements.ShowToast($"Успешно!");
+        UIElements.ShowToast($"пїЅпїЅпїЅпїЅпїЅпїЅпїЅ!");
     }
     public int Compare(out string result, Recipe recipeEtalon, Recipe recipe)
     {
@@ -67,11 +67,11 @@ public class BellFinish : MonoBehaviour
         {
             if (recipeEtalon.HasWater)
             {
-                sb.AppendLine("Блюдо должно быть супом, подаваемым в суповой тарелке!");
+                sb.AppendLine("пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ!");
             }
             else
             {
-                sb.AppendLine("Блюдо должно подаваться в обычной тарелке!");
+                sb.AppendLine("пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ!");
             }
             result = sb.ToString();
 
@@ -85,7 +85,7 @@ public class BellFinish : MonoBehaviour
         {
             if (!etalonContent.Select(f => f.FoodId).Contains(r.FoodId))
             {
-                sb.AppendLine("Лишний продукт " + r.FoodName);
+                sb.AppendLine("пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ " + r.FoodName);
                 hasRightAmountOfProducts = false;
             }
             else
@@ -96,7 +96,7 @@ public class BellFinish : MonoBehaviour
                 {
                     if(!etalonFoods.Select(f=>f.CurrentCutType).Contains(food.CurrentCutType))
                     {
-                        sb.AppendLine("Неправильная нарезка " + food.FoodName);
+                        sb.AppendLine("пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ " + food.FoodName);
                         hasRightAmountOfProducts = false;
                     }
                 }
@@ -108,7 +108,7 @@ public class BellFinish : MonoBehaviour
             var foodsWithEtalonId = recipeContent.Where(f => f.FoodId == etalonFood.FoodId);
             if (foodsWithEtalonId == null || foodsWithEtalonId.Count()<=0)
             {
-                sb.AppendLine("Нет " + etalonFood.FoodName);
+                sb.AppendLine("пїЅпїЅпїЅ " + etalonFood.FoodName);
                 hasRightAmountOfProducts = false;
             }
             else 
@@ -120,7 +120,7 @@ public class BellFinish : MonoBehaviour
                 }
                 if (GetDiffPercent(currentFood.Count, etalonFood.Count) > 20f || GetDiffPercent(currentFood.Count, etalonFood.Count) < -20f)
                 {
-                    sb.AppendLine("Не соответствует количество " + etalonFood.FoodName + $" {currentFood.Count}/{etalonFood.Count}");
+                    sb.AppendLine("пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ " + etalonFood.FoodName + $" {currentFood.Count}/{etalonFood.Count}");
                     hasRightAmountOfProducts = false;
                 }
                 else 
@@ -136,7 +136,7 @@ public class BellFinish : MonoBehaviour
                             }
                             else
                             {
-                                sb.AppendLine($"{currentFood}: Лишнее: " + realP.ParamName);
+                                sb.AppendLine($"{currentFood}: пїЅпїЅпїЅпїЅпїЅпїЅ: " + realP.ParamName);
                             }
                             if (realP.IsSpice)
                             {
@@ -159,7 +159,7 @@ public class BellFinish : MonoBehaviour
                             }
                             else
                             {
-                                sb.AppendLine("Нет: " + paramEtalon.ParamName + " " + etalonFood.FoodName);
+                                sb.AppendLine("пїЅпїЅпїЅ: " + paramEtalon.ParamName + " " + etalonFood.FoodName);
                             }
                             if(!fullParamEtalon.IsSpice)
                             {
