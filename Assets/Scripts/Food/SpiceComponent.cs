@@ -1,4 +1,4 @@
-using UnityEngine;
+п»їusing UnityEngine;
 
 [RequireComponent(typeof(ShakingAnim))]
 public class SpiceComponent : MonoBehaviour
@@ -13,8 +13,8 @@ public class SpiceComponent : MonoBehaviour
     {
         info = GetComponent<ShowObjectInfo>();
         anim = GetComponent<ShakingAnim>();
-        info.ObjectInfo = "Нажмите 'Переместить в ёмкость' на посуду или продукт чтобы добавить";
-        info.ObjectData = $"{spiceDozenGramsWeight} г за раз";
+        info.ObjectInfo = "РќР°Р¶РјРёС‚Рµ 'РџРµСЂРµРјРµСЃС‚РёС‚СЊ РІ С‘РјРєРѕСЃС‚СЊ' РЅР° РїРѕСЃСѓРґСѓ РёР»Рё РїСЂРѕРґСѓРєС‚ С‡С‚РѕР±С‹ РґРѕР±Р°РІРёС‚СЊ";
+        info.ObjectData = $"{spiceDozenGramsWeight} Рі Р·Р° СЂР°Р·";
     }
     public void AddSpiceTo(FoodComponent food)
     {

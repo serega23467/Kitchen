@@ -1,4 +1,4 @@
-using TMPro;
+О╩©using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -23,9 +23,9 @@ public class FinishWindow : MonoBehaviour, IHideble
     {
         gameObject.SetActive(true);
         if (playerRate > 0)
-            resultText.text = "спнбемэ опнидем";
+            resultText.text = "пёп═п·п▓п∙п²п╛ п÷п═п·п≥п■п∙п²";
         else
-            resultText.text = "спнбемэ ме опнидем";
+            resultText.text = "пёп═п·п▓п∙п²п╛ п²п∙ п÷п═п·п≥п■п∙п²";
         for (int i = 0; i < playerRate; i++)
         {
             if (i > stars.Length - 1) return;

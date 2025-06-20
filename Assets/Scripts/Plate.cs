@@ -124,7 +124,7 @@ public class Plate : MonoBehaviour, IListable, IFinish
             food.plate = null;
         }
         List<FoodComponent> list = Foods.ToList();
-        Foods = new ObservableCollection<FoodComponent>();
+        Foods.Clear();
         return list;
     }
     public void UpdateInfo(object sender=null, NotifyCollectionChangedEventArgs e=null)
@@ -160,6 +160,11 @@ public class Plate : MonoBehaviour, IListable, IFinish
         if (contentMaterial != null && contentEtalonTexture != null)
         {
             var etalonFoods = BellFinish.Level.Recipe.RecipeContent;
+            if(BellFinish.Level.Recipe.HasWater)
+            {
+                content.SetActive(false);
+                return;
+            }
             if (CompareWithEtalon(etalonFoods))
             {
                 foreach(var f in Foods)

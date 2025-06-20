@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
@@ -56,7 +56,7 @@ public class Pot : MonoBehaviour, IHeated, IListable
     {
         if(info != null)
         {
-            //êîñòûëü âûïîëíåíèÿ ìåòîäà èíòåðôåéñà ïî óìîë÷àíèþ, ò.ê. íåëüçÿ íàñëåäîâàòü íåñêîëüêî êëàññîâ ÷òîáû èñïîëüçîâàòü àáñòðàêòíûé
+          //ÐºÐ¾ÑÑ‚Ñ‹Ð»ÑŒ Ð²Ñ‹Ð¿Ð¾Ð»Ð½ÐµÐ½Ð¸Ñ Ð¼ÐµÑ‚Ð¾Ð´Ð° Ð¸Ð½Ñ‚ÐµÑ€Ñ„ÐµÐ¹ÑÐ° Ð¿Ð¾ ÑƒÐ¼Ð¾Ð»Ñ‡Ð°Ð½Ð¸ÑŽ, Ñ‚.Ðº. Ð½ÐµÐ»ÑŒÐ·Ñ Ð½Ð°ÑÐ»ÐµÐ´Ð¾Ð²Ð°Ñ‚ÑŒ Ð½ÐµÑÐºÐ¾Ð»ÑŒÐºÐ¾ ÐºÐ»Ð°ÑÑÐ¾Ð² Ñ‡Ñ‚Ð¾Ð±Ñ‹ Ð¸ÑÐ¿Ð¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ñ‚ÑŒ Ð°Ð±ÑÑ‚Ñ€Ð°ÐºÑ‚Ð½Ñ‹Ð¹
             var iheated = this as IHeated;
             info.ObjectInfo = foodInfoBoofer + "\n" + iheated.GetInfo();
 
@@ -74,16 +74,6 @@ public class Pot : MonoBehaviour, IHeated, IListable
                     smoke.Stop();
                 }
             }
-        }
-    }
-    void ChangeWaterMaterial(object sender, NotifyCollectionChangedEventArgs e)
-    {
-        if(potWater!=null && waterRend!=null && waterWithFoodMaterial!=null)
-        {
-            if (Foods.Count() > 0)
-                waterRend.material = waterWithFoodMaterial;
-            else
-                waterRend.material = waterMaterial;
         }
     }
     public void SpiceFood(SpiceComponent spice)
@@ -176,12 +166,26 @@ public class Pot : MonoBehaviour, IHeated, IListable
         if (potSource != null && potSource.isPlaying)
             potSource.Stop();
     }
+    public void RemoveFood(FoodComponent food)
+    {
+        Foods.Remove(food);
+        UIElements.GetInstance().UpdateObjectContent(this);
+    }
     public void PutFood(FoodComponent food)
     {
         if (Parents.GetInstance().Player.PickFood(food))
         {
-            Foods.Remove(food);
-            UIElements.GetInstance().UpdateObjectContent(this);
+            RemoveFood(food);
+        }
+    }
+    void ChangeWaterMaterial(object sender, NotifyCollectionChangedEventArgs e)
+    {
+        if(potWater!=null && waterRend!=null && waterWithFoodMaterial!=null)
+        {
+            if (Foods.Count() > 0)
+                waterRend.material = waterWithFoodMaterial;
+            else
+                waterRend.material = waterMaterial;
         }
     }
     IEnumerator Cooling()

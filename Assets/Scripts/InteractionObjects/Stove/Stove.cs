@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+п»їusing System.Collections.Generic;
 using UnityEngine;
 
 public class Stove : MonoBehaviour
@@ -9,10 +9,10 @@ public class Stove : MonoBehaviour
     Inclose[] places;
     public static Dictionary<byte, string> FireLevels = new Dictionary<byte, string>()
     {
-        {0, "Нет огня" },
-        {1, "Слабый огонь" },
-        {2, "Средний огонь" },
-        {3, "Сильный огонь" },
+        {0, "РќРµС‚ РѕРіРЅСЏ" },
+        {1, "РЎР»Р°Р±С‹Р№ РѕРіРѕРЅСЊ" },
+        {2, "РЎСЂРµРґРЅРёР№ РѕРіРѕРЅСЊ" },
+        {3, "РЎРёР»СЊРЅС‹Р№ РѕРіРѕРЅСЊ" },
     };
     private void Start()
     {

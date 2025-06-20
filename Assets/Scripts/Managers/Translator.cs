@@ -1,4 +1,4 @@
- using System.Collections.Generic;
+п»ї using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 using static UnityEngine.UI.Image;
@@ -15,14 +15,14 @@ public class Translator
             instance = new Translator();
             instance.translate = new Dictionary<string, string>()
             {
-                { "None", "не нарезано" },
-                { "Large", "крупно" },
-                { "Medium", "средне" },
-                { "Finely", "мелко" },
-                {  "Громкость", "MasterVolume" },
-                { "Громкость музыки", "MusicVolume" },
-                { "Громкость музыки в главном меню", "MainMenuMusicVolume" },
-                {  "Громкость звуков", "EffectsVolume"},
+                { "None", "РќРµ РЅР°СЂРµР·Р°РЅРѕ" },
+                { "Large", "РљСЂСѓРїРЅРѕ" },
+                { "Medium", "РЎСЂРµРґРЅРµ" },
+                { "Finely", "РњРµР»РєРѕ" },
+                {  "Р“СЂРѕРјРєРѕСЃС‚СЊ", "MasterVolume" },
+                { "Р“СЂРѕРјРєРѕСЃС‚СЊ РјСѓР·С‹РєРё", "MusicVolume" },
+                { "Р“СЂРѕРјРєРѕСЃС‚СЊ РјСѓР·С‹РєРё РІ РіР»Р°РІРЅРѕРј РјРµРЅСЋ", "MainMenuMusicVolume" },
+                {  "Р“СЂРѕРјРєРѕСЃС‚СЊ Р·РІСѓРєРѕРІ", "EffectsVolume"},
             };
         }
         return instance;

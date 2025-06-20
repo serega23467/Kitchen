@@ -1,4 +1,4 @@
-using DG.Tweening;
+ï»¿using DG.Tweening;
 using System;
 using TMPro;
 using UnityEngine;
@@ -50,7 +50,7 @@ public class SceneLoader : MonoBehaviour
         rotatedThing.Rotate(0, 0, -1 * Time.deltaTime * 500);
         if (loadingSceneOperation != null)
         {
-            progressText.text = "Çàãðóçêà " + Mathf.RoundToInt(loadingSceneOperation.progress * 100f) + " %";
+            progressText.text = "Ð—Ð°Ð³Ñ€ÑƒÐ·ÐºÐ° " + Mathf.RoundToInt(loadingSceneOperation.progress * 100f) + " %";
         }
     }
     void Hide()

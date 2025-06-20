@@ -66,6 +66,14 @@ public class PlateDish : MonoBehaviour, IFinish
         }
         if (contentMaterial != null && contentEtalonTexture != null && contentDefaultTexture != null)
         {
+            if (!BellFinish.Level.Recipe.HasWater)
+            {
+                if (contentMaterial.material.mainTexture != contentDefaultTexture)
+                {
+                    contentMaterial.material.mainTexture = contentDefaultTexture;
+                }
+                return;
+            }
             var etalonFoods = BellFinish.Level.Recipe.RecipeContent;
             if (CompareWithEtalon(etalonFoods))
             {

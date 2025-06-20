@@ -344,6 +344,30 @@ public class PlayerRaycast : MonoBehaviour
                         }
                     }
                 }
+                else if(CurrentDraggableObject.TryGetComponent(out Pot handsPot))
+                {
+                    if (ComponentGetter.TryGetComponent(hit.collider, out Plate plateForPot))
+                    {
+                        var foodList = new List<FoodComponent>(handsPot.Foods);
+                        foreach (var f in foodList)
+                        {
+                            if(plateForPot.TryAddFood(f))
+                            {
+                                f.gameObject.transform.localScale = Vector3.one;
+                                var dgo = f.GetComponent<DraggableObject>();
+                                if (dgo != null)
+                                {
+                                    dgo.OffRigidbody();
+                                    dgo.CanDrag = false;
+                                }
+                                handsPot.RemoveFood(f);
+                            }
+
+
+
+                        }
+                    }
+                }
             }
             else if (ComponentGetter.TryGetComponent(hit.collider, out FoodComponent food))
             {

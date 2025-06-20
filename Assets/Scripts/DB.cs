@@ -1,4 +1,4 @@
-using UnityEngine;
+п»їusing UnityEngine;
 using System.Data;
 using Mono.Data.Sqlite;
 using System.IO;
@@ -17,7 +17,7 @@ public static class DB
     {
         DBPath = GetDatabasePath();
     }
-    /// <summary> Возвращает путь к БД. Если её нет в нужной папке на Андроиде, то копирует её с исходного apk файла. </summary>
+    /// <summary> Р’РѕР·РІСЂР°С‰Р°РµС‚ РїСѓС‚СЊ Рє Р‘Р”. Р•СЃР»Рё РµС‘ РЅРµС‚ РІ РЅСѓР¶РЅРѕР№ РїР°РїРєРµ РЅР° РђРЅРґСЂРѕРёРґРµ, С‚Рѕ РєРѕРїРёСЂСѓРµС‚ РµС‘ СЃ РёСЃС…РѕРґРЅРѕРіРѕ apk С„Р°Р№Р»Р°. </summary>
     private static string GetDatabasePath()
     {
 #if UNITY_EDITOR
@@ -28,8 +28,8 @@ public static class DB
         return filePath;
 #endif
     }
-    /// <summary> Распаковывает базу данных в указанный путь. </summary>
-    /// <param name="toPath"> Путь в который нужно распаковать базу данных. </param>
+    /// <summary> Р Р°СЃРїР°РєРѕРІС‹РІР°РµС‚ Р±Р°Р·Сѓ РґР°РЅРЅС‹С… РІ СѓРєР°Р·Р°РЅРЅС‹Р№ РїСѓС‚СЊ. </summary>
+    /// <param name="toPath"> РџСѓС‚СЊ РІ РєРѕС‚РѕСЂС‹Р№ РЅСѓР¶РЅРѕ СЂР°СЃРїР°РєРѕРІР°С‚СЊ Р±Р°Р·Сѓ РґР°РЅРЅС‹С…. </param>
     private static void UnpackDatabase(string toPath)
     {
         string fromPath = Path.Combine(Application.streamingAssetsPath, fileName);
@@ -45,14 +45,14 @@ public static class DB
         command = new SqliteCommand(connection);
         connection.Open();
     }
-    /// <summary> Этот метод закрывает подключение к БД. </summary>
+    /// <summary> Р­С‚РѕС‚ РјРµС‚РѕРґ Р·Р°РєСЂС‹РІР°РµС‚ РїРѕРґРєР»СЋС‡РµРЅРёРµ Рє Р‘Р”. </summary>
     private static void CloseConnection()
     {
         connection.Close();
         command.Dispose();
     }
-    /// <summary> Этот метод выполняет запрос query. </summary>
-    /// <param name="query"> Собственно запрос. </param>
+    /// <summary> Р­С‚РѕС‚ РјРµС‚РѕРґ РІС‹РїРѕР»РЅСЏРµС‚ Р·Р°РїСЂРѕСЃ query. </summary>
+    /// <param name="query"> РЎРѕР±СЃС‚РІРµРЅРЅРѕ Р·Р°РїСЂРѕСЃ. </param>
     private static void ExecuteQueryWithoutAnswer(string query)
     {
         OpenConnection();
@@ -60,9 +60,9 @@ public static class DB
         command.ExecuteNonQuery();
         CloseConnection();
     }
-    /// <summary> Этот метод выполняет запрос query и возвращает ответ запроса. </summary>
-    /// <param name="query"> Собственно запрос. </param>
-    /// <returns> Возвращает значение 1 строки 1 столбца, если оно имеется. </returns>
+    /// <summary> Р­С‚РѕС‚ РјРµС‚РѕРґ РІС‹РїРѕР»РЅСЏРµС‚ Р·Р°РїСЂРѕСЃ query Рё РІРѕР·РІСЂР°С‰Р°РµС‚ РѕС‚РІРµС‚ Р·Р°РїСЂРѕСЃР°. </summary>
+    /// <param name="query"> РЎРѕР±СЃС‚РІРµРЅРЅРѕ Р·Р°РїСЂРѕСЃ. </param>
+    /// <returns> Р’РѕР·РІСЂР°С‰Р°РµС‚ Р·РЅР°С‡РµРЅРёРµ 1 СЃС‚СЂРѕРєРё 1 СЃС‚РѕР»Р±С†Р°, РµСЃР»Рё РѕРЅРѕ РёРјРµРµС‚СЃСЏ. </returns>
     private static string ExecuteQueryWithAnswer(string query)
     {
         OpenConnection();
@@ -73,8 +73,8 @@ public static class DB
         if (answer != null) return answer.ToString();
         else return null;
     }
-    /// <summary> Этот метод возвращает таблицу, которая является результатом выборки запроса query. </summary>
-    /// <param name="query"> Собственно запрос. </param>
+    /// <summary> Р­С‚РѕС‚ РјРµС‚РѕРґ РІРѕР·РІСЂР°С‰Р°РµС‚ С‚Р°Р±Р»РёС†Сѓ, РєРѕС‚РѕСЂР°СЏ СЏРІР»СЏРµС‚СЃСЏ СЂРµР·СѓР»СЊС‚Р°С‚РѕРј РІС‹Р±РѕСЂРєРё Р·Р°РїСЂРѕСЃР° query. </summary>
+    /// <param name="query"> РЎРѕР±СЃС‚РІРµРЅРЅРѕ Р·Р°РїСЂРѕСЃ. </param>
     private static DataTable GetTable(string query)
     {
         OpenConnection();
@@ -112,7 +112,7 @@ public static class DB
     public static Dictionary<string, float> GetAudioValues()
     {
         Dictionary<string, float> values = new Dictionary<string, float>();
-        DataTable scoreboard = DB.GetTable("SELECT Id, Name, Value FROM SettingsValues WHERE Name LIKE '%Громкость%'");
+        DataTable scoreboard = DB.GetTable("SELECT Id, Name, Value FROM SettingsValues WHERE Name LIKE '%Р“СЂРѕРјРєРѕСЃС‚СЊ%'");
         for (int i = 0; i < scoreboard.Rows.Count; i++)
         {
             values.Add(Translator.GetInstance().GetTranslate(scoreboard.Rows[i][1].ToString()), float.Parse(scoreboard.Rows[i][2].ToString()));
@@ -121,13 +121,13 @@ public static class DB
     }
     public static float GetVirtualSecond()
     {
-        DataTable scoreboard = DB.GetTable("SELECT * FROM SettingsValues WHERE Name = 'Множитель времени';");
+        DataTable scoreboard = DB.GetTable("SELECT * FROM SettingsValues WHERE Name = 'РњРЅРѕР¶РёС‚РµР»СЊ РІСЂРµРјРµРЅРё';");
         float secs = 1f / float.Parse(scoreboard.Rows[0][2].ToString());
         return secs;
     }
     public static float GetSensetivity()
     {
-        DataTable scoreboard = DB.GetTable("SELECT * FROM SettingsValues WHERE Name = 'Чувствительность';");
+        DataTable scoreboard = DB.GetTable("SELECT * FROM SettingsValues WHERE Name = 'Р§СѓРІСЃС‚РІРёС‚РµР»СЊРЅРѕСЃС‚СЊ';");
         float sens = float.Parse(scoreboard.Rows[0][2].ToString()) / 100;
         if (sens < 0.5f)
         {
@@ -140,17 +140,17 @@ public static class DB
     }
     public static bool GetScreenMode()
     {
-        DataTable scoreboard = DB.GetTable("SELECT * FROM SettingsValues WHERE Name = 'Режим экрана';");
+        DataTable scoreboard = DB.GetTable("SELECT * FROM SettingsValues WHERE Name = 'Р РµР¶РёРј СЌРєСЂР°РЅР°';");
         return Convert.ToBoolean(int.Parse(scoreboard.Rows[0][2].ToString()));
     }
     public static int GetResolution()
     {
-        DataTable scoreboard = DB.GetTable("SELECT * FROM SettingsValues WHERE Name = 'Разрешение';");
+        DataTable scoreboard = DB.GetTable("SELECT * FROM SettingsValues WHERE Name = 'Р Р°Р·СЂРµС€РµРЅРёРµ';");
         return int.Parse(scoreboard.Rows[0][2].ToString());
     }
     public static float GetBrightness()
     {
-        DataTable scoreboard = DB.GetTable("SELECT * FROM SettingsValues WHERE Name = 'Яркость';");
+        DataTable scoreboard = DB.GetTable("SELECT * FROM SettingsValues WHERE Name = 'РЇСЂРєРѕСЃС‚СЊ';");
         return float.Parse(scoreboard.Rows[0][2].ToString());
     }
     public static void UpdateLevelInfo(int rate, int time)

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public interface IListable
 {
+    public void PutFood(FoodComponent food);
     ObservableCollection<FoodComponent> Foods { get; set; }
     bool CanPull { get; }
-    public void PutFood(FoodComponent food);
 }

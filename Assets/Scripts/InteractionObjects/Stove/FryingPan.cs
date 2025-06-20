@@ -1,4 +1,4 @@
-using System.Collections;
+п»їusing System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -22,11 +22,9 @@ public class FryingPan : MonoBehaviour, IHeated
         HeatedInfo = new HeatedInfo(temperature: 20, minMassKG: 1, currentMassKG: 1, maxMassKG: 5, hasWater: false, time: 0);
 
         plate = GetComponent<Plate>();
-        //info.ObjectName = "Сковородка";
 
         plate.OnUpdateInfo.AddListener(UpdateFoodsInfo);
-        UpdateFoodsInfo($"Макс вес - {plate.MaxWeight} г");
-        //plate.GetComponent<ShowObjectInfo>().
+        UpdateFoodsInfo($"РњР°РєСЃ РІРµСЃ - {plate.MaxWeight} Рі");
     }
     public List<FoodComponent> GetFoods()
     {
@@ -62,7 +60,7 @@ public class FryingPan : MonoBehaviour, IHeated
     {
         if (info != null)
         {
-            //костыль выполнения метода интерфейса по умолчанию, т.к. нельзя наследовать несколько классов чтобы использовать абстрактный
+            //РєРѕСЃС‚С‹Р»СЊ РІС‹РїРѕР»РЅРµРЅРёСЏ РјРµС‚РѕРґР° РёРЅС‚РµСЂС„РµР№СЃР° РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ, С‚.Рє. РЅРµР»СЊР·СЏ РЅР°СЃР»РµРґРѕРІР°С‚СЊ РЅРµСЃРєРѕР»СЊРєРѕ РєР»Р°СЃСЃРѕРІ С‡С‚РѕР±С‹ РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊ Р°Р±СЃС‚СЂР°РєС‚РЅС‹Р№
             var iheated = this as IHeated;
             info.ObjectData = iheated.GetInfo(false) + "\n" + foodDataBoofer;
         }

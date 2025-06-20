@@ -1,4 +1,4 @@
-using UnityEngine;
+п»їusing UnityEngine;
 
 public interface IHeated
 {
@@ -17,16 +17,16 @@ public interface IHeated
            
             string time = Translator.GetTimeBySeconds(totalSeconds);
             if(hasWater) 
-                result= $"\nтемпература: {HeatedInfo.Temperature.ToString("F1")} C\nмасса воды: {(HeatedInfo.CurrentMassKG - HeatedInfo.MinMassKG).ToString("F1")} kg\nвремя: {time}";
+                result= $"\nС‚РµРјРїРµСЂР°С‚СѓСЂР°: {HeatedInfo.Temperature.ToString("F1")} C\nРјР°СЃСЃР° РІРѕРґС‹: {(HeatedInfo.CurrentMassKG - HeatedInfo.MinMassKG).ToString("F1")} РєРі\nРІСЂРµРјСЏ: {time}";
             else
-                result = $"\nтемпература: {HeatedInfo.Temperature.ToString("F1")} C\nвремя: {time}";
+                result = $"\nС‚РµРјРїРµСЂР°С‚СѓСЂР°: {HeatedInfo.Temperature.ToString("F1")} C\nРІСЂРµРјСЏ: {time}";
         }
         else
         {
             if(hasWater)
-                result = $"\nтемпература: {HeatedInfo.Temperature.ToString("F1")} C\nмасса воды: {(HeatedInfo.CurrentMassKG - HeatedInfo.MinMassKG).ToString("F1")} kg";
+                result = $"\nС‚РµРјРїРµСЂР°С‚СѓСЂР°: {HeatedInfo.Temperature.ToString("F1")} C\nРјР°СЃСЃР° РІРѕРґС‹: {(HeatedInfo.CurrentMassKG - HeatedInfo.MinMassKG).ToString("F1")} РєРі";
             else
-                result = $"\nтемпература: {HeatedInfo.Temperature.ToString("F1")} C";
+                result = $"\nС‚РµРјРїРµСЂР°С‚СѓСЂР°: {HeatedInfo.Temperature.ToString("F1")} C";
         }
         return result;
     }

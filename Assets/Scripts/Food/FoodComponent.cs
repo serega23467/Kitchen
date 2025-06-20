@@ -1,4 +1,4 @@
-using System;
+п»їusing System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -35,21 +35,21 @@ public class FoodComponent : MonoBehaviour, ICloneable
             //FoodInfo.CurrentCutType = CutType.None;
         }
         //FoodInfo.Params = new List<FoodParametr>();
-        info.ObjectInfo = "Нажмите 'Переместить в ёмкость' на посуду чтобы положить";
+        info.ObjectInfo = "РќР°Р¶РјРёС‚Рµ 'РџРµСЂРµРјРµСЃС‚РёС‚СЊ РІ С‘РјРєРѕСЃС‚СЊ' РЅР° РїРѕСЃСѓРґСѓ С‡С‚РѕР±С‹ РїРѕР»РѕР¶РёС‚СЊ";
         if (FoodInfo.IsPour)
         {
             if (isInstanceSpawned)
             {
-                info.ObjectInfo += $"\n{FoodInfo.GramsWeight} г";
+                info.ObjectInfo += $"\n{FoodInfo.GramsWeight} Рі";
             }
             else
             {
-                info.ObjectInfo += $"\n{FoodInfo.GramsWeight} г за раз";
+                info.ObjectInfo += $"\n{FoodInfo.GramsWeight} Рі Р·Р° СЂР°Р·";
             }
         }
         else
         {
-            info.ObjectInfo += $"\n{FoodInfo.GramsWeight.ToString("N1")} г\n({Translator.GetInstance().GetTranslate(FoodInfo.CurrentCutType.ToString())})";           
+            info.ObjectInfo += $"\n{FoodInfo.GramsWeight.ToString("N1")} Рі\n({Translator.GetInstance().GetTranslate(FoodInfo.CurrentCutType.ToString())})";           
         }
         if(OnPull==null) OnPull = new UnityEvent<FoodComponent>();
         UpdateParamsData();
